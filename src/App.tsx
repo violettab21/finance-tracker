@@ -1,11 +1,13 @@
+import { BrowserRouter } from "react-router";
+import AppRouter from "./components/AppRouter";
 import { Global } from "./styled/global";
 
 function App() {
   return (
-    <>
-      <Global/>
-      <div>Finance App</div>
-    </>
+    <BrowserRouter>
+      <Global />
+      <AppRouter />
+    </BrowserRouter>
   );
 }
 
