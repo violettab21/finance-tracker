@@ -5,4 +5,7 @@ export type ButtonProps = {
   secondary?: boolean;
 };
 
-export type StyledButtonType = Omit<ButtonProps, 'children' | 'onClick'>;
+export type StyledProps = {
+  $primary?: boolean;
+  $secondary?: boolean;
+};

@@ -1,6 +1,6 @@
 import Login from '../pages/Login';
 import Main from '../pages/Main';
-import Register from '../pages/Register';
+import Register from '../pages/Register/Register';
 import Tracker from '../pages/Tracker';
 
 export const LOGIN_ROUTE = '/login';

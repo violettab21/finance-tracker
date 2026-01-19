@@ -8,7 +8,7 @@ export default function Button({
   secondary,
 }: ButtonProps) {
   return (
-    <StyledButton primary={primary} secondary={secondary} onClick={onClick}>
+    <StyledButton $primary={primary} $secondary={secondary} onClick={onClick}>
       {children}
     </StyledButton>
   );
