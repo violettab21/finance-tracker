@@ -1,6 +1,16 @@
 import type { InputHTMLAttributes } from 'react';
-import { StyledInput } from './styles';
+import { StyledErrorText, StyledInput } from './styles';
+import { StyledFlexWrapper } from '../../styled/flex';
 
-export default function Input(props: InputHTMLAttributes<HTMLInputElement>) {
-  return <StyledInput {...props}></StyledInput>;
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  error: string | null;
+}
+
+export default function Input({ error, ...props }: InputProps) {
+  return (
+    <StyledFlexWrapper direction="column">
+      <StyledInput error={error} {...props}></StyledInput>
+      {error && <StyledErrorText>{error}</StyledErrorText>}
+    </StyledFlexWrapper>
+  );
 }
