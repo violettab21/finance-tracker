@@ -7,4 +7,11 @@ export const colors = {
   text: '#ffffff',
   inputBackground: '#3E3658',
   formBackground: '#2C2638',
+  PasswordComplexityColors: {
+    weak: '#7b758d',
+    belowAverage: '#7d71a5',
+    medium: '#70619e',
+    good: '#69599c',
+    strong: '#6d54b5',
+  },
 };

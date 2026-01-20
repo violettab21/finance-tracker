@@ -9,6 +9,7 @@ import { RegistrationFormWrapper, StyledTitle } from './styles';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ValidationSchema } from './validation';
+import { PasswordComplexity } from '../PasswordComplexity/PasswordComplexity';
 
 interface RegistrationFormInput {
   firstName: string;
@@ -24,16 +25,19 @@ export default function RegisterForm() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm<RegistrationFormInput>({
     resolver: zodResolver(ValidationSchema),
     mode: 'onBlur',
   });
   const onSubmit = (data: RegistrationFormInput) => console.log(data);
 
+  const password = watch('password', '');
+
   return (
     <RegistrationFormWrapper>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <StyledFlexWrapper direction="column" width="30%" gap="10px">
+        <StyledFlexWrapper direction="column" width="20%" gap="10px">
           <StyledTitle>Create an account</StyledTitle>
           <p>Already have an account? Log in</p>
           <StyledFlexWrapper gap="10px">
@@ -68,7 +72,7 @@ export default function RegisterForm() {
             }}
             error={errors.password ? errors.password?.message || null : null}
           />
-
+          {password && <PasswordComplexity password={password} />}
           <Checkbox
             {...register('terms')}
             labelText="I agree to the Terms & Conditions"

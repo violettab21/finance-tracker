@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 type FlexProps = {
   direction?: 'row' | 'column';
-  justify?: 'center' | 'flex-start' | 'flex-end';
+  justify?: 'center' | 'flex-start' | 'flex-end' | 'space-between';
   align?: 'center' | 'flex-start' | 'flex-end';
   width?: string;
   gap?: string;
