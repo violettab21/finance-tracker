@@ -6,10 +6,17 @@ import Input from '../Input/Input';
 import Password from '../Input/Password/Password';
 import Separator from '../Separator/Separator';
 import { RegistrationFormWrapper, StyledTitle } from './styles';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ValidationSchema } from './validation';
 import { PasswordComplexity } from '../PasswordComplexity/PasswordComplexity';
+import { SignInWithGoogle, signUp } from '../../services/auth/auth';
+import { useCookies } from 'react-cookie';
+import { FirebaseError } from 'firebase/app';
+import {
+  FIREBASE_AUTH_ERROR_EMAIL_IN_USE,
+  FIREBASE_AUTH_ERROR_NETWORK,
+} from '../../constants/contants';
 
 interface RegistrationFormInput {
   firstName: string;
@@ -21,18 +28,58 @@ interface RegistrationFormInput {
 
 export default function RegisterForm() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [, setCookie] = useCookies();
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    watch,
+    formState: { errors, isValid },
+    control,
   } = useForm<RegistrationFormInput>({
     resolver: zodResolver(ValidationSchema),
     mode: 'onBlur',
   });
-  const onSubmit = (data: RegistrationFormInput) => console.log(data);
+  const [signUpError, setSignUpError] = useState<string>('');
+  const onSubmit = async (data: RegistrationFormInput) => {
+    try {
+      const user = await signUp(data);
+      const userToken = await user.getIdToken();
+      setCookie('token', userToken);
+    } catch (error) {
+      if (
+        error instanceof FirebaseError &&
+        error.code === FIREBASE_AUTH_ERROR_EMAIL_IN_USE
+      ) {
+        setSignUpError('Email is already in use');
+      } else if (
+        error instanceof FirebaseError &&
+        error.code === FIREBASE_AUTH_ERROR_NETWORK
+      ) {
+        setSignUpError('Network error. Check Internet connection');
+      } else {
+        setSignUpError('Something went wrong. Try again later');
+      }
+    }
+  };
 
-  const password = watch('password', '');
+  const signUpWithGoogle = async () => {
+    try {
+      const user = await SignInWithGoogle();
+      const userToken = await user.getIdToken();
+      setCookie('token', userToken);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        console.log(error.code);
+      } else {
+        setSignUpError('Something went wrong. Try again later');
+      }
+    }
+  };
+
+  const password = useWatch({
+    control,
+    name: 'password',
+    defaultValue: '',
+  });
 
   return (
     <RegistrationFormWrapper>
@@ -79,11 +126,14 @@ export default function RegisterForm() {
             error={errors.terms ? errors.terms?.message || null : null}
           />
 
-          <Button primary onClick={() => console.log('btn clicked')}>
+          <Button primary disabled={!isValid}>
             Create Account
           </Button>
           <Separator text="Or sign up with" />
-          <Button secondary>Google</Button>
+          <Button secondary onClick={signUpWithGoogle}>
+            Google
+          </Button>
+          {signUpError && <p>{signUpError}</p>}
         </StyledFlexWrapper>
       </form>
     </RegistrationFormWrapper>

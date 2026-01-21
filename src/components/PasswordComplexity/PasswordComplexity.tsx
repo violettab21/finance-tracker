@@ -93,8 +93,8 @@ export const PasswordComplexity = ({ password }: { password: string }) => {
           return (
             <StyledComplexityBox
               key={element}
-              indicatorColor={complexityValue.color}
-              isFilled={isFilled}
+              $indicatorColor={complexityValue.color}
+              $isFilled={isFilled}
             />
           );
         })}
