@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
 } from 'firebase/auth';
@@ -14,6 +15,11 @@ interface UserData {
   terms: boolean;
 }
 
+interface UserDataSignIn {
+  email: string;
+  password: string;
+}
+
 export async function signUp(userData: UserData) {
   const register = await createUserWithEmailAndPassword(
     auth,
@@ -25,6 +31,17 @@ export async function signUp(userData: UserData) {
   await updateProfile(user, {
     displayName: `${userData.firstName} ${userData.lastName}`,
   });
+
+  return user;
+}
+
+export async function signIn(userData: UserDataSignIn) {
+  const register = await signInWithEmailAndPassword(
+    auth,
+    userData.email,
+    userData.password
+  );
+  const user = register.user;
 
   return user;
 }

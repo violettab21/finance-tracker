@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { colors } from '../../styled/colors';
+import { Link } from 'react-router';
 
 /*export const StyledRegistrationFormWrapper = styled.div`
   width: 50%;
@@ -14,4 +15,8 @@ export const StyledTitle = styled.h1`
 
 export const RegistrationFormWrapper = styled.div`
   background-color: ${colors.formBackground};
+`;
+
+export const StyledLinkRegisterForm = styled(Link)`
+  color: ${colors.backgroundLight};
 `;

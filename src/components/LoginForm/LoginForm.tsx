@@ -1,38 +1,30 @@
-import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { StyledFlexWrapper } from '../../styled/flex';
-import Button from '../Button/Button';
-import Checkbox from '../Input/Checkbox/Checkbox';
 import Input from '../Input/Input';
 import Password from '../Input/Password/Password';
+import Button from '../Button/Button';
 import Separator from '../Separator/Separator';
-import {
-  RegistrationFormWrapper,
-  StyledLinkRegisterForm,
-  StyledTitle,
-} from './styles';
-import { useForm, useWatch } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { ValidationSchema } from './validation';
-import { PasswordComplexity } from '../PasswordComplexity/PasswordComplexity';
-import { SignInWithGoogle, signUp } from '../../services/auth/auth';
+import { useContext, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { useForm } from 'react-hook-form';
+import { AuthContext } from '../../context/authContext';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { FirebaseError } from 'firebase/app';
 import {
-  FIREBASE_AUTH_ERROR_EMAIL_IN_USE,
+  FIREBASE_AUTH_ERROR_CREDENTIAL,
   FIREBASE_AUTH_ERROR_NETWORK,
 } from '../../constants/contants';
-import { useNavigate } from 'react-router';
-import { AuthContext } from '../../context/authContext';
+import { signIn, SignInWithGoogle } from '../../services/auth/auth';
+import { ValidationSchemaSignIn } from './validation';
+import { StyledForm } from './styles';
+import { StyledLinkRegisterForm, StyledTitle } from '../RegisterForm/styles';
 
-interface RegistrationFormInput {
-  firstName: string;
-  lastName: string;
+interface SignInFormInput {
   email: string;
   password: string;
-  terms: boolean;
 }
 
-export default function RegisterForm() {
+export default function LoginForm() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { setUserData } = useContext(AuthContext);
   const [, setCookie] = useCookies(['user']);
@@ -41,15 +33,14 @@ export default function RegisterForm() {
     register,
     handleSubmit,
     formState: { errors, isValid },
-    control,
-  } = useForm<RegistrationFormInput>({
-    resolver: zodResolver(ValidationSchema),
+  } = useForm<SignInFormInput>({
+    resolver: zodResolver(ValidationSchemaSignIn),
     mode: 'onChange',
   });
   const [signUpError, setSignUpError] = useState<string>('');
-  const onSubmit = async (data: RegistrationFormInput) => {
+  const onSubmit = async (data: SignInFormInput) => {
     try {
-      const user = await signUp(data);
+      const user = await signIn(data);
       const userToken = await user.getIdToken();
       setCookie('user', userToken);
       setUserData({ userToken, userName: user.displayName });
@@ -57,9 +48,9 @@ export default function RegisterForm() {
     } catch (error) {
       if (
         error instanceof FirebaseError &&
-        error.code === FIREBASE_AUTH_ERROR_EMAIL_IN_USE
+        error.code === FIREBASE_AUTH_ERROR_CREDENTIAL
       ) {
-        setSignUpError('Email is already in use');
+        setSignUpError('Email is not correct');
       } else if (
         error instanceof FirebaseError &&
         error.code === FIREBASE_AUTH_ERROR_NETWORK
@@ -87,36 +78,17 @@ export default function RegisterForm() {
     }
   };
 
-  const password = useWatch({
-    control,
-    name: 'password',
-    defaultValue: '',
-  });
-
   return (
-    <RegistrationFormWrapper>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <StyledFlexWrapper width="50%" justify="center">
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <StyledFlexWrapper direction="column" width="100%" gap="10px">
-          <StyledTitle>Create an account</StyledTitle>
+          <StyledTitle>Log in</StyledTitle>
           <p>
-            Already have an account?{' '}
-            <StyledLinkRegisterForm to="/login">Log in</StyledLinkRegisterForm>
+            Do not have an account?{' '}
+            <StyledLinkRegisterForm to="/register">
+              Sign Up
+            </StyledLinkRegisterForm>
           </p>
-          <StyledFlexWrapper gap="10px">
-            <Input
-              placeholder="Name"
-              {...register('firstName')}
-              error={
-                errors.firstName ? errors.firstName?.message || null : null
-              }
-            ></Input>
-
-            <Input
-              placeholder="Surname"
-              {...register('lastName')}
-              error={errors.lastName ? errors.lastName?.message || null : null}
-            ></Input>
-          </StyledFlexWrapper>
           <Input
             placeholder="Email"
             type="email"
@@ -134,23 +106,16 @@ export default function RegisterForm() {
             }}
             error={errors.password ? errors.password?.message || null : null}
           />
-          {password && <PasswordComplexity password={password} />}
-          <Checkbox
-            {...register('terms')}
-            labelText="I agree to the Terms & Conditions"
-            error={errors.terms ? errors.terms?.message || null : null}
-          />
-
           <Button primary disabled={!isValid}>
-            Create Account
+            Login
           </Button>
-          <Separator text="Or sign up with" />
+          <Separator text="Or sign in with" />
           <Button secondary onClick={signUpWithGoogle}>
             Google
           </Button>
           {signUpError && <p>{signUpError}</p>}
         </StyledFlexWrapper>
-      </form>
-    </RegistrationFormWrapper>
+      </StyledForm>
+    </StyledFlexWrapper>
   );
 }

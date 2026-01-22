@@ -1,11 +1,10 @@
-import RegisterForm from '../../components/RegisterForm/RegisterForm';
-
+import LoginForm from '../../components/LoginForm/LoginForm';
 import AuthFormWrapper from '../../components/AuthFormWrapper/AuthFormWrapper';
 
-export default function Register() {
+export default function Login() {
   return (
     <AuthFormWrapper>
-      <RegisterForm />
+      <LoginForm />
     </AuthFormWrapper>
   );
 }

@@ -8,7 +8,8 @@ export const Global = createGlobalStyle`
   box-sizing: border-box;
 }
 body {
-color: ${colors.text}
-
+color: ${colors.text};
+background-color:#625E74;
+font-family: "Poppins", sans-serif;
 }
 `;
