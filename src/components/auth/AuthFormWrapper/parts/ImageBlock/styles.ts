@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { StyledFlexWrapper } from '../../../../styled/flex';
-import { colors } from '../../../../styled/colors';
-import bgImage from '../../../../assets/bank3.png';
+import bgImage from '../../../../../assets/bank3.png';
 import { Link } from 'react-router';
+import { StyledFlexWrapper } from '../../../../../styled/flex';
+import { colors } from '../../../../../styled/colors';
 
 export const StyledImageBlock = styled(StyledFlexWrapper)`
   background-color: ${colors.border};

@@ -1,4 +1,4 @@
-import { StyledFlexWrapper } from '../../../../styled/flex';
+import { StyledFlexWrapper } from '../../../../../styled/flex';
 import { StyledImageBlock, StyledImageText, StyledLink } from './styles';
 import { FaArrowRightLong } from 'react-icons/fa6';
 export default function ImageBlock() {

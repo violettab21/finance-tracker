@@ -1,5 +1,5 @@
-import LoginForm from '../../components/LoginForm/LoginForm';
-import AuthFormWrapper from '../../components/AuthFormWrapper/AuthFormWrapper';
+import AuthFormWrapper from '../../components/auth/AuthFormWrapper/AuthFormWrapper';
+import LoginForm from '../../components/auth/LoginForm/LoginForm';
 
 export default function Login() {
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyledFlexWrapper } from '../../styled/flex';
 import ImageBlock from './parts/ImageBlock/ImageBlock';
 import { StyledFormWrapper } from './styles';
+import { StyledFlexWrapper } from '../../../styled/flex';
 
 export default function AuthFormWrapper({
   children,
