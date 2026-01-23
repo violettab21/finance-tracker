@@ -1,6 +1,5 @@
-import { useContext, useState } from 'react';
-import { AuthContext } from '../../../../context/authContext';
-import { useCookies } from 'react-cookie';
+import { useState } from 'react';
+
 import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,8 +17,6 @@ interface SignInFormInput {
 }
 
 export const useSignIn = () => {
-  const { setUserData } = useContext(AuthContext);
-  const [, setCookie] = useCookies(['user']);
   const navigate = useNavigate();
   const {
     register,
@@ -32,10 +29,7 @@ export const useSignIn = () => {
   const [signInError, setSignInError] = useState<string>('');
   const onSubmit = async (data: SignInFormInput) => {
     try {
-      const user = await signIn(data);
-      const userToken = await user.getIdToken();
-      setCookie('user', userToken);
-      setUserData({ userToken, userName: user.displayName });
+      await signIn(data);
       navigate('/finance-tracker');
     } catch (error) {
       if (

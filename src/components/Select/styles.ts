@@ -1,17 +1,12 @@
 import styled from 'styled-components';
 import { colors } from '../../styled/colors';
-import type { InputProps } from './Input';
-
-export const StyledInput = styled.input<InputProps>`
-  border: ${({ error }) =>
-    !error ? `${colors.border} solid 1px;` : `#ca3e3e solid 1px;`};
+export const StyledSelect = styled.select`
   border-radius: 4px;
   color: ${colors.text};
   background-color: ${colors.inputBackground};
   width: 100%;
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem 2rem;
 `;
-
 export const StyledErrorText = styled.p`
   font-size: 0.8rem;
   color: #ca3e3e;
