@@ -11,10 +11,13 @@ import {
   type ExpenseData,
 } from '../../../services/expenses/expenses';
 import { categories } from '../../Select/CustomSelect';
+import type { Dispatch, SetStateAction } from 'react';
 
 export default function ExpenseForm({
+  setExpenses,
   getExpanses,
 }: {
+  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
   getExpanses: () => Promise<ExpenseData[]>;
 }) {
   const {
@@ -29,12 +32,18 @@ export default function ExpenseForm({
 
   const onSubmit = async (data: FormDataExpense) => {
     console.log(data);
-    await addExpense({
-      category: data.category.value,
-      cost: data.cost,
-      date: data.date,
-    });
-    await getExpanses();
+    try {
+      await addExpense({
+        category: data.category.value,
+        cost: data.cost,
+        date: data.date,
+      });
+      const userExpanses = await getExpanses();
+
+      setExpenses(userExpanses);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -69,7 +78,7 @@ export default function ExpenseForm({
             error={errors.date ? errors.date?.message || null : null}
           ></Input>
 
-          <Button primary disabled={isValid}>
+          <Button primary disabled={!isValid}>
             Add
           </Button>
         </StyledFlexWrapper>

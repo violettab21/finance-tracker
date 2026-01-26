@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { ExpenseData } from '../../../services/expenses/expenses';
+import { MdExpandLess, MdExpandMore } from 'react-icons/md';
+import { StyledControl } from './styles';
 
 export default function ExpenseItem({
   expenses,
@@ -25,13 +27,17 @@ export default function ExpenseItem({
     <>
       <tr key={groupedExpense.category}>
         <td>
-          <button
+          <StyledControl
             onClick={() => {
               setIsDetailsVisible(!isDetailsVisible);
             }}
           >
-            {!isDetailsVisible ? 'Expand' : 'Collapse'}
-          </button>
+            {isDetailsVisible ? (
+              <MdExpandLess size={20} />
+            ) : (
+              <MdExpandMore size={20} />
+            )}
+          </StyledControl>
         </td>
         <td>{groupedExpense.category}</td>
         <td>{groupedExpense.cost}</td>

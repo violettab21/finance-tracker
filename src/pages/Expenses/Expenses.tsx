@@ -8,20 +8,39 @@ import {
   type ExpenseData,
 } from '../../services/expenses/expenses';
 
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
 export default function Expenses() {
   const [showModal, setShowModal] = useState(false);
   const [expenses, setExpenses] = useState<ExpenseData[]>([]);
+  const [month, setMonth] = useState(new Date().getMonth());
 
   const getExpanses = useCallback(async () => {
     const userExpanses = await getExpensesByUser();
-    return userExpanses;
-  }, []);
+    const filteredExpensesByMonth = userExpanses.filter(
+      (expense) => new Date(expense.date).getMonth() === month
+    );
+    return filteredExpensesByMonth;
+  }, [month]);
 
   useEffect(() => {
     getExpanses()
       .then((result) => setExpenses(result))
       .catch((err) => console.log(err));
-  }, [getExpanses]);
+  }, [getExpanses, month]);
 
   return (
     <div>
@@ -29,10 +48,22 @@ export default function Expenses() {
         Add Expense
       </Button>
       <Modal
-        modalContent={<ExpenseForm getExpanses={getExpanses} />}
+        modalContent={
+          <ExpenseForm setExpenses={setExpenses} getExpanses={getExpanses} />
+        }
         showModal={showModal}
         onClose={() => setShowModal(false)}
       />
+      <select
+        onChange={(event) => {
+          const monthIndex = months.indexOf(event.target.value);
+          setMonth(monthIndex);
+        }}
+      >
+        {months.map((el, i) => (
+          <option key={i}>{el}</option>
+        ))}
+      </select>
       <ExpensesList expenses={expenses} />
     </div>
   );
