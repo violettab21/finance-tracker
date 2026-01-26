@@ -1,6 +1,11 @@
 import { createPortal } from 'react-dom';
-import Button from '../Button/Button';
-import { StyledModalWindow, StyledModalWrapper } from './styles';
+
+import {
+  StyledModalClose,
+  StyledModalWindow,
+  StyledModalWrapper,
+} from './styles';
+import { GrClose } from 'react-icons/gr';
 
 export default function Modal({
   modalContent,
@@ -19,7 +24,9 @@ export default function Modal({
         createPortal(
           <StyledModalWrapper>
             <StyledModalWindow>
-              <Button onClick={onClose}>Close</Button>
+              <StyledModalClose onClick={onClose}>
+                <GrClose size={20} />
+              </StyledModalClose>
               {modalContent}
             </StyledModalWindow>
           </StyledModalWrapper>,

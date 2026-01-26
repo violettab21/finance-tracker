@@ -5,13 +5,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { StyledFlexWrapper } from '../../../styled/flex';
 import { ValidationSchemaExpense, type FormDataExpense } from './validation';
 import { customStyles, StyledSelect, StyledTitle } from './styles';
-import { categories } from '../../Select/Select';
+
 import {
   addExpense,
-  getExpensesByUser,
+  type ExpenseData,
 } from '../../../services/expenses/expenses';
+import { categories } from '../../Select/CustomSelect';
 
-export default function ExpenseForm() {
+export default function ExpenseForm({
+  getExpanses,
+}: {
+  getExpanses: () => Promise<ExpenseData[]>;
+}) {
   const {
     register,
     handleSubmit,
@@ -29,8 +34,7 @@ export default function ExpenseForm() {
       cost: data.cost,
       date: data.date,
     });
-    const result = await getExpensesByUser();
-    console.log(result);
+    await getExpanses();
   };
 
   return (
@@ -38,18 +42,19 @@ export default function ExpenseForm() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledFlexWrapper direction="column" width="100%" gap="10px">
           <StyledTitle>Add Expense</StyledTitle>
+
           <Controller
             control={control}
             name="category"
-            render={({ field: { onBlur, value } }) => (
+            render={({ field }) => (
               <StyledSelect
+                {...field}
                 options={categories}
-                onBlur={onBlur}
-                value={value}
                 styles={customStyles}
               />
             )}
           />
+
           <Input
             type="number"
             placeholder="Cost"
@@ -64,7 +69,7 @@ export default function ExpenseForm() {
             error={errors.date ? errors.date?.message || null : null}
           ></Input>
 
-          <Button primary disabled={!isValid}>
+          <Button primary disabled={isValid}>
             Add
           </Button>
         </StyledFlexWrapper>

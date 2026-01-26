@@ -13,7 +13,18 @@ export const StyledModalWrapper = styled.div`
 
 export const StyledModalWindow = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
   background-color: white;
   padding: 2rem 3rem;
+  border-radius: 8px;
+`;
+
+export const StyledModalClose = styled.button`
+  background: none;
+  border: none;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
 `;
