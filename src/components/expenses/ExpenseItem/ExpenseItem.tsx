@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import type { ExpenseData } from '../../../services/expenses/expenses';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import { StyledControl } from './styles';
+import { MdEdit } from 'react-icons/md';
+import { MdDelete } from 'react-icons/md';
 
 export default function ExpenseItem({
   expenses,
@@ -22,6 +24,16 @@ export default function ExpenseItem({
     };
     getCategoryDetails();
   }, [expenses, groupedExpense.category]);
+
+  function transformDate(date: string) {
+    const dateObject = new Date(date);
+    const transformedDate = new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(dateObject);
+    return transformedDate;
+  }
 
   return (
     <>
@@ -44,13 +56,19 @@ export default function ExpenseItem({
       </tr>
       {isDetailsVisible && (
         <tr>
-          <td colSpan={3}>
+          <td colSpan={4}>
             <table>
               <tbody>
                 {details?.map((item) => (
                   <tr key={item.id}>
                     <td>{item.cost}</td>
-                    <td>{item.date}</td>
+                    <td>{transformDate(item.date)}</td>
+                    <td>
+                      <MdEdit />
+                    </td>
+                    <td>
+                      <MdDelete />
+                    </td>
                   </tr>
                 ))}
               </tbody>

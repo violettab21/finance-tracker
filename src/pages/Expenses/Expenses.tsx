@@ -7,20 +7,22 @@ import {
   getExpensesByUser,
   type ExpenseData,
 } from '../../services/expenses/expenses';
+import Select from 'react-select';
+import { customStyles } from '../../components/expenses/ExpenseForm/styles';
 
 const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
+  { value: 'January', label: 'January' },
+  { value: 'February', label: 'February' },
+  { value: 'March', label: 'March' },
+  { value: 'April', label: 'April' },
+  { value: 'May', label: 'May' },
+  { value: 'June', label: 'June' },
+  { value: 'July', label: 'July' },
+  { value: 'August', label: 'August' },
+  { value: 'September', label: 'September' },
+  { value: 'October', label: 'October' },
+  { value: 'November', label: 'November' },
+  { value: 'December', label: 'December' },
 ];
 
 export default function Expenses() {
@@ -54,16 +56,25 @@ export default function Expenses() {
         showModal={showModal}
         onClose={() => setShowModal(false)}
       />
-      <select
-        onChange={(event) => {
-          const monthIndex = months.indexOf(event.target.value);
-          setMonth(monthIndex);
+      <Select
+        options={months}
+        styles={customStyles}
+        value={months[month]}
+        onChange={(option: unknown) => {
+          if (
+            typeof option === 'object' &&
+            option &&
+            'value' in option &&
+            'label' in option
+          ) {
+            const monthIndex = months.findIndex(
+              (object) => object.value === option?.value
+            );
+            setMonth(monthIndex);
+          }
         }}
-      >
-        {months.map((el, i) => (
-          <option key={i}>{el}</option>
-        ))}
-      </select>
+      ></Select>
+
       <ExpensesList expenses={expenses} />
     </div>
   );

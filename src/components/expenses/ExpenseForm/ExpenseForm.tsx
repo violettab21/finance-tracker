@@ -12,6 +12,7 @@ import {
 } from '../../../services/expenses/expenses';
 import { categories } from '../../Select/CustomSelect';
 import type { Dispatch, SetStateAction } from 'react';
+import { StyledErrorText } from '../../Input/styles';
 
 export default function ExpenseForm({
   setExpenses,
@@ -24,10 +25,10 @@ export default function ExpenseForm({
     register,
     handleSubmit,
     control,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormDataExpense>({
     resolver: zodResolver(ValidationSchemaExpense),
-    mode: 'onBlur',
+    mode: 'onChange',
   });
 
   const onSubmit = async (data: FormDataExpense) => {
@@ -51,18 +52,22 @@ export default function ExpenseForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledFlexWrapper direction="column" width="100%" gap="10px">
           <StyledTitle>Add Expense</StyledTitle>
-
-          <Controller
-            control={control}
-            name="category"
-            render={({ field }) => (
-              <StyledSelect
-                {...field}
-                options={categories}
-                styles={customStyles}
-              />
+          <StyledFlexWrapper width="100%">
+            <Controller
+              control={control}
+              name="category"
+              render={({ field }) => (
+                <StyledSelect
+                  {...field}
+                  options={categories}
+                  styles={customStyles}
+                />
+              )}
+            />
+            {errors.category && (
+              <StyledErrorText>{errors.category.message}</StyledErrorText>
             )}
-          />
+          </StyledFlexWrapper>
 
           <Input
             type="number"
@@ -78,9 +83,7 @@ export default function ExpenseForm({
             error={errors.date ? errors.date?.message || null : null}
           ></Input>
 
-          <Button primary disabled={!isValid}>
-            Add
-          </Button>
+          <Button primary>Add</Button>
         </StyledFlexWrapper>
       </form>
     </StyledFlexWrapper>
