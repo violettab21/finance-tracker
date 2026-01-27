@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react';
-import type { ExpenseData } from '../../../services/expenses/expenses';
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import {
+  deleteExpense,
+  type ExpenseData,
+} from '../../../services/expenses/expenses';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import { StyledControl } from './styles';
 import { MdEdit } from 'react-icons/md';
@@ -8,9 +11,11 @@ import { MdDelete } from 'react-icons/md';
 export default function ExpenseItem({
   expenses,
   groupedExpense,
+  setExpenses,
 }: {
   expenses: ExpenseData[];
   groupedExpense: { category: string; cost: number };
+  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
 }) {
   const [isDetailsVisible, setIsDetailsVisible] = useState(false);
   const [details, setDetails] = useState<ExpenseData[]>();
@@ -64,10 +69,23 @@ export default function ExpenseItem({
                     <td>{item.cost}</td>
                     <td>{transformDate(item.date)}</td>
                     <td>
-                      <MdEdit />
+                      <button>
+                        <MdEdit />
+                      </button>
                     </td>
                     <td>
-                      <MdDelete />
+                      <button
+                        onClick={() =>
+                          deleteExpense(item.id)
+                            .then((result) => {
+                              console.log(result);
+                              setExpenses(result);
+                            })
+                            .catch((err) => console.log(err))
+                        }
+                      >
+                        <MdDelete />
+                      </button>
                     </td>
                   </tr>
                 ))}

@@ -4,11 +4,14 @@ import {
 } from '../../../services/expenses/expenses';
 import { StyledTable } from './styles';
 import ExpenseItem from '../ExpenseItem/ExpenseItem';
+import type { Dispatch, SetStateAction } from 'react';
 
 export default function ExpensesList({
   expenses,
+  setExpenses,
 }: {
   expenses: ExpenseData[];
+  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
 }) {
   if (expenses.length === 0) {
     return <p>No expenses. Click Add Expense to start track your expanses.</p>;
@@ -27,6 +30,7 @@ export default function ExpensesList({
         <tbody>
           {getTotalExpensesPerCategory(expenses).map((expense) => (
             <ExpenseItem
+              setExpenses={setExpenses}
               key={expense.category}
               expenses={expenses}
               groupedExpense={expense}

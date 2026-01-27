@@ -75,7 +75,7 @@ export default function Expenses() {
         }}
       ></Select>
 
-      <ExpensesList expenses={expenses} />
+      <ExpensesList expenses={expenses} setExpenses={setExpenses} />
     </div>
   );
 }
