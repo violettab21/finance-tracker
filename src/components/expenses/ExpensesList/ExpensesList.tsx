@@ -5,6 +5,7 @@ import {
 import { StyledTable } from './styles';
 import ExpenseItem from '../ExpenseItem/ExpenseItem';
 import type { Dispatch, SetStateAction } from 'react';
+import { StyledFlexWrapper } from '../../../styled/flex';
 
 export default function ExpensesList({
   expenses,
@@ -18,7 +19,7 @@ export default function ExpensesList({
   }
 
   return (
-    <div>
+    <StyledFlexWrapper width="50%">
       <StyledTable>
         <thead>
           <tr>
@@ -38,6 +39,6 @@ export default function ExpensesList({
           ))}
         </tbody>
       </StyledTable>
-    </div>
+    </StyledFlexWrapper>
   );
 }

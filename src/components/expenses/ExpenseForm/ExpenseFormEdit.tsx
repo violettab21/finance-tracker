@@ -7,20 +7,20 @@ import { ValidationSchemaExpense, type FormDataExpense } from './validation';
 import { customStyles, StyledSelect, StyledTitle } from './styles';
 
 import {
-  addExpense,
+  editExpense,
   type ExpenseData,
 } from '../../../services/expenses/expenses';
 import { categories } from '../../Select/CustomSelect';
 import type { Dispatch, SetStateAction } from 'react';
 import { StyledErrorText } from '../../Input/styles';
 
-export default function ExpenseForm({
+export default function ExpenseFormEdit({
   setExpenses,
-  getExpanses,
+  expense,
   onClose,
 }: {
   setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
-  getExpanses: () => Promise<ExpenseData[]>;
+  expense: ExpenseData | null;
   onClose: () => void;
 }) {
   const {
@@ -30,19 +30,28 @@ export default function ExpenseForm({
     formState: { errors },
   } = useForm<FormDataExpense>({
     resolver: zodResolver(ValidationSchemaExpense),
+    defaultValues: {
+      category:
+        categories.find((el) => el.value === expense?.category) ||
+        categories[0],
+      cost: expense?.cost || 1,
+      date: expense?.date
+        ? transformDateForInput(expense?.date)
+        : new Date().toLocaleString(),
+    },
     mode: 'onChange',
   });
 
   const onSubmit = async (data: FormDataExpense) => {
     console.log(data);
     try {
-      await addExpense({
+      const userExpanses = await editExpense({
+        id: expense?.id || '',
         category: data.category.value,
         cost: data.cost,
         date: data.date,
         notes: data.notes,
       });
-      const userExpanses = await getExpanses();
 
       setExpenses(userExpanses);
       onClose();
@@ -51,11 +60,22 @@ export default function ExpenseForm({
     }
   };
 
+  function transformDateForInput(initialDate: string) {
+    const dateObject = new Date(initialDate);
+
+    const date = dateObject.getDate();
+    const month = dateObject.getMonth();
+    const year = dateObject.getFullYear();
+    return `${year}-${(month + 1).toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
+  }
+
+  if (!expense) return null;
+
   return (
     <StyledFlexWrapper width="100%" justify="center">
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledFlexWrapper direction="column" width="100%" gap="10px">
-          <StyledTitle>Add Expense</StyledTitle>
+          <StyledTitle>Edit Expense</StyledTitle>
           <StyledFlexWrapper width="100%">
             <Controller
               control={control}
@@ -63,6 +83,9 @@ export default function ExpenseForm({
               render={({ field }) => (
                 <StyledSelect
                   {...field}
+                  defaultValue={categories.find(
+                    (el) => el.value === expense.category
+                  )}
                   options={categories}
                   styles={customStyles}
                 />
@@ -75,6 +98,7 @@ export default function ExpenseForm({
 
           <Input
             type="number"
+            defaultValue={expense.cost}
             placeholder="Cost"
             {...register('cost', { valueAsNumber: true })}
             error={errors.cost ? errors.cost?.message || null : null}
@@ -83,6 +107,7 @@ export default function ExpenseForm({
           <Input
             placeholder="Date"
             type="date"
+            defaultValue={transformDateForInput(expense.date)}
             {...register('date')}
             error={errors.date ? errors.date?.message || null : null}
           ></Input>
@@ -90,11 +115,12 @@ export default function ExpenseForm({
           <Input
             placeholder="Notes"
             type="text"
+            defaultValue={expense.notes}
             {...register('notes')}
             error={errors.notes ? errors.notes?.message || null : null}
           ></Input>
 
-          <Button primary>Add</Button>
+          <Button primary>Edit</Button>
         </StyledFlexWrapper>
       </form>
     </StyledFlexWrapper>

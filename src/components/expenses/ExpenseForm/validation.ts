@@ -12,6 +12,7 @@ export const ValidationSchemaExpense = z.object({
     .number({ message: 'Cost is required' })
     .positive({ message: 'Cost should be positive' }),
   date: z.string(),
+  notes: z.string().optional(),
 });
 
 export type FormDataExpense = z.infer<typeof ValidationSchemaExpense>;

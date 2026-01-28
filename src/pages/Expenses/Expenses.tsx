@@ -9,6 +9,7 @@ import {
 } from '../../services/expenses/expenses';
 import Select from 'react-select';
 import { customStyles } from '../../components/expenses/ExpenseForm/styles';
+import { StyledFlexWrapper } from '../../styled/flex';
 
 const months = [
   { value: 'January', label: 'January' },
@@ -45,17 +46,22 @@ export default function Expenses() {
   }, [getExpanses, month]);
 
   return (
-    <div>
+    <StyledFlexWrapper width="100%" direction="column">
       <Button primary onClick={() => setShowModal(true)}>
         Add Expense
       </Button>
       <Modal
         modalContent={
-          <ExpenseForm setExpenses={setExpenses} getExpanses={getExpanses} />
+          <ExpenseForm
+            setExpenses={setExpenses}
+            getExpanses={getExpanses}
+            onClose={() => setShowModal(false)}
+          />
         }
         showModal={showModal}
         onClose={() => setShowModal(false)}
       />
+
       <Select
         options={months}
         styles={customStyles}
@@ -76,6 +82,6 @@ export default function Expenses() {
       ></Select>
 
       <ExpensesList expenses={expenses} setExpenses={setExpenses} />
-    </div>
+    </StyledFlexWrapper>
   );
 }
