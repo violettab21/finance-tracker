@@ -9,7 +9,7 @@ export default function AuthFormWrapper({
   children: React.ReactNode;
 }) {
   return (
-    <StyledFlexWrapper justify="center">
+    <StyledFlexWrapper justify="center" align="center">
       <StyledFormWrapper
         justify="space-around"
         direction="row"

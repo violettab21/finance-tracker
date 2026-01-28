@@ -1,6 +1,4 @@
-import { useContext, useState } from 'react';
-import { AuthContext } from '../../../../context/authContext';
-import { useCookies } from 'react-cookie';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { signUp } from '../../../../services/auth/auth';
 import { FirebaseError } from 'firebase/app';
@@ -21,8 +19,8 @@ interface RegistrationFormInput {
 }
 
 export function useSignUp() {
-  const { setUserData } = useContext(AuthContext);
-  const [, setCookie] = useCookies(['user']);
+  /* const { setUserData } = useContext(AuthContext);*/
+  /* const [, setCookie] = useCookies(['user']);*/
   const navigate = useNavigate();
   const {
     register,
@@ -36,10 +34,7 @@ export function useSignUp() {
   const [signUpError, setSignUpError] = useState<string>('');
   const onSubmit = async (data: RegistrationFormInput) => {
     try {
-      const user = await signUp(data);
-      const userToken = await user.getIdToken();
-      setCookie('user', userToken);
-      setUserData({ userToken, userName: user.displayName });
+      await signUp(data);
       navigate('/finance-tracker');
     } catch (error) {
       if (
