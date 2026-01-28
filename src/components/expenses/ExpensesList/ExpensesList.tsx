@@ -15,11 +15,11 @@ export default function ExpensesList({
   setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
 }) {
   if (expenses.length === 0) {
-    return <p>No expenses. Click Add Expense to start track your expanses.</p>;
+    return <p>No Data</p>;
   }
 
   return (
-    <StyledFlexWrapper width="50%">
+    <StyledFlexWrapper width="100%">
       <StyledTable>
         <thead>
           <tr>

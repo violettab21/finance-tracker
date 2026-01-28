@@ -6,22 +6,20 @@ import { StyledFlexWrapper } from '../../../styled/flex';
 import { ValidationSchemaExpense, type FormDataExpense } from './validation';
 import { customStyles, StyledSelect, StyledTitle } from './styles';
 
-import {
-  addExpense,
-  type ExpenseData,
-} from '../../../services/expenses/expenses';
-import { categories } from '../../Select/CustomSelect';
-import type { Dispatch, SetStateAction } from 'react';
+import { type Option } from '../../Select/CustomSelect';
 import { StyledErrorText } from '../../Input/styles';
+import type { ExpenseData } from '../../../services/expenses/expenses';
 
 export default function ExpenseForm({
-  setExpenses,
-  getExpanses,
-  onClose,
+  title,
+  onSubmit,
+  categories,
+  editedExpense,
 }: {
-  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
-  getExpanses: () => Promise<ExpenseData[]>;
-  onClose: () => void;
+  title: string;
+  onSubmit: (data: FormDataExpense) => Promise<void>;
+  categories: Option[];
+  editedExpense: ExpenseData | null;
 }) {
   const {
     register,
@@ -31,31 +29,33 @@ export default function ExpenseForm({
   } = useForm<FormDataExpense>({
     resolver: zodResolver(ValidationSchemaExpense),
     mode: 'onChange',
+    defaultValues: editedExpense
+      ? {
+          category:
+            categories.find((el) => el.value === editedExpense?.category) ||
+            categories[0],
+          cost: editedExpense?.cost || 1,
+          date: editedExpense?.date
+            ? transformDateForInput(editedExpense?.date)
+            : transformDateForInput(new Date().toLocaleString()),
+        }
+      : undefined,
   });
 
-  const onSubmit = async (data: FormDataExpense) => {
-    console.log(data);
-    try {
-      await addExpense({
-        category: data.category.value,
-        cost: data.cost,
-        date: data.date,
-        notes: data.notes,
-      });
-      const userExpanses = await getExpanses();
+  function transformDateForInput(initialDate: string) {
+    const dateObject = new Date(initialDate);
 
-      setExpenses(userExpanses);
-      onClose();
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    const date = dateObject.getDate();
+    const month = dateObject.getMonth();
+    const year = dateObject.getFullYear();
+    return `${year}-${(month + 1).toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
+  }
 
   return (
     <StyledFlexWrapper width="100%" justify="center">
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledFlexWrapper direction="column" width="100%" gap="10px">
-          <StyledTitle>Add Expense</StyledTitle>
+          <StyledTitle>{title}</StyledTitle>
           <StyledFlexWrapper width="100%">
             <Controller
               control={control}
@@ -63,6 +63,10 @@ export default function ExpenseForm({
               render={({ field }) => (
                 <StyledSelect
                   {...field}
+                  defaultValue={
+                    editedExpense &&
+                    categories.find((el) => el.value === editedExpense.category)
+                  }
                   options={categories}
                   styles={customStyles}
                 />
@@ -75,6 +79,7 @@ export default function ExpenseForm({
 
           <Input
             type="number"
+            defaultValue={editedExpense ? editedExpense.cost : undefined}
             placeholder="Cost"
             {...register('cost', { valueAsNumber: true })}
             error={errors.cost ? errors.cost?.message || null : null}
@@ -83,6 +88,11 @@ export default function ExpenseForm({
           <Input
             placeholder="Date"
             type="date"
+            defaultValue={
+              editedExpense
+                ? transformDateForInput(editedExpense.date)
+                : transformDateForInput(new Date().toLocaleString())
+            }
             {...register('date')}
             error={errors.date ? errors.date?.message || null : null}
           ></Input>
@@ -90,11 +100,12 @@ export default function ExpenseForm({
           <Input
             placeholder="Notes"
             type="text"
+            defaultValue={editedExpense ? editedExpense.notes : ''}
             {...register('notes')}
             error={errors.notes ? errors.notes?.message || null : null}
           ></Input>
 
-          <Button primary>Add</Button>
+          <Button primary>{title}</Button>
         </StyledFlexWrapper>
       </form>
     </StyledFlexWrapper>

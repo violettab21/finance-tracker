@@ -1,6 +1,7 @@
 import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import {
   deleteExpense,
+  editExpense,
   type ExpenseData,
 } from '../../../services/expenses/expenses';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
@@ -18,7 +19,10 @@ import {
 import { MdEdit } from 'react-icons/md';
 import { MdDelete } from 'react-icons/md';
 import Modal from '../../Modal/Modal';
-import ExpenseFormEdit from '../ExpenseForm/ExpenseFormEdit';
+import ExpenseForm from '../ExpenseForm/ExpenseForm';
+import type { FormDataExpense } from '../ExpenseForm/validation';
+import { categories } from '../../Select/CustomSelect';
+import { savingCategories } from '../../../pages/Savings/Savings';
 
 export default function ExpenseItem({
   expenses,
@@ -53,6 +57,25 @@ export default function ExpenseItem({
     }).format(dateObject);
     return transformedDate;
   }
+
+  const onExpenseUpdate = async (data: FormDataExpense) => {
+    console.log(data);
+    try {
+      const userExpanses = await editExpense({
+        id: editItem?.id || '',
+        type: editItem?.type || 'income',
+        category: data.category.value,
+        cost: data.cost,
+        date: data.date,
+        notes: data.notes,
+      });
+
+      setExpenses(userExpanses);
+      setIsEditVisible(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -121,10 +144,13 @@ export default function ExpenseItem({
       )}
       <Modal
         modalContent={
-          <ExpenseFormEdit
-            setExpenses={setExpenses}
-            expense={editItem}
-            onClose={() => setIsEditVisible(false)}
+          <ExpenseForm
+            editedExpense={editItem}
+            onSubmit={onExpenseUpdate}
+            title={'Edit expense'}
+            categories={
+              editItem?.type === 'income' ? savingCategories : categories
+            }
           />
         }
         showModal={isEditVisible}
