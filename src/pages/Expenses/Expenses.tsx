@@ -7,9 +7,19 @@ import { StyledFlexWrapper } from '../../styled/flex';
 import { categories } from '../../components/Select/CustomSelect';
 import { savingCategories } from '../Savings/Savings';
 import { MdAddCircle } from 'react-icons/md';
-import { StyledButtonExpense, StyledExpensesWrapper } from './styles';
+import {
+  StyledButtonExpense,
+  StyledExpensesWrapper,
+  StyledSummaryWrapper,
+} from './styles';
 import { MdRemoveCircle } from 'react-icons/md';
 import { useExpenses } from './hooks/useExpenses';
+import ExpenseCard from '../../components/expenses/ExpensesSummary/ExpenseCard';
+
+import { TbArrowBigRight } from 'react-icons/tb';
+import { IoIosWallet } from 'react-icons/io';
+import { TbArrowBigLeft } from 'react-icons/tb';
+import { FaSackDollar } from 'react-icons/fa6';
 
 const months = [
   { value: 'January', label: 'January' },
@@ -67,48 +77,68 @@ export default function Expenses() {
   return (
     <StyledExpensesWrapper direction="column" gap={'1rem'}>
       <StyledFlexWrapper direction="column" gap={'1rem'}>
-        <p>Current Balance: {balance}</p>
-        <Select
-          options={months}
-          styles={customStyles}
-          value={months[month]}
-          onChange={(option: unknown) => {
-            if (
-              typeof option === 'object' &&
-              option &&
-              'value' in option &&
-              'label' in option
-            ) {
-              const monthIndex = months.findIndex(
-                (object) => object.value === option?.value
-              );
-              setMonth(monthIndex);
-            }
-          }}
-        ></Select>
-        <Select
-          options={years}
-          styles={customStyles}
-          value={years.find((yearEl) => yearEl.value === year.toString())}
-          onChange={(option: unknown) => {
-            if (
-              typeof option === 'object' &&
-              option &&
-              'value' in option &&
-              'label' in option
-            ) {
-              const selectedYear = years.find(
-                (yearEl) => yearEl.value === option?.value
-              );
-              if (selectedYear) {
-                setYear(Number(selectedYear.value));
+        <ExpenseCard
+          text={'Balance'}
+          value={balance}
+          icon={<IoIosWallet size={30} />}
+        />
+        <StyledFlexWrapper direction="row" gap={'1rem'}>
+          <Select
+            options={months}
+            styles={customStyles}
+            value={months[month]}
+            onChange={(option: unknown) => {
+              if (
+                typeof option === 'object' &&
+                option &&
+                'value' in option &&
+                'label' in option
+              ) {
+                const monthIndex = months.findIndex(
+                  (object) => object.value === option?.value
+                );
+                setMonth(monthIndex);
               }
-            }
-          }}
-        ></Select>
-        <p>Total Month expenses: {getTotalExpenses(expenses)} </p>
-        <p>Total Month Income: {getTotalExpenses(incomes)}</p>
-        <p>Previously saved: {saved}</p>
+            }}
+          ></Select>
+          <Select
+            options={years}
+            styles={customStyles}
+            value={years.find((yearEl) => yearEl.value === year.toString())}
+            onChange={(option: unknown) => {
+              if (
+                typeof option === 'object' &&
+                option &&
+                'value' in option &&
+                'label' in option
+              ) {
+                const selectedYear = years.find(
+                  (yearEl) => yearEl.value === option?.value
+                );
+                if (selectedYear) {
+                  setYear(Number(selectedYear.value));
+                }
+              }
+            }}
+          ></Select>
+        </StyledFlexWrapper>
+        <StyledSummaryWrapper gap={'1rem'}>
+          <ExpenseCard
+            text={'Month Expenses'}
+            value={getTotalExpenses(expenses)}
+            icon={<TbArrowBigLeft size={30} />}
+          />
+          <ExpenseCard
+            text={'Month Incomes'}
+            value={getTotalExpenses(incomes)}
+            icon={<TbArrowBigRight size={30} />}
+          />
+          <ExpenseCard
+            text={'Previously saved'}
+            value={saved}
+            icon={<FaSackDollar size={30} />}
+          />
+        </StyledSummaryWrapper>
       </StyledFlexWrapper>
       <StyledFlexWrapper width="100%" gap={'10px'}>
         <StyledFlexWrapper width="100%" direction="column" gap={'1rem'}>

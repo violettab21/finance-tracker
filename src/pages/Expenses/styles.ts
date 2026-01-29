@@ -13,3 +13,7 @@ export const StyledButtonExpense = styled(Button)`
 export const StyledExpensesWrapper = styled(StyledFlexWrapper)`
   padding: 1rem;
 `;
+
+export const StyledSummaryWrapper = styled(StyledFlexWrapper)`
+  flex-wrap: wrap;
+`;
