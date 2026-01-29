@@ -9,6 +9,7 @@ import { savingCategories } from '../Savings/Savings';
 import { MdAddCircle } from 'react-icons/md';
 import {
   StyledButtonExpense,
+  StyledButtonMonth,
   StyledExpensesWrapper,
   StyledSummaryWrapper,
 } from './styles';
@@ -20,6 +21,8 @@ import { TbArrowBigRight } from 'react-icons/tb';
 import { IoIosWallet } from 'react-icons/io';
 import { TbArrowBigLeft } from 'react-icons/tb';
 import { FaSackDollar } from 'react-icons/fa6';
+import { GrPrevious } from 'react-icons/gr';
+import { GrNext } from 'react-icons/gr';
 
 const months = [
   { value: 'January', label: 'January' },
@@ -42,6 +45,7 @@ export default function Expenses() {
     setShowModal,
     expenses,
     month,
+
     showModalIncome,
     setShowModalIncome,
     incomes,
@@ -77,12 +81,22 @@ export default function Expenses() {
   return (
     <StyledExpensesWrapper direction="column" gap={'1rem'}>
       <StyledFlexWrapper direction="column" gap={'1rem'}>
-        <ExpenseCard
-          text={'Balance'}
-          value={balance}
-          icon={<IoIosWallet size={30} />}
-        />
-        <StyledFlexWrapper direction="row" gap={'1rem'}>
+        <StyledFlexWrapper
+          direction="row"
+          gap={'1rem'}
+          align="center"
+          justify={'center'}
+        >
+          <StyledButtonMonth
+            onClick={() => {
+              const date = new Date(year, month, 1);
+              const newDate = date.setMonth(month - 1);
+              setMonth(new Date(newDate).getMonth());
+              setYear(new Date(newDate).getFullYear());
+            }}
+          >
+            <GrPrevious size={15} />
+          </StyledButtonMonth>
           <Select
             options={months}
             styles={customStyles}
@@ -121,8 +135,18 @@ export default function Expenses() {
               }
             }}
           ></Select>
+          <StyledButtonMonth
+            onClick={() => {
+              const date = new Date(year, month, 1);
+              const newDate = date.setMonth(month + 1);
+              setMonth(new Date(newDate).getMonth());
+              setYear(new Date(newDate).getFullYear());
+            }}
+          >
+            <GrNext size={15} />
+          </StyledButtonMonth>
         </StyledFlexWrapper>
-        <StyledSummaryWrapper gap={'1rem'}>
+        <StyledSummaryWrapper gap={'1rem'} justify={'center'}>
           <ExpenseCard
             text={'Month Expenses'}
             value={getTotalExpenses(expenses)}
@@ -137,6 +161,11 @@ export default function Expenses() {
             text={'Previously saved'}
             value={saved}
             icon={<FaSackDollar size={30} />}
+          />
+          <ExpenseCard
+            text={'Balance'}
+            value={balance}
+            icon={<IoIosWallet size={30} />}
           />
         </StyledSummaryWrapper>
       </StyledFlexWrapper>
