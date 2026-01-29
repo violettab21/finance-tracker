@@ -1,9 +1,5 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
-import {
-  deleteExpense,
-  editExpense,
-  type ExpenseData,
-} from '../../../services/expenses/expenses';
+import { type Dispatch, type SetStateAction } from 'react';
+import { type ExpenseData } from '../../../services/expenses/expenses';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import {
   StyledButtonIcon,
@@ -20,77 +16,42 @@ import { MdEdit } from 'react-icons/md';
 import { MdDelete } from 'react-icons/md';
 import Modal from '../../Modal/Modal';
 import ExpenseForm from '../ExpenseForm/ExpenseForm';
-import type { FormDataExpense } from '../ExpenseForm/validation';
 import { categories } from '../../Select/CustomSelect';
 import { savingCategories } from '../../../pages/Savings/Savings';
+import { transformDate } from '../../../helpers/helpers';
+import { useExpenseItem } from './hooks/useExpenseItem';
 
 export default function ExpenseItem({
   expenses,
   groupedExpense,
   setExpenses,
+  getExpenses,
 }: {
   expenses: ExpenseData[];
   groupedExpense: { category: string; cost: number };
   setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
+  getExpenses: () => Promise<ExpenseData[]>;
 }) {
-  const [isDetailsVisible, setIsDetailsVisible] = useState(false);
-  const [details, setDetails] = useState<ExpenseData[]>();
-  const [isEditVisible, setIsEditVisible] = useState(false);
-  const [editItem, setEditItem] = useState<ExpenseData | null>(null);
-
-  useEffect(() => {
-    const getCategoryDetails = () => {
-      const data = expenses.filter((expenseData) => {
-        return expenseData.category === groupedExpense.category;
-      });
-      setDetails(data);
-    };
-    getCategoryDetails();
-  }, [expenses, groupedExpense.category]);
-
-  function transformDate(date: string) {
-    const dateObject = new Date(date);
-    const transformedDate = new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).format(dateObject);
-    return transformedDate;
-  }
-
-  const onExpenseUpdate = async (data: FormDataExpense) => {
-    console.log(data);
-    try {
-      const userExpanses = await editExpense({
-        id: editItem?.id || '',
-        type: editItem?.type || 'income',
-        category: data.category.value,
-        cost: data.cost,
-        date: data.date,
-        notes: data.notes,
-      });
-
-      setExpenses(userExpanses);
-      setIsEditVisible(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const {
+    onExpenseUpdate,
+    onExpenseDelete,
+    openEditModal,
+    toggleDetailsVisibility,
+    isDetailsVisible,
+    details,
+    isEditVisible,
+    editItem,
+    setIsEditVisible,
+  } = useExpenseItem(expenses, groupedExpense, setExpenses, getExpenses);
 
   return (
     <>
       <StyledRow
         key={groupedExpense.category}
-        onClick={() => {
-          setIsDetailsVisible(!isDetailsVisible);
-        }}
+        onClick={toggleDetailsVisibility}
       >
         <td>
-          <StyledControl
-            onClick={() => {
-              setIsDetailsVisible(!isDetailsVisible);
-            }}
-          >
+          <StyledControl onClick={toggleDetailsVisibility}>
             {isDetailsVisible ? (
               <MdExpandLess size={20} />
             ) : (
@@ -115,22 +76,12 @@ export default function ExpenseItem({
                       <StyledButtonsWrapper>
                         <StyledButtonIcon
                           onClick={() => {
-                            setIsEditVisible(true);
-                            setEditItem(item);
+                            openEditModal(item);
                           }}
                         >
                           <MdEdit size={20} />
                         </StyledButtonIcon>
-                        <StyledButtonIcon
-                          onClick={() =>
-                            deleteExpense(item.id)
-                              .then((result) => {
-                                console.log(result);
-                                setExpenses(result);
-                              })
-                              .catch((err) => console.log(err))
-                          }
-                        >
+                        <StyledButtonIcon onClick={() => onExpenseDelete(item)}>
                           <MdDelete size={20} />
                         </StyledButtonIcon>
                       </StyledButtonsWrapper>

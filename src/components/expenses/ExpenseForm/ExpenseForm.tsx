@@ -9,18 +9,21 @@ import { customStyles, StyledSelect, StyledTitle } from './styles';
 import { type Option } from '../../Select/CustomSelect';
 import { StyledErrorText } from '../../Input/styles';
 import type { ExpenseData } from '../../../services/expenses/expenses';
+import { transformDateForInput } from '../../../helpers/helpers';
+
+interface ExpenseFormProps {
+  title: string;
+  onSubmit: (data: FormDataExpense) => Promise<void>;
+  categories: Option[];
+  editedExpense: ExpenseData | null;
+}
 
 export default function ExpenseForm({
   title,
   onSubmit,
   categories,
   editedExpense,
-}: {
-  title: string;
-  onSubmit: (data: FormDataExpense) => Promise<void>;
-  categories: Option[];
-  editedExpense: ExpenseData | null;
-}) {
+}: ExpenseFormProps) {
   const {
     register,
     handleSubmit,
@@ -41,15 +44,6 @@ export default function ExpenseForm({
         }
       : undefined,
   });
-
-  function transformDateForInput(initialDate: string) {
-    const dateObject = new Date(initialDate);
-
-    const date = dateObject.getDate();
-    const month = dateObject.getMonth();
-    const year = dateObject.getFullYear();
-    return `${year}-${(month + 1).toString().padStart(2, '0')}-${date.toString().padStart(2, '0')}`;
-  }
 
   return (
     <StyledFlexWrapper width="100%" justify="center">

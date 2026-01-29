@@ -112,7 +112,10 @@ export async function getExpensesByCategory(category: string) {
   return expenses;
 }
 
-export async function deleteExpense(customId: string) {
+export async function deleteExpense(
+  customId: string,
+  type: 'income' | 'expense'
+) {
   const currentUser = auth.currentUser?.uid;
 
   const q = query(
@@ -128,7 +131,8 @@ export async function deleteExpense(customId: string) {
 
   const q2 = query(
     collection(db, 'expenses'),
-    where('userUID', '==', currentUser)
+    where('userUID', '==', currentUser),
+    where('type', '==', type)
   );
   const result2 = await getDocs(q2);
   const expenses: ExpenseData[] = result2.docs.map((doc) => {
@@ -168,7 +172,8 @@ export async function editExpense(updatedExpenseData: ExpenseData) {
 
   const q2 = query(
     collection(db, 'expenses'),
-    where('userUID', '==', currentUser)
+    where('userUID', '==', currentUser),
+    where('type', '==', updatedExpenseData.type)
   );
   const result2 = await getDocs(q2);
   const expenses: ExpenseData[] = result2.docs.map((doc) => {

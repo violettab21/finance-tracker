@@ -6,14 +6,23 @@ import { StyledTable } from './styles';
 import ExpenseItem from '../ExpenseItem/ExpenseItem';
 import type { Dispatch, SetStateAction } from 'react';
 import { StyledFlexWrapper } from '../../../styled/flex';
+import Loader from '../../Loader/Loader';
 
 export default function ExpensesList({
   expenses,
   setExpenses,
+  isLoading,
+  getExpenses,
 }: {
   expenses: ExpenseData[];
   setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
+  isLoading: boolean;
+  getExpenses: () => Promise<ExpenseData[]>;
 }) {
+  if (isLoading) {
+    return <Loader />;
+  }
+
   if (expenses.length === 0) {
     return <p>No Data</p>;
   }
@@ -35,6 +44,7 @@ export default function ExpensesList({
               key={expense.category}
               expenses={expenses}
               groupedExpense={expense}
+              getExpenses={getExpenses}
             />
           ))}
         </tbody>
