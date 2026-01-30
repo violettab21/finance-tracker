@@ -9,8 +9,7 @@ import type { FormDataExpense } from '../../ExpenseForm/validation';
 export const useExpenseItem = (
   expenses: ExpenseData[],
   groupedExpense: { category: string; cost: number },
-  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>,
-  getExpenses: () => Promise<ExpenseData[]>
+  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>
 ) => {
   const [isDetailsVisible, setIsDetailsVisible] = useState(false);
   const [details, setDetails] = useState<ExpenseData[]>();
@@ -28,9 +27,8 @@ export const useExpenseItem = (
   }, [expenses, groupedExpense.category]);
 
   const onExpenseUpdate = async (data: FormDataExpense) => {
-    console.log(data);
     try {
-      await editExpense({
+      const userExpenses = await editExpense({
         id: editItem?.id || '',
         type: editItem?.type || 'income',
         category: data.category.value,
@@ -38,8 +36,8 @@ export const useExpenseItem = (
         date: data.date,
         notes: data.notes,
       });
-      const userExpanses = await getExpenses();
-      setExpenses(userExpanses);
+
+      setExpenses(userExpenses);
       setIsEditVisible(false);
     } catch (err) {
       console.log(err);
@@ -47,9 +45,12 @@ export const useExpenseItem = (
   };
 
   const onExpenseDelete = async (item: ExpenseData) => {
-    await deleteExpense(item.id, item.type);
-    const userExpanses = await getExpenses();
-    setExpenses(userExpanses);
+    try {
+      const userExpenses = await deleteExpense(item.id);
+      setExpenses(userExpenses);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const openEditModal = (item: ExpenseData) => {

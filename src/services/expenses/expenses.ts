@@ -33,6 +33,8 @@ export async function addExpense(expenseData: Omit<ExpenseData, 'id'>) {
     userUID: currentUser,
     notes: expenseData.notes,
   });
+  const result = await getAllExpensesByUser();
+  return result;
 }
 
 export async function getExpensesByUser(type: 'income' | 'expense') {
@@ -54,6 +56,30 @@ export async function getExpensesByUser(type: 'income' | 'expense') {
     };
   });
   console.log(expenses);
+  return expenses;
+}
+
+export async function getAllExpensesByUser() {
+  const currentUser = auth.currentUser?.uid;
+
+  const q = query(
+    collection(db, 'expenses'),
+    where('userUID', '==', currentUser)
+  );
+
+  const result = await getDocs(q);
+
+  const expenses: ExpenseData[] = result.docs.map((doc) => {
+    return {
+      id: doc.data().id,
+      type: doc.data().type,
+      category: doc.data().category,
+      cost: doc.data().cost,
+      date: doc.data().date.toDate().toLocaleString(),
+      notes: doc.data().notes,
+    };
+  });
+
   return expenses;
 }
 
@@ -112,10 +138,7 @@ export async function getExpensesByCategory(category: string) {
   return expenses;
 }
 
-export async function deleteExpense(
-  customId: string,
-  type: 'income' | 'expense'
-) {
+export async function deleteExpense(customId: string) {
   const currentUser = auth.currentUser?.uid;
 
   const q = query(
@@ -129,24 +152,8 @@ export async function deleteExpense(
 
   await deleteDoc(doc(db, 'expenses', documentId));
 
-  const q2 = query(
-    collection(db, 'expenses'),
-    where('userUID', '==', currentUser),
-    where('type', '==', type)
-  );
-  const result2 = await getDocs(q2);
-  const expenses: ExpenseData[] = result2.docs.map((doc) => {
-    return {
-      id: doc.data().id,
-      type: doc.data().type,
-      category: doc.data().category,
-      cost: doc.data().cost,
-      date: doc.data().date.toDate().toLocaleString(),
-      notes: doc.data().notes,
-    };
-  });
-  console.log(expenses);
-  return expenses;
+  const updatedExpenses = await getAllExpensesByUser();
+  return updatedExpenses;
 }
 
 export async function editExpense(updatedExpenseData: ExpenseData) {
@@ -170,21 +177,6 @@ export async function editExpense(updatedExpenseData: ExpenseData) {
     notes: updatedExpenseData.notes,
   });
 
-  const q2 = query(
-    collection(db, 'expenses'),
-    where('userUID', '==', currentUser),
-    where('type', '==', updatedExpenseData.type)
-  );
-  const result2 = await getDocs(q2);
-  const expenses: ExpenseData[] = result2.docs.map((doc) => {
-    return {
-      id: doc.data().id,
-      type: doc.data().type,
-      category: doc.data().category,
-      cost: doc.data().cost,
-      date: doc.data().date.toDate().toLocaleString(),
-      notes: doc.data().notes,
-    };
-  });
-  return expenses;
+  const updatedExpenses = await getAllExpensesByUser();
+  return updatedExpenses;
 }

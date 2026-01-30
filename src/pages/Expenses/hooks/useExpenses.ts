@@ -1,42 +1,37 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   addExpense,
-  getExpensesByUser,
+  getAllExpensesByUser,
   type ExpenseData,
 } from '../../../services/expenses/expenses';
 import type { FormDataExpense } from '../../../components/expenses/ExpenseForm/validation';
 
 export const useExpenses = () => {
   const [showModal, setShowModal] = useState(false);
+  const [allExpenses, setAllExpenses] = useState<ExpenseData[]>([]);
   const [expenses, setExpenses] = useState<ExpenseData[]>([]);
   const [isExpensesLoading, setIsExpensesLoading] = useState(true);
   const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear());
   const [showModalIncome, setShowModalIncome] = useState(false);
-  const [incomes, setIncomes] = useState<ExpenseData[]>([]);
-  const [isIncomesLoading, setIsIncomesLoading] = useState(true);
-  const [balance, setBalance] = useState<number>(0);
-  const [saved, setSaved] = useState<number>(0);
 
-  const getExpanses = useCallback(async () => {
-    const userExpanses = await getExpensesByUser('expense');
-    const filteredExpensesByMonth = userExpanses.filter(
+  const newExpenses = useMemo(() => {
+    return allExpenses.filter(
       (expense) =>
+        expense.type === 'expense' &&
         new Date(expense.date).getMonth() === month &&
         new Date(expense.date).getFullYear() === year
     );
-    return filteredExpensesByMonth;
-  }, [month, year]);
+  }, [allExpenses, month, year]);
 
-  const getIncomes = useCallback(async () => {
-    const userExpanses = await getExpensesByUser('income');
-    const filteredExpensesByMonth = userExpanses.filter(
+  const newIncomes = useMemo(() => {
+    return allExpenses.filter(
       (expense) =>
+        expense.type === 'income' &&
         new Date(expense.date).getMonth() === month &&
         new Date(expense.date).getFullYear() === year
     );
-    return filteredExpensesByMonth;
-  }, [month, year]);
+  }, [allExpenses, month, year]);
 
   function getTotalExpenses(expenses: ExpenseData[]) {
     const sum = expenses.reduce(
@@ -46,23 +41,28 @@ export const useExpenses = () => {
     return sum;
   }
 
-  const getBalance = useCallback(async () => {
-    const allExpenses = await getExpensesByUser('expense');
-    const allIncomes = await getExpensesByUser('income');
-
-    const totalExpenses = getTotalExpenses(allExpenses);
-    const totalIncomes = getTotalExpenses(allIncomes);
+  const balance = useMemo(() => {
+    const totalExpenses = getTotalExpenses(
+      allExpenses.filter((expense) => expense.type === 'expense')
+    );
+    const totalIncomes = getTotalExpenses(
+      allExpenses.filter((expense) => expense.type === 'income')
+    );
 
     return totalIncomes - totalExpenses;
-  }, []);
+  }, [allExpenses]);
 
-  const getSavedFromPreviousMonths = useCallback(async () => {
-    const allExpenses = await getExpensesByUser('expense');
-    const allIncomes = await getExpensesByUser('income');
-    const filteredExpensesByMonth = allExpenses.filter(
+  const savedFromPreviousMonths = useMemo(() => {
+    const filteredExpenses = allExpenses.filter(
+      (expense) => expense.type === 'expense'
+    );
+    const filteredIncomes = allExpenses.filter(
+      (expense) => expense.type === 'income'
+    );
+    const filteredExpensesByMonth = filteredExpenses.filter(
       (expense) => new Date(expense.date) < new Date(year, month, 1)
     );
-    const filteredIncomesByMonth = allIncomes.filter(
+    const filteredIncomesByMonth = filteredIncomes.filter(
       (expense) => new Date(expense.date) < new Date(year, month, 1)
     );
 
@@ -70,16 +70,7 @@ export const useExpenses = () => {
     const totalIncomes = getTotalExpenses(filteredIncomesByMonth);
 
     return totalIncomes - totalExpenses;
-  }, [month, year]);
-
-  useEffect(() => {
-    getExpanses()
-      .then((result) => {
-        setExpenses(result);
-        setIsExpensesLoading(false);
-      })
-      .catch((err) => console.log(err));
-  }, [getExpanses, month, year]);
+  }, [month, year, allExpenses]);
 
   const onExpenseCreate = async (data: FormDataExpense) => {
     try {
@@ -90,9 +81,9 @@ export const useExpenses = () => {
         date: data.date,
         notes: data.notes,
       });
-      const userExpanses = await getExpanses();
+      const userExpanses = await getAllExpensesByUser();
 
-      setExpenses(userExpanses);
+      setAllExpenses(userExpanses);
       setShowModal(false);
     } catch (err) {
       console.log(err);
@@ -108,9 +99,9 @@ export const useExpenses = () => {
         date: data.date,
         notes: data.notes,
       });
-      const userIncomes = await getIncomes();
+      const userExpenses = await getAllExpensesByUser();
 
-      setIncomes(userIncomes);
+      setAllExpenses(userExpenses);
       setShowModalIncome(false);
     } catch (err) {
       console.log(err);
@@ -118,27 +109,13 @@ export const useExpenses = () => {
   };
 
   useEffect(() => {
-    getIncomes()
-      .then((result) => {
-        setIncomes(result);
-        setIsIncomesLoading(false);
-      })
-      .catch((err) => console.log(err));
-  }, [getIncomes, month, year]);
-
-  useEffect(() => {
-    getBalance()
-      .then((result) => setBalance(result))
-      .catch((err) => console.log(err));
-  }, [expenses, incomes, getBalance]);
-
-  useEffect(() => {
-    getSavedFromPreviousMonths()
-      .then((result) => {
-        setSaved(result);
-      })
-      .catch((err) => console.log(err));
-  }, [expenses, incomes, getSavedFromPreviousMonths]);
+    const getAll = async () => {
+      const expenses1 = await getAllExpensesByUser();
+      setAllExpenses(expenses1);
+      setIsExpensesLoading(false);
+    };
+    void getAll();
+  }, [month, year]);
 
   return {
     isExpensesLoading,
@@ -148,19 +125,18 @@ export const useExpenses = () => {
     month,
     showModalIncome,
     setShowModalIncome,
-    incomes,
     balance,
     getTotalExpenses,
     onExpenseCreate,
     onIncomeCreate,
     setExpenses,
-    setIncomes,
     setMonth,
-    isIncomesLoading,
     year,
     setYear,
-    saved,
-    getIncomes,
-    getExpanses,
+    allExpenses,
+    newExpenses,
+    newIncomes,
+    setAllExpenses,
+    savedFromPreviousMonths,
   };
 };

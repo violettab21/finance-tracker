@@ -43,28 +43,24 @@ export default function Expenses() {
   const {
     showModal,
     setShowModal,
-    expenses,
     month,
-
+    setMonth,
     showModalIncome,
     setShowModalIncome,
-    incomes,
     balance,
     getTotalExpenses,
     onExpenseCreate,
     onIncomeCreate,
-    setExpenses,
-    setIncomes,
-    setMonth,
     isExpensesLoading,
-    isIncomesLoading,
     year,
     setYear,
-    saved,
-    getIncomes,
-    getExpanses,
+    setAllExpenses,
+    newExpenses,
+    newIncomes,
+    savedFromPreviousMonths,
   } = useExpenses();
   const years = generateYears();
+
   function generateYears() {
     const currentYear = new Date().getFullYear();
     const years = [];
@@ -78,6 +74,7 @@ export default function Expenses() {
       };
     });
   }
+
   return (
     <StyledExpensesWrapper direction="column" gap={'1rem'}>
       <StyledFlexWrapper direction="column" gap={'1rem'}>
@@ -149,17 +146,17 @@ export default function Expenses() {
         <StyledSummaryWrapper gap={'1rem'} justify={'center'}>
           <ExpenseCard
             text={'Month Expenses'}
-            value={getTotalExpenses(expenses)}
+            value={getTotalExpenses(newExpenses)}
             icon={<TbArrowBigLeft size={30} />}
           />
           <ExpenseCard
             text={'Month Incomes'}
-            value={getTotalExpenses(incomes)}
+            value={getTotalExpenses(newIncomes)}
             icon={<TbArrowBigRight size={30} />}
           />
           <ExpenseCard
             text={'Previously saved'}
-            value={saved}
+            value={savedFromPreviousMonths}
             icon={<FaSackDollar size={30} />}
           />
           <ExpenseCard
@@ -188,10 +185,9 @@ export default function Expenses() {
           />
 
           <ExpensesList
-            expenses={expenses}
-            setExpenses={setExpenses}
+            expenses={newExpenses}
+            setExpenses={setAllExpenses}
             isLoading={isExpensesLoading}
-            getExpenses={getExpanses}
           />
         </StyledFlexWrapper>
         <StyledFlexWrapper width="100%" direction="column" gap={'1rem'}>
@@ -212,10 +208,9 @@ export default function Expenses() {
           />
 
           <ExpensesList
-            expenses={incomes}
-            setExpenses={setIncomes}
-            isLoading={isIncomesLoading}
-            getExpenses={getIncomes}
+            expenses={newIncomes}
+            setExpenses={setAllExpenses}
+            isLoading={isExpensesLoading}
           />
         </StyledFlexWrapper>
       </StyledFlexWrapper>

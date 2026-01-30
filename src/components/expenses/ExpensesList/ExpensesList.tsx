@@ -8,17 +8,17 @@ import type { Dispatch, SetStateAction } from 'react';
 import { StyledFlexWrapper } from '../../../styled/flex';
 import Loader from '../../Loader/Loader';
 
+interface ExpensesListProps {
+  expenses: ExpenseData[];
+  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
+  isLoading: boolean;
+}
+
 export default function ExpensesList({
   expenses,
   setExpenses,
   isLoading,
-  getExpenses,
-}: {
-  expenses: ExpenseData[];
-  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
-  isLoading: boolean;
-  getExpenses: () => Promise<ExpenseData[]>;
-}) {
+}: ExpensesListProps) {
   if (isLoading) {
     return <Loader />;
   }
@@ -44,7 +44,6 @@ export default function ExpensesList({
               key={expense.category}
               expenses={expenses}
               groupedExpense={expense}
-              getExpenses={getExpenses}
             />
           ))}
         </tbody>

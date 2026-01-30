@@ -21,17 +21,17 @@ import { savingCategories } from '../../../pages/Savings/Savings';
 import { transformDate } from '../../../helpers/helpers';
 import { useExpenseItem } from './hooks/useExpenseItem';
 
+interface ExpenseItemProps {
+  expenses: ExpenseData[];
+  groupedExpense: { category: string; cost: number };
+  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
+}
+
 export default function ExpenseItem({
   expenses,
   groupedExpense,
   setExpenses,
-  getExpenses,
-}: {
-  expenses: ExpenseData[];
-  groupedExpense: { category: string; cost: number };
-  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
-  getExpenses: () => Promise<ExpenseData[]>;
-}) {
+}: ExpenseItemProps) {
   const {
     onExpenseUpdate,
     onExpenseDelete,
@@ -42,7 +42,7 @@ export default function ExpenseItem({
     isEditVisible,
     editItem,
     setIsEditVisible,
-  } = useExpenseItem(expenses, groupedExpense, setExpenses, getExpenses);
+  } = useExpenseItem(expenses, groupedExpense, setExpenses);
 
   return (
     <>
