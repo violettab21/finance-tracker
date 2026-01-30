@@ -1,0 +1,31 @@
+import styled from 'styled-components';
+import Button from '../../components/Button/Button';
+import { StyledFlexWrapper } from '../../styled/flex';
+
+export const StyledButtonExpense = styled(Button)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 30%;
+`;
+
+export const StyledExpensesWrapper = styled(StyledFlexWrapper)`
+  padding: 1rem;
+  overflow: auto;
+`;
+
+export const StyledSummaryWrapper = styled(StyledFlexWrapper)`
+  flex-wrap: wrap;
+`;
+
+export const StyledButtonMonth = styled.button`
+  background: #3e3658;
+  cursor: pointer;
+  height: 100%;
+  padding: 0 10px;
+  color: #ffffff;
+  border-color: #cccccc;
+  border-radius: 4px;
+  border-style: ridge;
+`;

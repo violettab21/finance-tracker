@@ -6,20 +6,29 @@ import { StyledTable } from './styles';
 import ExpenseItem from '../ExpenseItem/ExpenseItem';
 import type { Dispatch, SetStateAction } from 'react';
 import { StyledFlexWrapper } from '../../../styled/flex';
+import Loader from '../../Loader/Loader';
+
+interface ExpensesListProps {
+  expenses: ExpenseData[];
+  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
+  isLoading: boolean;
+}
 
 export default function ExpensesList({
   expenses,
   setExpenses,
-}: {
-  expenses: ExpenseData[];
-  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
-}) {
+  isLoading,
+}: ExpensesListProps) {
+  if (isLoading) {
+    return <Loader />;
+  }
+
   if (expenses.length === 0) {
-    return <p>No expenses. Click Add Expense to start track your expanses.</p>;
+    return <p>No Data</p>;
   }
 
   return (
-    <StyledFlexWrapper width="50%">
+    <StyledFlexWrapper width="100%">
       <StyledTable>
         <thead>
           <tr>

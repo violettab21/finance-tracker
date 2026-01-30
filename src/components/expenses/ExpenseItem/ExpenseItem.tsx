@@ -1,8 +1,5 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
-import {
-  deleteExpense,
-  type ExpenseData,
-} from '../../../services/expenses/expenses';
+import { type Dispatch, type SetStateAction } from 'react';
+import { type ExpenseData } from '../../../services/expenses/expenses';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import {
   StyledButtonIcon,
@@ -18,56 +15,43 @@ import {
 import { MdEdit } from 'react-icons/md';
 import { MdDelete } from 'react-icons/md';
 import Modal from '../../Modal/Modal';
-import ExpenseFormEdit from '../ExpenseForm/ExpenseFormEdit';
+import ExpenseForm from '../ExpenseForm/ExpenseForm';
+import { categories } from '../../Select/CustomSelect';
+import { savingCategories } from '../../../pages/Savings/Savings';
+import { transformDate } from '../../../helpers/helpers';
+import { useExpenseItem } from './hooks/useExpenseItem';
+
+interface ExpenseItemProps {
+  expenses: ExpenseData[];
+  groupedExpense: { category: string; cost: number };
+  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
+}
 
 export default function ExpenseItem({
   expenses,
   groupedExpense,
   setExpenses,
-}: {
-  expenses: ExpenseData[];
-  groupedExpense: { category: string; cost: number };
-  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
-}) {
-  const [isDetailsVisible, setIsDetailsVisible] = useState(false);
-  const [details, setDetails] = useState<ExpenseData[]>();
-  const [isEditVisible, setIsEditVisible] = useState(false);
-  const [editItem, setEditItem] = useState<ExpenseData | null>(null);
-
-  useEffect(() => {
-    const getCategoryDetails = () => {
-      const data = expenses.filter((expenseData) => {
-        return expenseData.category === groupedExpense.category;
-      });
-      setDetails(data);
-    };
-    getCategoryDetails();
-  }, [expenses, groupedExpense.category]);
-
-  function transformDate(date: string) {
-    const dateObject = new Date(date);
-    const transformedDate = new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).format(dateObject);
-    return transformedDate;
-  }
+}: ExpenseItemProps) {
+  const {
+    onExpenseUpdate,
+    onExpenseDelete,
+    openEditModal,
+    toggleDetailsVisibility,
+    isDetailsVisible,
+    details,
+    isEditVisible,
+    editItem,
+    setIsEditVisible,
+  } = useExpenseItem(expenses, groupedExpense, setExpenses);
 
   return (
     <>
       <StyledRow
         key={groupedExpense.category}
-        onClick={() => {
-          setIsDetailsVisible(!isDetailsVisible);
-        }}
+        onClick={toggleDetailsVisibility}
       >
         <td>
-          <StyledControl
-            onClick={() => {
-              setIsDetailsVisible(!isDetailsVisible);
-            }}
-          >
+          <StyledControl onClick={toggleDetailsVisibility}>
             {isDetailsVisible ? (
               <MdExpandLess size={20} />
             ) : (
@@ -92,22 +76,12 @@ export default function ExpenseItem({
                       <StyledButtonsWrapper>
                         <StyledButtonIcon
                           onClick={() => {
-                            setIsEditVisible(true);
-                            setEditItem(item);
+                            openEditModal(item);
                           }}
                         >
                           <MdEdit size={20} />
                         </StyledButtonIcon>
-                        <StyledButtonIcon
-                          onClick={() =>
-                            deleteExpense(item.id)
-                              .then((result) => {
-                                console.log(result);
-                                setExpenses(result);
-                              })
-                              .catch((err) => console.log(err))
-                          }
-                        >
+                        <StyledButtonIcon onClick={() => onExpenseDelete(item)}>
                           <MdDelete size={20} />
                         </StyledButtonIcon>
                       </StyledButtonsWrapper>
@@ -121,10 +95,13 @@ export default function ExpenseItem({
       )}
       <Modal
         modalContent={
-          <ExpenseFormEdit
-            setExpenses={setExpenses}
-            expense={editItem}
-            onClose={() => setIsEditVisible(false)}
+          <ExpenseForm
+            editedExpense={editItem}
+            onSubmit={onExpenseUpdate}
+            title={'Edit expense'}
+            categories={
+              editItem?.type === 'income' ? savingCategories : categories
+            }
           />
         }
         showModal={isEditVisible}

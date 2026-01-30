@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { StyledFlexWrapper } from '../../styled/flex';
 
 export const StyledLoaderWrapper = styled(StyledFlexWrapper)`
-  height: 100vh;
+  height: 100%;
 `;
 
 export const StyledLoader = styled.div`
