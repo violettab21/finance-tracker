@@ -1,43 +1,16 @@
 import Modal from '../../components/Modal/Modal';
 import ExpenseForm from '../../components/expenses/ExpenseForm/ExpenseForm';
 import ExpensesList from '../../components/expenses/ExpensesList/ExpensesList';
-import Select from 'react-select';
-import { customStyles } from '../../components/expenses/ExpenseForm/styles';
 import { StyledFlexWrapper } from '../../styled/flex';
 import { categories } from '../../components/Select/CustomSelect';
 import { savingCategories } from '../Savings/Savings';
 import { MdAddCircle } from 'react-icons/md';
-import {
-  StyledButtonExpense,
-  StyledButtonMonth,
-  StyledExpensesWrapper,
-  StyledSummaryWrapper,
-} from './styles';
+import { StyledButtonExpense, StyledExpensesWrapper } from './styles';
 import { MdRemoveCircle } from 'react-icons/md';
 import { useExpenses } from './hooks/useExpenses';
-import ExpenseCard from '../../components/expenses/ExpensesSummary/ExpenseCard';
 
-import { TbArrowBigRight } from 'react-icons/tb';
-import { IoIosWallet } from 'react-icons/io';
-import { TbArrowBigLeft } from 'react-icons/tb';
-import { FaSackDollar } from 'react-icons/fa6';
-import { GrPrevious } from 'react-icons/gr';
-import { GrNext } from 'react-icons/gr';
-
-const months = [
-  { value: 'January', label: 'January' },
-  { value: 'February', label: 'February' },
-  { value: 'March', label: 'March' },
-  { value: 'April', label: 'April' },
-  { value: 'May', label: 'May' },
-  { value: 'June', label: 'June' },
-  { value: 'July', label: 'July' },
-  { value: 'August', label: 'August' },
-  { value: 'September', label: 'September' },
-  { value: 'October', label: 'October' },
-  { value: 'November', label: 'November' },
-  { value: 'December', label: 'December' },
-];
+import TimePeriodSection from '../../components/expenses/TimePeriodSection/TimePeriodSection';
+import ExpensesSummary from '../../components/expenses/ExpensesSummary/ExpensesSummary';
 
 export default function Expenses() {
   const {
@@ -59,112 +32,22 @@ export default function Expenses() {
     newIncomes,
     savedFromPreviousMonths,
   } = useExpenses();
-  const years = generateYears();
-
-  function generateYears() {
-    const currentYear = new Date().getFullYear();
-    const years = [];
-    for (let i = 2020; i <= currentYear; i++) {
-      years.push(i);
-    }
-    return years.map((year) => {
-      return {
-        value: year.toString(),
-        label: year.toString(),
-      };
-    });
-  }
 
   return (
     <StyledExpensesWrapper direction="column" gap={'1rem'}>
       <StyledFlexWrapper direction="column" gap={'1rem'}>
-        <StyledFlexWrapper
-          direction="row"
-          gap={'1rem'}
-          align="center"
-          justify={'center'}
-        >
-          <StyledButtonMonth
-            onClick={() => {
-              const date = new Date(year, month, 1);
-              const newDate = date.setMonth(month - 1);
-              setMonth(new Date(newDate).getMonth());
-              setYear(new Date(newDate).getFullYear());
-            }}
-          >
-            <GrPrevious size={15} />
-          </StyledButtonMonth>
-          <Select
-            options={months}
-            styles={customStyles}
-            value={months[month]}
-            onChange={(option: unknown) => {
-              if (
-                typeof option === 'object' &&
-                option &&
-                'value' in option &&
-                'label' in option
-              ) {
-                const monthIndex = months.findIndex(
-                  (object) => object.value === option?.value
-                );
-                setMonth(monthIndex);
-              }
-            }}
-          ></Select>
-          <Select
-            options={years}
-            styles={customStyles}
-            value={years.find((yearEl) => yearEl.value === year.toString())}
-            onChange={(option: unknown) => {
-              if (
-                typeof option === 'object' &&
-                option &&
-                'value' in option &&
-                'label' in option
-              ) {
-                const selectedYear = years.find(
-                  (yearEl) => yearEl.value === option?.value
-                );
-                if (selectedYear) {
-                  setYear(Number(selectedYear.value));
-                }
-              }
-            }}
-          ></Select>
-          <StyledButtonMonth
-            onClick={() => {
-              const date = new Date(year, month, 1);
-              const newDate = date.setMonth(month + 1);
-              setMonth(new Date(newDate).getMonth());
-              setYear(new Date(newDate).getFullYear());
-            }}
-          >
-            <GrNext size={15} />
-          </StyledButtonMonth>
-        </StyledFlexWrapper>
-        <StyledSummaryWrapper gap={'1rem'} justify={'center'}>
-          <ExpenseCard
-            text={'Month Expenses'}
-            value={getTotalExpenses(newExpenses)}
-            icon={<TbArrowBigLeft size={30} />}
-          />
-          <ExpenseCard
-            text={'Month Incomes'}
-            value={getTotalExpenses(newIncomes)}
-            icon={<TbArrowBigRight size={30} />}
-          />
-          <ExpenseCard
-            text={'Previously saved'}
-            value={savedFromPreviousMonths}
-            icon={<FaSackDollar size={30} />}
-          />
-          <ExpenseCard
-            text={'Balance'}
-            value={balance}
-            icon={<IoIosWallet size={30} />}
-          />
-        </StyledSummaryWrapper>
+        <TimePeriodSection
+          month={month}
+          year={year}
+          setYear={setYear}
+          setMonth={setMonth}
+        />
+        <ExpensesSummary
+          expenses={getTotalExpenses(newExpenses)}
+          incomes={getTotalExpenses(newIncomes)}
+          balance={balance}
+          saved={savedFromPreviousMonths}
+        />
       </StyledFlexWrapper>
       <StyledFlexWrapper width="100%" gap={'10px'}>
         <StyledFlexWrapper width="100%" direction="column" gap={'1rem'}>

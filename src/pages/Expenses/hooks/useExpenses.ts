@@ -5,6 +5,7 @@ import {
   type ExpenseData,
 } from '../../../services/expenses/expenses';
 import type { FormDataExpense } from '../../../components/expenses/ExpenseForm/validation';
+import { getTotalExpenses } from '../../../helpers/expenses';
 
 export const useExpenses = () => {
   const [showModal, setShowModal] = useState(false);
@@ -32,14 +33,6 @@ export const useExpenses = () => {
         new Date(expense.date).getFullYear() === year
     );
   }, [allExpenses, month, year]);
-
-  function getTotalExpenses(expenses: ExpenseData[]) {
-    const sum = expenses.reduce(
-      (accumulator, currentValue) => +accumulator + +currentValue.cost,
-      0
-    );
-    return sum;
-  }
 
   const balance = useMemo(() => {
     const totalExpenses = getTotalExpenses(
