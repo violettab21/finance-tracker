@@ -1,20 +1,20 @@
 import { StyledFlexWrapper } from '../../../styled/flex';
 import { StyledButtonMonth } from '../../../pages/Expenses/styles';
-import type { Dispatch, SetStateAction } from 'react';
 import { GrNext, GrPrevious } from 'react-icons/gr';
 import { customStyles } from '../ExpenseForm/styles';
 import Select from 'react-select';
+import { type Dispatch, type SetStateAction } from 'react';
 
 export default function TimePeriodSection({
-  year,
   month,
-  setYear,
   setMonth,
+  year,
+  setYear,
 }: {
-  year: number;
   month: number;
-  setYear: Dispatch<SetStateAction<number>>;
   setMonth: Dispatch<SetStateAction<number>>;
+  year: number;
+  setYear: Dispatch<SetStateAction<number>>;
 }) {
   const months = [
     { value: 'January', label: 'January' },
@@ -30,6 +30,7 @@ export default function TimePeriodSection({
     { value: 'November', label: 'November' },
     { value: 'December', label: 'December' },
   ];
+
   const years = generateYears();
 
   function generateYears() {

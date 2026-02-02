@@ -1,4 +1,3 @@
-import { type Dispatch, type SetStateAction } from 'react';
 import { type ExpenseData } from '../../../services/expenses/expenses';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import {
@@ -24,13 +23,11 @@ import { useExpenseItem } from './hooks/useExpenseItem';
 interface ExpenseItemProps {
   expenses: ExpenseData[];
   groupedExpense: { category: string; cost: number };
-  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
 }
 
 export default function ExpenseItem({
   expenses,
   groupedExpense,
-  setExpenses,
 }: ExpenseItemProps) {
   const {
     onExpenseUpdate,
@@ -42,7 +39,7 @@ export default function ExpenseItem({
     isEditVisible,
     editItem,
     setIsEditVisible,
-  } = useExpenseItem(expenses, groupedExpense, setExpenses);
+  } = useExpenseItem(expenses, groupedExpense);
 
   return (
     <>

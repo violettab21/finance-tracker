@@ -11,42 +11,42 @@ import { useExpenses } from './hooks/useExpenses';
 
 import TimePeriodSection from '../../components/expenses/TimePeriodSection/TimePeriodSection';
 import ExpensesSummary from '../../components/expenses/ExpensesSummary/ExpensesSummary';
+import { useContext } from 'react';
+import { ExpensesContext } from '../../context/expensesContext';
+import { getTotalExpenses } from '../../helpers/expenses';
 
 export default function Expenses() {
   const {
     showModal,
     setShowModal,
-    month,
-    setMonth,
     showModalIncome,
     setShowModalIncome,
-    balance,
-    getTotalExpenses,
     onExpenseCreate,
     onIncomeCreate,
-    isExpensesLoading,
+    month,
+    setMonth,
     year,
     setYear,
-    setAllExpenses,
-    newExpenses,
-    newIncomes,
     savedFromPreviousMonths,
+    expenses,
+    incomes,
   } = useExpenses();
+
+  const { isExpensesLoading } = useContext(ExpensesContext);
 
   return (
     <StyledExpensesWrapper direction="column" gap={'1rem'}>
       <StyledFlexWrapper direction="column" gap={'1rem'}>
         <TimePeriodSection
           month={month}
+          setMonth={setMonth}
           year={year}
           setYear={setYear}
-          setMonth={setMonth}
         />
         <ExpensesSummary
-          expenses={getTotalExpenses(newExpenses)}
-          incomes={getTotalExpenses(newIncomes)}
-          balance={balance}
-          saved={savedFromPreviousMonths}
+          expenses={getTotalExpenses(expenses)}
+          incomes={getTotalExpenses(incomes)}
+          savedFromPreviousMonths={savedFromPreviousMonths}
         />
       </StyledFlexWrapper>
       <StyledFlexWrapper width="100%" gap={'10px'}>
@@ -67,11 +67,7 @@ export default function Expenses() {
             onClose={() => setShowModal(false)}
           />
 
-          <ExpensesList
-            expenses={newExpenses}
-            setExpenses={setAllExpenses}
-            isLoading={isExpensesLoading}
-          />
+          <ExpensesList expenses={expenses} isLoading={isExpensesLoading} />
         </StyledFlexWrapper>
         <StyledFlexWrapper width="100%" direction="column" gap={'1rem'}>
           <StyledButtonExpense primary onClick={() => setShowModalIncome(true)}>
@@ -90,11 +86,7 @@ export default function Expenses() {
             onClose={() => setShowModalIncome(false)}
           />
 
-          <ExpensesList
-            expenses={newIncomes}
-            setExpenses={setAllExpenses}
-            isLoading={isExpensesLoading}
-          />
+          <ExpensesList expenses={incomes} isLoading={isExpensesLoading} />
         </StyledFlexWrapper>
       </StyledFlexWrapper>
     </StyledExpensesWrapper>

@@ -1,16 +1,17 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   deleteExpense,
   editExpense,
   type ExpenseData,
 } from '../../../../services/expenses/expenses';
 import type { FormDataExpense } from '../../ExpenseForm/validation';
+import { ExpensesContext } from '../../../../context/expensesContext';
 
 export const useExpenseItem = (
   expenses: ExpenseData[],
-  groupedExpense: { category: string; cost: number },
-  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>
+  groupedExpense: { category: string; cost: number }
 ) => {
+  const { setExpensesData } = useContext(ExpensesContext);
   const [isDetailsVisible, setIsDetailsVisible] = useState(false);
   const [details, setDetails] = useState<ExpenseData[]>();
   const [isEditVisible, setIsEditVisible] = useState(false);
@@ -37,7 +38,7 @@ export const useExpenseItem = (
         notes: data.notes,
       });
 
-      setExpenses(userExpenses);
+      setExpensesData(userExpenses);
       setIsEditVisible(false);
     } catch (err) {
       console.log(err);
@@ -47,7 +48,7 @@ export const useExpenseItem = (
   const onExpenseDelete = async (item: ExpenseData) => {
     try {
       const userExpenses = await deleteExpense(item.id);
-      setExpenses(userExpenses);
+      setExpensesData(userExpenses);
     } catch (err) {
       console.log(err);
     }
