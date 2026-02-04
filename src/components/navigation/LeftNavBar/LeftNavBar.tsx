@@ -15,10 +15,12 @@ export default function LeftNavBar() {
     <StyledLeftNavBar>
       <ul>
         <li>
-          <StyledNavLink to="/finance-tracker">Overview</StyledNavLink>
+          <StyledNavLink to="/overview">Overview</StyledNavLink>
         </li>
         <li>
-          <StyledNavLink to="/expenses">Expenses Management</StyledNavLink>
+          <StyledNavLink to="/finance-tracker">
+            Expenses Management
+          </StyledNavLink>
         </li>
         <li>
           <StyledNavLink to="/plans">Plans</StyledNavLink>
