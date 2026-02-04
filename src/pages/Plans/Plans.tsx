@@ -7,6 +7,15 @@ import PlanItem from '../../components/plans/PlanItem/PlanItem';
 import { StyledTable } from '../../styled/table';
 import { ExpensesContext } from '../../context/expensesContext';
 import { months } from '../../components/TimePeriodSection/TimePeriodSection';
+import { customStyles } from '../../components/expenses/ExpenseForm/styles';
+import { StyledSelect } from './styles';
+
+const plansFilters = [
+  { value: 'all', label: 'All' },
+  { value: 'past', label: 'Past Plans' },
+  { value: 'current', label: 'Current Plans' },
+  { value: 'future', label: 'Future Plans' },
+];
 
 export interface Plan {
   id: string;
@@ -20,9 +29,49 @@ export interface Plan {
 export default function Plans() {
   const [showModal, setShowModal] = useState(false);
   const { plans, setPlans } = useContext(ExpensesContext);
+  const [filter, setFilter] = useState<string>('current');
+
+  const filteredPlans = useMemo(() => {
+    let result: Plan[] = [];
+    switch (filter) {
+      case 'all':
+        result = plans.slice();
+        break;
+      case 'past':
+        result = plans.filter((el) => {
+          const monthIndex = months.findIndex(
+            (value) => value.value === el.month
+          );
+          const dateValue = new Date(el.year, monthIndex, 1);
+          return dateValue < new Date() && monthIndex !== new Date().getMonth();
+        });
+        break;
+      case 'current':
+        result = plans.filter((el) => {
+          const monthIndex = months.findIndex(
+            (value) => value.value === el.month
+          );
+          return (
+            monthIndex === new Date().getMonth() &&
+            el.year === new Date().getFullYear()
+          );
+        });
+        break;
+      case 'future':
+        result = plans.filter((el) => {
+          const monthIndex = months.findIndex(
+            (value) => value.value === el.month
+          );
+          const dateValue = new Date(el.year, monthIndex, 1);
+          return dateValue > new Date();
+        });
+        break;
+    }
+    return result;
+  }, [plans, filter]);
 
   const sortedPlans = useMemo(() => {
-    const copiedPlans = plans.slice();
+    const copiedPlans = filteredPlans.slice();
     const formattedPlans = copiedPlans.map((el) => {
       const monthIndex = months.findIndex((value) => value.value === el.month);
       const dateValue = new Date(el.year, monthIndex, 1);
@@ -36,10 +85,30 @@ export default function Plans() {
       };
     });
     return formattedPlans.sort((a, b) => Number(a.date) - Number(b.date));
-  }, [plans]);
+  }, [filteredPlans, filter, plans]);
 
   return (
     <StyledFlexWrapper direction="column">
+      <StyledFlexWrapper justify="flex-end">
+        <StyledSelect
+          options={plansFilters}
+          styles={customStyles}
+          value={plansFilters.find((el) => el.value === filter)}
+          onChange={(option: unknown) => {
+            if (
+              typeof option === 'object' &&
+              option &&
+              'value' in option &&
+              'label' in option
+            ) {
+              if (typeof option.value === 'string') {
+                setFilter(option.value);
+              }
+            }
+          }}
+        ></StyledSelect>
+      </StyledFlexWrapper>
+
       <Button onClick={() => setShowModal(true)}>Add Plan</Button>
       <Modal
         modalContent={<PlansForm />}
