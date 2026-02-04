@@ -60,6 +60,7 @@ export default function Savings() {
             onSubmit={onSavingCreate}
             categories={savingCategories.filter((el) => el.value === 'Savings')}
             editedExpense={null}
+            planWarning={null}
           />
         }
         showModal={showModal}

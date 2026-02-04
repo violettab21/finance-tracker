@@ -2,10 +2,12 @@ import { useContext, useMemo, useState } from 'react';
 import {
   addExpense,
   getAllExpensesByUser,
+  getTotalExpensesPerCategory,
 } from '../../../services/expenses/expenses';
 import type { FormDataExpense } from '../../../components/expenses/ExpenseForm/validation';
 import { ExpensesContext } from '../../../context/expensesContext';
 import { getTotalExpenses } from '../../../helpers/expenses';
+import { months } from '../../../components/TimePeriodSection/TimePeriodSection';
 
 export const useExpenses = () => {
   const [showModal, setShowModal] = useState(false);
@@ -13,6 +15,8 @@ export const useExpenses = () => {
   const [year, setYear] = useState(new Date().getFullYear());
   const { expensesData, setExpensesData } = useContext(ExpensesContext);
   const [showModalIncome, setShowModalIncome] = useState(false);
+  const { plans } = useContext(ExpensesContext);
+  const [planWarning, setPlanWarning] = useState<string | null>(null);
 
   const expenses = useMemo(() => {
     return expensesData.filter(
@@ -34,17 +38,48 @@ export const useExpenses = () => {
 
   const onExpenseCreate = async (data: FormDataExpense) => {
     try {
-      await addExpense({
-        category: data.category.value,
-        type: 'expense',
-        cost: data.cost,
-        date: data.date,
-        notes: data.notes,
-      });
-      const userExpenses = await getAllExpensesByUser();
+      const specificExpenses = expensesData.filter(
+        (expense) =>
+          expense.type === 'expense' &&
+          new Date(expense.date).getMonth() ===
+            new Date(data.date).getMonth() &&
+          new Date(expense.date).getFullYear() ===
+            new Date(data.date).getFullYear()
+      );
+      const groupedExpenses = getTotalExpensesPerCategory(specificExpenses);
+      console.log(groupedExpenses);
 
-      setExpensesData(userExpenses);
-      setShowModal(false);
+      const plannedExpense =
+        plans.find(
+          (plan) =>
+            Number(months.findIndex((month) => plan.month === month.value)) ===
+              new Date(data.date).getMonth() &&
+            Number(plan.year) === new Date(data.date).getFullYear() &&
+            plan.category === data.category.value
+        )?.cost || 0;
+      console.log(plannedExpense);
+
+      const currentExpenseForCategory =
+        groupedExpenses.find(
+          (expense) => expense.category === data.category.value
+        )?.cost || 0;
+      console.log(currentExpenseForCategory);
+
+      if (plannedExpense < currentExpenseForCategory + data.cost) {
+        setPlanWarning('Plan limit is reached');
+      } else {
+        await addExpense({
+          category: data.category.value,
+          type: 'expense',
+          cost: data.cost,
+          date: data.date,
+          notes: data.notes,
+        });
+        const userExpenses = await getAllExpensesByUser();
+
+        setExpensesData(userExpenses);
+        setShowModal(false);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -102,5 +137,7 @@ export const useExpenses = () => {
     expenses,
     incomes,
     savedFromPreviousMonths,
+    planWarning,
+    setPlanWarning,
   };
 };

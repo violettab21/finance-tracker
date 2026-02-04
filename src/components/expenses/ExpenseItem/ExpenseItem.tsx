@@ -14,11 +14,11 @@ import { MdDelete } from 'react-icons/md';
 import Modal from '../../Modal/Modal';
 import ExpenseForm from '../ExpenseForm/ExpenseForm';
 import { categories } from '../../Select/CustomSelect';
-import { savingCategories } from '../../../pages/Savings/Savings';
 import { transformDate } from '../../../helpers/helpers';
 import { useExpenseItem } from './hooks/useExpenseItem';
 import ButtonIcon from '../../ButtonIcon/ButtonIcon';
 import { StyledRow } from '../../../styled/table';
+import { savingCategories } from '../../../pages/Savings/Savings';
 
 interface ExpenseItemProps {
   expenses: ExpenseData[];
@@ -99,6 +99,7 @@ export default function ExpenseItem({
             categories={
               editItem?.type === 'income' ? savingCategories : categories
             }
+            planWarning=""
           />
         }
         showModal={isEditVisible}

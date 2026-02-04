@@ -148,6 +148,7 @@ export default function Overview() {
             { dataKey: 'real', label: 'Actual' },
             { dataKey: 'planned', label: 'Planned' },
           ]}
+          colors={[colorsCategory[0], colorsCategory[1]]}
           {...chartSetting}
         />
       </StyledFlexWrapper>

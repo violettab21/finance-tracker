@@ -30,6 +30,8 @@ export default function Expenses() {
     savedFromPreviousMonths,
     expenses,
     incomes,
+    planWarning,
+    setPlanWarning,
   } = useExpenses();
 
   const { isExpensesLoading } = useContext(ExpensesContext);
@@ -51,7 +53,13 @@ export default function Expenses() {
       </StyledFlexWrapper>
       <StyledFlexWrapper width="100%" gap={'10px'}>
         <StyledFlexWrapper width="100%" direction="column" gap={'1rem'}>
-          <StyledButtonExpense primary onClick={() => setShowModal(true)}>
+          <StyledButtonExpense
+            primary
+            onClick={() => {
+              setShowModal(true);
+              setPlanWarning(null);
+            }}
+          >
             <p>Add Expense</p> <MdRemoveCircle size={30} />
           </StyledButtonExpense>
           <Modal
@@ -61,6 +69,7 @@ export default function Expenses() {
                 onSubmit={onExpenseCreate}
                 categories={categories}
                 editedExpense={null}
+                planWarning={planWarning}
               />
             }
             showModal={showModal}
@@ -80,6 +89,7 @@ export default function Expenses() {
                 onSubmit={onIncomeCreate}
                 categories={savingCategories}
                 editedExpense={null}
+                planWarning={planWarning}
               />
             }
             showModal={showModalIncome}
