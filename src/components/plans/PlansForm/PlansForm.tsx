@@ -8,14 +8,24 @@ import { StyledErrorText } from '../../Input/styles';
 import Input from '../../Input/Input';
 import Button from '../../Button/Button';
 import { addPlan } from '../../../services/plans/plans';
-import type { Dispatch, SetStateAction } from 'react';
-import type { Plan } from '../../../pages/Plans/Plans';
+import { useContext, useState } from 'react';
+import { ExpensesContext } from '../../../context/expensesContext';
+const months = [
+  { value: 'January', label: 'January' },
+  { value: 'February', label: 'February' },
+  { value: 'March', label: 'March' },
+  { value: 'April', label: 'April' },
+  { value: 'May', label: 'May' },
+  { value: 'June', label: 'June' },
+  { value: 'July', label: 'July' },
+  { value: 'August', label: 'August' },
+  { value: 'September', label: 'September' },
+  { value: 'October', label: 'October' },
+  { value: 'November', label: 'November' },
+  { value: 'December', label: 'December' },
+];
 
-export default function PlansForm({
-  setPlans,
-}: {
-  setPlans: Dispatch<SetStateAction<Plan[]>>;
-}) {
+export default function PlansForm() {
   const {
     register,
     handleSubmit,
@@ -25,21 +35,8 @@ export default function PlansForm({
     resolver: zodResolver(ValidationSchemaPlan),
     mode: 'onChange',
   });
-
-  const months = [
-    { value: 'January', label: 'January' },
-    { value: 'February', label: 'February' },
-    { value: 'March', label: 'March' },
-    { value: 'April', label: 'April' },
-    { value: 'May', label: 'May' },
-    { value: 'June', label: 'June' },
-    { value: 'July', label: 'July' },
-    { value: 'August', label: 'August' },
-    { value: 'September', label: 'September' },
-    { value: 'October', label: 'October' },
-    { value: 'November', label: 'November' },
-    { value: 'December', label: 'December' },
-  ];
+  const { plans, setPlans } = useContext(ExpensesContext);
+  const [isPlanError, setIsPlanError] = useState<string>();
 
   const years = generateYears();
 
@@ -58,16 +55,25 @@ export default function PlansForm({
   }
 
   const onSubmit = async (data: FormDataPlan) => {
-    console.log(data);
     try {
-      const plans = await addPlan({
-        category: data.category.value,
-        cost: data.cost,
-        month: data.month.value,
-        year: +data.year.value,
-      });
+      const existingPlan = plans.find(
+        (plan) =>
+          plan.category === data.category.value &&
+          plan.month === data.month.value &&
+          plan.year === +data.year.value
+      );
+      if (existingPlan) {
+        setIsPlanError('Such plan already exists');
+      } else {
+        const updatedPlans = await addPlan({
+          category: data.category.value,
+          cost: data.cost,
+          month: data.month.value,
+          year: +data.year.value,
+        });
 
-      setPlans(plans);
+        setPlans(updatedPlans);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -137,7 +143,7 @@ export default function PlansForm({
               <StyledErrorText>{errors.category.message}</StyledErrorText>
             )}
           </StyledFlexWrapper>
-
+          {isPlanError && <StyledErrorText>{isPlanError}</StyledErrorText>}
           <Button primary>Add</Button>
         </StyledFlexWrapper>
       </form>
