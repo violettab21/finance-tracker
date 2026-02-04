@@ -5,6 +5,21 @@ import Select from 'react-select';
 import { type Dispatch, type SetStateAction } from 'react';
 import { StyledButtonMonth } from './styles';
 
+export const months = [
+  { value: 'January', label: 'January' },
+  { value: 'February', label: 'February' },
+  { value: 'March', label: 'March' },
+  { value: 'April', label: 'April' },
+  { value: 'May', label: 'May' },
+  { value: 'June', label: 'June' },
+  { value: 'July', label: 'July' },
+  { value: 'August', label: 'August' },
+  { value: 'September', label: 'September' },
+  { value: 'October', label: 'October' },
+  { value: 'November', label: 'November' },
+  { value: 'December', label: 'December' },
+];
+
 export default function TimePeriodSection({
   month,
   setMonth,
@@ -16,21 +31,6 @@ export default function TimePeriodSection({
   year: number;
   setYear: Dispatch<SetStateAction<number>>;
 }) {
-  const months = [
-    { value: 'January', label: 'January' },
-    { value: 'February', label: 'February' },
-    { value: 'March', label: 'March' },
-    { value: 'April', label: 'April' },
-    { value: 'May', label: 'May' },
-    { value: 'June', label: 'June' },
-    { value: 'July', label: 'July' },
-    { value: 'August', label: 'August' },
-    { value: 'September', label: 'September' },
-    { value: 'October', label: 'October' },
-    { value: 'November', label: 'November' },
-    { value: 'December', label: 'December' },
-  ];
-
   const years = generateYears();
 
   function generateYears() {

@@ -1,5 +1,7 @@
 import { useExpenses } from '../Expenses/hooks/useExpenses';
-import TimePeriodSection from '../../components/TimePeriodSection/TimePeriodSection';
+import TimePeriodSection, {
+  months,
+} from '../../components/TimePeriodSection/TimePeriodSection';
 import { StyledFlexWrapper } from '../../styled/flex';
 import { getTotalExpenses } from '../../helpers/expenses';
 import ExpensesSummary from '../../components/expenses/ExpensesSummary/ExpensesSummary';
@@ -57,7 +59,7 @@ export default function Overview() {
     savedFromPreviousMonths,
   } = useExpenses();
 
-  const { expensesData } = useContext(ExpensesContext);
+  const { expensesData, plans } = useContext(ExpensesContext);
 
   const prepareData = (data: ExpenseData[]) => {
     const dataChart = getTotalExpensesPerCategory(data).map((el, i) => {
@@ -73,8 +75,15 @@ export default function Overview() {
 
   const prepareDataBars = (data: ExpenseData[]) => {
     const dataChart = getTotalExpensesPerCategory(data).map((el) => {
+      const planned = plans.find(
+        (plan) =>
+          plan.category === el.category &&
+          months.findIndex((object) => object.value === plan.month) === month &&
+          plan.year === year
+      );
       return {
         real: el.cost,
+        planned: planned?.cost || 0,
         category: el.category,
       };
     });
@@ -135,7 +144,10 @@ export default function Overview() {
         <BarChart
           dataset={prepareDataBars(expenses)}
           xAxis={[{ dataKey: 'category' }]}
-          series={[{ dataKey: 'real', label: 'Actual' }]}
+          series={[
+            { dataKey: 'real', label: 'Actual' },
+            { dataKey: 'planned', label: 'Planned' },
+          ]}
           {...chartSetting}
         />
       </StyledFlexWrapper>

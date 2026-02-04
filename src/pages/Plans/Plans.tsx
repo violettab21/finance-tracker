@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from '../../components/Button/Button';
 import Modal from '../../components/Modal/Modal';
 import PlansForm from '../../components/plans/PlansForm/PlansForm';
 import { StyledFlexWrapper } from '../../styled/flex';
 import PlanItem from '../../components/plans/PlanItem/PlanItem';
-import { getAllPlansByUser } from '../../services/plans/plans';
 import { StyledTable } from '../../styled/table';
+import { ExpensesContext } from '../../context/expensesContext';
 
 export interface Plan {
   id: string;
@@ -17,19 +17,7 @@ export interface Plan {
 
 export default function Plans() {
   const [showModal, setShowModal] = useState(false);
-  const [plans, setPlans] = useState<Plan[]>([]);
-
-  useEffect(() => {
-    const getPlans = async () => {
-      try {
-        const plans = await getAllPlansByUser();
-        setPlans(plans);
-      } catch {
-        console.log('error');
-      }
-    };
-    getPlans();
-  }, []);
+  const { plans, setPlans } = useContext(ExpensesContext);
 
   return (
     <StyledFlexWrapper direction="column">

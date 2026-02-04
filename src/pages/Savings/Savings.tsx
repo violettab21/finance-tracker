@@ -10,7 +10,7 @@ import Button from '../../components/Button/Button';
 import Modal from '../../components/Modal/Modal';
 import ExpenseForm from '../../components/expenses/ExpenseForm/ExpenseForm';
 import type { FormDataExpense } from '../../components/expenses/ExpenseForm/validation';
-import { StyledTable } from '../../components/expenses/ExpensesList/styles';
+import { StyledTable } from '../../styled/table';
 
 export const savingCategories: Option[] = [
   { value: 'Salary', label: 'Salary' },

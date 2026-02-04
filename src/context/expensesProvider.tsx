@@ -5,6 +5,8 @@ import {
 } from '../services/expenses/expenses';
 import { getTotalExpenses } from '../helpers/expenses';
 import { ExpensesContext } from './expensesContext';
+import { getAllPlansByUser } from '../services/plans/plans';
+import type { Plan } from '../pages/Plans/Plans';
 
 export default function ExpensesProvider({
   children,
@@ -13,6 +15,19 @@ export default function ExpensesProvider({
 }) {
   const [expensesData, setExpensesData] = useState<ExpenseData[]>([]);
   const [isExpensesLoading, setIsExpensesLoading] = useState(true);
+  const [plans, setPlans] = useState<Plan[]>([]);
+
+  useEffect(() => {
+    const getPlans = async () => {
+      try {
+        const plans = await getAllPlansByUser();
+        setPlans(plans);
+      } catch {
+        console.log('error');
+      }
+    };
+    getPlans();
+  }, []);
 
   const balance = useMemo(() => {
     const totalExpenses = getTotalExpenses(
@@ -42,6 +57,8 @@ export default function ExpensesProvider({
         isExpensesLoading,
         setIsExpensesLoading,
         balance,
+        plans,
+        setPlans,
       }}
     >
       {children}
