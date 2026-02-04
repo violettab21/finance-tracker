@@ -2,10 +2,10 @@ import {
   getTotalExpensesPerCategory,
   type ExpenseData,
 } from '../../../services/expenses/expenses';
-import { StyledTable } from './styles';
 import ExpenseItem from '../ExpenseItem/ExpenseItem';
 import { StyledFlexWrapper } from '../../../styled/flex';
 import Loader from '../../Loader/Loader';
+import { StyledTable } from '../../../styled/table';
 
 interface ExpensesListProps {
   expenses: ExpenseData[];

@@ -9,7 +9,7 @@ import { StyledButtonExpense, StyledExpensesWrapper } from './styles';
 import { MdRemoveCircle } from 'react-icons/md';
 import { useExpenses } from './hooks/useExpenses';
 
-import TimePeriodSection from '../../components/expenses/TimePeriodSection/TimePeriodSection';
+import TimePeriodSection from '../../components/TimePeriodSection/TimePeriodSection';
 import ExpensesSummary from '../../components/expenses/ExpensesSummary/ExpensesSummary';
 import { useContext } from 'react';
 import { ExpensesContext } from '../../context/expensesContext';

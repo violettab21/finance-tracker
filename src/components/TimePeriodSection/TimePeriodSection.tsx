@@ -1,9 +1,9 @@
-import { StyledFlexWrapper } from '../../../styled/flex';
-import { StyledButtonMonth } from '../../../pages/Expenses/styles';
+import { StyledFlexWrapper } from '../../styled/flex';
 import { GrNext, GrPrevious } from 'react-icons/gr';
-import { customStyles } from '../ExpenseForm/styles';
+import { customStyles } from '../expenses/ExpenseForm/styles';
 import Select from 'react-select';
 import { type Dispatch, type SetStateAction } from 'react';
+import { StyledButtonMonth } from './styles';
 
 export default function TimePeriodSection({
   month,

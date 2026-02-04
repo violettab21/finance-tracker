@@ -11,3 +11,10 @@ export const StyledTable = styled.table`
     text-align: center;
   }
 `;
+
+export const StyledRow = styled.tr`
+  &:hover {
+    background: #3c34585d;
+    border-radius: 8px;
+  }
+`;

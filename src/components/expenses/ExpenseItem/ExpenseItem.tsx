@@ -1,7 +1,6 @@
 import { type ExpenseData } from '../../../services/expenses/expenses';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import {
-  StyledButtonIcon,
   StyledButtonsWrapper,
   StyledControl,
   StyledCost,
@@ -9,7 +8,6 @@ import {
   StyledDetailsRow,
   StyledDetailsTable,
   StyledNotes,
-  StyledRow,
 } from './styles';
 import { MdEdit } from 'react-icons/md';
 import { MdDelete } from 'react-icons/md';
@@ -19,6 +17,8 @@ import { categories } from '../../Select/CustomSelect';
 import { savingCategories } from '../../../pages/Savings/Savings';
 import { transformDate } from '../../../helpers/helpers';
 import { useExpenseItem } from './hooks/useExpenseItem';
+import ButtonIcon from '../../ButtonIcon/ButtonIcon';
+import { StyledRow } from '../../../styled/table';
 
 interface ExpenseItemProps {
   expenses: ExpenseData[];
@@ -71,16 +71,16 @@ export default function ExpenseItem({
                       <StyledCost>{item.cost}</StyledCost>
                       <StyledNotes>{item?.notes || 'N/A'}</StyledNotes>
                       <StyledButtonsWrapper>
-                        <StyledButtonIcon
+                        <ButtonIcon
                           onClick={() => {
                             openEditModal(item);
                           }}
                         >
                           <MdEdit size={20} />
-                        </StyledButtonIcon>
-                        <StyledButtonIcon onClick={() => onExpenseDelete(item)}>
+                        </ButtonIcon>
+                        <ButtonIcon onClick={() => onExpenseDelete(item)}>
                           <MdDelete size={20} />
-                        </StyledButtonIcon>
+                        </ButtonIcon>
                       </StyledButtonsWrapper>
                     </StyledDetailsRow>
                   </>

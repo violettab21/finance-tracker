@@ -3,9 +3,9 @@ import Button from '../../components/Button/Button';
 import Modal from '../../components/Modal/Modal';
 import PlansForm from '../../components/plans/PlansForm/PlansForm';
 import { StyledFlexWrapper } from '../../styled/flex';
-import { StyledTable } from '../../components/expenses/ExpensesList/styles';
 import PlanItem from '../../components/plans/PlanItem/PlanItem';
 import { getAllPlansByUser } from '../../services/plans/plans';
+import { StyledTable } from '../../styled/table';
 
 export interface Plan {
   id: string;
@@ -32,7 +32,7 @@ export default function Plans() {
   }, []);
 
   return (
-    <div>
+    <StyledFlexWrapper direction="column">
       <Button onClick={() => setShowModal(true)}>Add Plan</Button>
       <Modal
         modalContent={<PlansForm setPlans={setPlans} />}
@@ -46,15 +46,16 @@ export default function Plans() {
               <th>Category</th>
               <th>Cost</th>
               <th>Time Period</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {plans.map((plan) => (
-              <PlanItem key={plan.category} plan={plan} />
+              <PlanItem key={plan.id} plan={plan} setPlans={setPlans} />
             ))}
           </tbody>
         </StyledTable>
       </StyledFlexWrapper>
-    </div>
+    </StyledFlexWrapper>
   );
 }

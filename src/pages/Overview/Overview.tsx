@@ -1,5 +1,5 @@
 import { useExpenses } from '../Expenses/hooks/useExpenses';
-import TimePeriodSection from '../../components/expenses/TimePeriodSection/TimePeriodSection';
+import TimePeriodSection from '../../components/TimePeriodSection/TimePeriodSection';
 import { StyledFlexWrapper } from '../../styled/flex';
 import { getTotalExpenses } from '../../helpers/expenses';
 import ExpensesSummary from '../../components/expenses/ExpensesSummary/ExpensesSummary';
