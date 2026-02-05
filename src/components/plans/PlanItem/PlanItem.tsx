@@ -1,9 +1,11 @@
 import type { Plan } from '../../../pages/Plans/Plans';
 import { MdDelete } from 'react-icons/md';
-import type { Dispatch, SetStateAction } from 'react';
+import { useState, type Dispatch, type SetStateAction } from 'react';
 import { deletePlan } from '../../../services/plans/plans';
 import ButtonIcon from '../../ButtonIcon/ButtonIcon';
 import { StyledRow } from '../../../styled/table';
+import Modal from '../../Modal/Modal';
+import ConfirmationMessage from '../../Confirmation/ConfirmationMessage';
 
 export default function PlanItem({
   plan,
@@ -12,6 +14,9 @@ export default function PlanItem({
   plan: Plan;
   setPlans: Dispatch<SetStateAction<Plan[]>>;
 }) {
+  const [isConfirmationMessageVisible, setIsConfirmationMessageVisible] =
+    useState(false);
+
   const onDeletePlan = async (id: string) => {
     try {
       const newPlans = await deletePlan(id);
@@ -22,21 +27,41 @@ export default function PlanItem({
   };
 
   return (
-    <StyledRow key={plan.category}>
-      <td>{plan.category}</td>
-      <td>{plan.cost}</td>
-      <td>
-        {plan.month} {plan.year}
-      </td>
-      <td>
-        <ButtonIcon
-          onClick={() => {
-            onDeletePlan(plan.id);
-          }}
-        >
-          <MdDelete size={20} />
-        </ButtonIcon>
-      </td>
-    </StyledRow>
+    <>
+      <StyledRow key={plan.category}>
+        <td>{plan.category}</td>
+        <td>{plan.cost}</td>
+        <td>
+          {plan.month} {plan.year}
+        </td>
+        <td>
+          <ButtonIcon
+            onClick={() => {
+              {
+                setIsConfirmationMessageVisible(true);
+              }
+            }}
+          >
+            <MdDelete size={20} />
+          </ButtonIcon>
+        </td>
+      </StyledRow>
+      <Modal
+        modalContent={
+          <ConfirmationMessage
+            confirmCallback={() => {
+              onDeletePlan(plan.id);
+              setIsConfirmationMessageVisible(false);
+            }}
+            declineCallback={() => {
+              setIsConfirmationMessageVisible(false);
+            }}
+            text="test"
+          />
+        }
+        onClose={() => setIsConfirmationMessageVisible(false)}
+        showModal={isConfirmationMessageVisible}
+      />
+    </>
   );
 }

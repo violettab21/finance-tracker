@@ -19,6 +19,8 @@ import { useExpenseItem } from './hooks/useExpenseItem';
 import ButtonIcon from '../../ButtonIcon/ButtonIcon';
 import { StyledRow } from '../../../styled/table';
 import { savingCategories } from '../../../pages/Savings/Savings';
+import { useState } from 'react';
+import ConfirmationMessage from '../../Confirmation/ConfirmationMessage';
 
 interface ExpenseItemProps {
   expenses: ExpenseData[];
@@ -40,6 +42,9 @@ export default function ExpenseItem({
     editItem,
     setIsEditVisible,
   } = useExpenseItem(expenses, groupedExpense);
+  const [isConfirmationMessageVisible, setIsConfirmationMessageVisible] =
+    useState(false);
+  const [deleteItem, setDeleteItem] = useState<ExpenseData | null>(null);
 
   return (
     <>
@@ -78,7 +83,12 @@ export default function ExpenseItem({
                         >
                           <MdEdit size={20} />
                         </ButtonIcon>
-                        <ButtonIcon onClick={() => onExpenseDelete(item)}>
+                        <ButtonIcon
+                          onClick={() => {
+                            setIsConfirmationMessageVisible(true);
+                            setDeleteItem(item);
+                          }}
+                        >
                           <MdDelete size={20} />
                         </ButtonIcon>
                       </StyledButtonsWrapper>
@@ -104,6 +114,22 @@ export default function ExpenseItem({
         showModal={isEditVisible}
         onClose={() => setIsEditVisible(false)}
       />
+      {deleteItem && (
+        <Modal
+          modalContent={
+            <ConfirmationMessage
+              confirmCallback={() => {
+                onExpenseDelete(deleteItem);
+                setIsConfirmationMessageVisible(false);
+              }}
+              declineCallback={() => setIsConfirmationMessageVisible(false)}
+              text={`Are you sure you want to delete selected ${deleteItem.type}: ${deleteItem.category} ${deleteItem.cost}?`}
+            />
+          }
+          showModal={isConfirmationMessageVisible}
+          onClose={() => setIsConfirmationMessageVisible(false)}
+        />
+      )}
     </>
   );
 }
