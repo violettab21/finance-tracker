@@ -30,8 +30,6 @@ export default function Expenses() {
     savedFromPreviousMonths,
     expenses,
     incomes,
-    planWarning,
-    setPlanWarning,
   } = useExpenses();
 
   const { isExpensesLoading } = useContext(ExpensesContext);
@@ -57,7 +55,6 @@ export default function Expenses() {
             primary
             onClick={() => {
               setShowModal(true);
-              setPlanWarning(null);
             }}
           >
             <p>Add Expense</p> <MdRemoveCircle size={30} />
@@ -69,7 +66,6 @@ export default function Expenses() {
                 onSubmit={onExpenseCreate}
                 categories={categories}
                 editedExpense={null}
-                planWarning={planWarning}
               />
             }
             showModal={showModal}
@@ -89,7 +85,6 @@ export default function Expenses() {
                 onSubmit={onIncomeCreate}
                 categories={savingCategories}
                 editedExpense={null}
-                planWarning={planWarning}
               />
             }
             showModal={showModalIncome}

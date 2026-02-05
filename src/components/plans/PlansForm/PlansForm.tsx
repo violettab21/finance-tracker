@@ -10,6 +10,7 @@ import Button from '../../Button/Button';
 import { addPlan } from '../../../services/plans/plans';
 import { useContext, useState } from 'react';
 import { ExpensesContext } from '../../../context/expensesContext';
+import { StyledTitle } from './styles';
 const months = [
   { value: 'January', label: 'January' },
   { value: 'February', label: 'February' },
@@ -83,7 +84,7 @@ export default function PlansForm() {
     <StyledFlexWrapper width="100%" justify="center">
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledFlexWrapper direction="column" width="100%" gap="10px">
-          <p>Add plan</p>
+          <StyledTitle>Add plan</StyledTitle>
           <StyledFlexWrapper width="100%">
             <Controller
               control={control}

@@ -16,7 +16,6 @@ interface ExpenseFormProps {
   onSubmit: (data: FormDataExpense) => Promise<void>;
   categories: Option[];
   editedExpense: ExpenseData | null;
-  planWarning: string | null;
 }
 
 export default function ExpenseForm({
@@ -24,7 +23,6 @@ export default function ExpenseForm({
   onSubmit,
   categories,
   editedExpense,
-  planWarning,
 }: ExpenseFormProps) {
   const {
     register,
@@ -100,7 +98,6 @@ export default function ExpenseForm({
             {...register('notes')}
             error={errors.notes ? errors.notes?.message || null : null}
           ></Input>
-          {planWarning && <p>{planWarning}</p>}
           <Button primary>{title}</Button>
         </StyledFlexWrapper>
       </form>

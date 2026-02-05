@@ -99,7 +99,6 @@ export default function ExpenseItem({
             categories={
               editItem?.type === 'income' ? savingCategories : categories
             }
-            planWarning=""
           />
         }
         showModal={isEditVisible}

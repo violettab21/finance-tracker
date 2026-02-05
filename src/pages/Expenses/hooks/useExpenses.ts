@@ -8,6 +8,7 @@ import type { FormDataExpense } from '../../../components/expenses/ExpenseForm/v
 import { ExpensesContext } from '../../../context/expensesContext';
 import { getTotalExpenses } from '../../../helpers/expenses';
 import { months } from '../../../components/TimePeriodSection/TimePeriodSection';
+import { ToastContext } from '../../../context/toastContext';
 
 export const useExpenses = () => {
   const [showModal, setShowModal] = useState(false);
@@ -16,7 +17,7 @@ export const useExpenses = () => {
   const { expensesData, setExpensesData } = useContext(ExpensesContext);
   const [showModalIncome, setShowModalIncome] = useState(false);
   const { plans } = useContext(ExpensesContext);
-  const [planWarning, setPlanWarning] = useState<string | null>(null);
+  const { showToast } = useContext(ToastContext);
 
   const expenses = useMemo(() => {
     return expensesData.filter(
@@ -65,20 +66,23 @@ export const useExpenses = () => {
         )?.cost || 0;
       console.log(currentExpenseForCategory);
 
-      if (plannedExpense < currentExpenseForCategory + data.cost) {
-        setPlanWarning('Plan limit is reached');
-      } else {
-        await addExpense({
-          category: data.category.value,
-          type: 'expense',
-          cost: data.cost,
-          date: data.date,
-          notes: data.notes,
-        });
-        const userExpenses = await getAllExpensesByUser();
+      await addExpense({
+        category: data.category.value,
+        type: 'expense',
+        cost: data.cost,
+        date: data.date,
+        notes: data.notes,
+      });
+      const userExpenses = await getAllExpensesByUser();
 
-        setExpensesData(userExpenses);
-        setShowModal(false);
+      setExpensesData(userExpenses);
+      setShowModal(false);
+
+      if (plannedExpense < currentExpenseForCategory + data.cost) {
+        showToast({
+          type: 'warning',
+          message: `Plan limit is reached for ${data.category.value} category. Please review your plans and expenses.`,
+        });
       }
     } catch (err) {
       console.log(err);
@@ -137,7 +141,5 @@ export const useExpenses = () => {
     expenses,
     incomes,
     savedFromPreviousMonths,
-    planWarning,
-    setPlanWarning,
   };
 };
