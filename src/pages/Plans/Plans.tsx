@@ -88,34 +88,42 @@ export default function Plans() {
   }, [filteredPlans, filter, plans]);
 
   return (
-    <StyledFlexWrapper direction="column">
-      <StyledFlexWrapper justify="flex-end">
-        <StyledSelect
-          options={plansFilters}
-          styles={customStyles}
-          value={plansFilters.find((el) => el.value === filter)}
-          onChange={(option: unknown) => {
-            if (
-              typeof option === 'object' &&
-              option &&
-              'value' in option &&
-              'label' in option
-            ) {
-              if (typeof option.value === 'string') {
-                setFilter(option.value);
-              }
-            }
-          }}
-        ></StyledSelect>
-      </StyledFlexWrapper>
-
-      <Button onClick={() => setShowModal(true)}>Add Plan</Button>
+    <StyledFlexWrapper
+      direction="column"
+      gap={'1rem'}
+      justify={'center'}
+      align="center"
+    >
       <Modal
         modalContent={<PlansForm />}
         showModal={showModal}
         onClose={() => setShowModal(false)}
       />
-      <StyledFlexWrapper width="100%">
+      <StyledFlexWrapper direction="column" width="80%" gap={'1rem'}>
+        <StyledFlexWrapper justify="space-between">
+          <StyledFlexWrapper width="30%">
+            <Button onClick={() => setShowModal(true)} secondary>
+              Add Plan
+            </Button>
+          </StyledFlexWrapper>
+          <StyledSelect
+            options={plansFilters}
+            styles={customStyles}
+            value={plansFilters.find((el) => el.value === filter)}
+            onChange={(option: unknown) => {
+              if (
+                typeof option === 'object' &&
+                option &&
+                'value' in option &&
+                'label' in option
+              ) {
+                if (typeof option.value === 'string') {
+                  setFilter(option.value);
+                }
+              }
+            }}
+          ></StyledSelect>
+        </StyledFlexWrapper>
         <StyledTable>
           <thead>
             <tr>

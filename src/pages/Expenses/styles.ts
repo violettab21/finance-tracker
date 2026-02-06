@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Button from '../../components/Button/Button';
 import { StyledFlexWrapper } from '../../styled/flex';
+import ExpensesSummary from '../../components/expenses/ExpensesSummary/ExpensesSummary';
 
 export const StyledButtonExpense = styled(Button)`
   display: flex;
@@ -15,6 +16,7 @@ export const StyledExpensesWrapper = styled(StyledFlexWrapper)`
   overflow: auto;
 `;
 
-export const StyledSummaryWrapper = styled(StyledFlexWrapper)`
-  flex-wrap: wrap;
+export const StyledSummaryExpenses = styled(ExpensesSummary)`
+  justify-content: center;
+  align-items: center;
 `;

@@ -10,15 +10,16 @@ import {
   getTotalExpensesPerCategory,
   type ExpenseData,
 } from '../../services/expenses/expenses';
-import { StyledPieWrapper } from './styles';
-import { useContext } from 'react';
+import { StyledChartWrapper, StyledOverviewWrapper } from './styles';
+import { useContext, useMemo } from 'react';
 import { ExpensesContext } from '../../context/expensesContext';
 import { BarChart } from '@mui/x-charts/BarChart';
+import { StyledRow, StyledTableSecondary } from '../../styled/table';
 
 const settings = {
-  margin: { left: 50 },
-  width: 400,
-  height: 400,
+  margin: { left: 10 },
+  width: 300,
+  height: 300,
 };
 
 const chartSetting = {
@@ -28,8 +29,8 @@ const chartSetting = {
       width: 60,
     },
   ],
-  width: 600,
-  height: 400,
+  width: 500,
+  height: 300,
 };
 
 const colorsCategory = [
@@ -73,6 +74,13 @@ export default function Overview() {
     return dataChart;
   };
 
+  const topExpenses = useMemo(() => {
+    const groupedExpensesByCategory = getTotalExpensesPerCategory(expenses);
+    const copy = [...groupedExpensesByCategory];
+    const topFiveExpenses = copy.sort((a, b) => b.cost - a.cost).slice(0, 5);
+    return topFiveExpenses;
+  }, [expensesData, month, year, expenses]);
+
   const prepareDataBars = (data: ExpenseData[]) => {
     const dataChart = getTotalExpensesPerCategory(data).map((el) => {
       const planned = plans.find(
@@ -91,7 +99,7 @@ export default function Overview() {
   };
 
   return (
-    <StyledFlexWrapper direction="column" gap={'1rem'} align="center">
+    <StyledFlexWrapper align="center" direction="column" gap={'1rem'}>
       <StyledFlexWrapper direction="column" gap={'1rem'}>
         <TimePeriodSection
           month={month}
@@ -99,95 +107,123 @@ export default function Overview() {
           year={year}
           setYear={setYear}
         />
-        <ExpensesSummary
-          expenses={getTotalExpenses(expenses)}
-          incomes={getTotalExpenses(incomes)}
-          savedFromPreviousMonths={savedFromPreviousMonths}
-        />
       </StyledFlexWrapper>
-      <StyledPieWrapper direction="column" align="center">
-        <p>Month Expenses</p>
-        <PieChart
-          series={[
-            {
-              innerRadius: 50,
-              outerRadius: 150,
-              data: prepareData(expenses),
-              arcLabel: 'label',
-              arcLabelMinAngle: 35,
-            },
-          ]}
-          sx={{
-            [`& .${pieArcLabelClasses.root}`]: {
-              fill: 'white',
-              fontSize: '20px',
-            },
-          }}
-          {...settings}
-          slotProps={{
-            legend: {
-              direction: 'vertical',
-              position: {
-                vertical: 'middle',
-                horizontal: 'start',
+      <StyledOverviewWrapper>
+        <StyledFlexWrapper width="35%">
+          <StyledFlexWrapper
+            direction="column"
+            height="100%"
+            justify="space-between"
+          >
+            <ExpensesSummary
+              expenses={getTotalExpenses(expenses)}
+              incomes={getTotalExpenses(incomes)}
+              savedFromPreviousMonths={savedFromPreviousMonths}
+            />
+          </StyledFlexWrapper>
+        </StyledFlexWrapper>
+        <StyledChartWrapper direction="column" align="center" width="60%">
+          <p>Total Expanses</p>
+          <BarChart
+            dataset={prepareDataBars(expenses)}
+            xAxis={[
+              {
+                dataKey: 'category',
               },
-              sx: {
-                fontSize: 20,
-                color: 'black',
+            ]}
+            series={[
+              { dataKey: 'real', label: 'Actual' },
+              { dataKey: 'planned', label: 'Planned' },
+            ]}
+            colors={[colorsCategory[0], colorsCategory[1]]}
+            slotProps={{
+              legend: {
+                direction: 'vertical',
+                position: {
+                  vertical: 'middle',
+                  horizontal: 'end',
+                },
+                sx: {
+                  fontSize: 20,
+                  color: 'white',
+                },
               },
-            },
-          }}
-        />
-      </StyledPieWrapper>
-      <StyledFlexWrapper direction="column" align="center">
-        <p>Comparison with planned</p>
-        <BarChart
-          dataset={prepareDataBars(expenses)}
-          xAxis={[{ dataKey: 'category' }]}
-          series={[
-            { dataKey: 'real', label: 'Actual' },
-            { dataKey: 'planned', label: 'Planned' },
-          ]}
-          colors={[colorsCategory[0], colorsCategory[1]]}
-          {...chartSetting}
-        />
-      </StyledFlexWrapper>
-      <StyledPieWrapper direction="column" align="center">
-        <p>All Expenses</p>
-        <PieChart
-          series={[
-            {
-              innerRadius: 50,
-              outerRadius: 150,
-              data: prepareData(
-                expensesData.filter((el) => el.type === 'expense')
-              ),
-              arcLabel: 'label',
-              arcLabelMinAngle: 35,
-            },
-          ]}
-          sx={{
-            [`& .${pieArcLabelClasses.root}`]: {
-              fill: 'white',
-              fontSize: '20px',
-            },
-          }}
-          {...settings}
-          slotProps={{
-            legend: {
-              direction: 'vertical',
-              position: {
-                vertical: 'middle',
-                horizontal: 'start',
+            }}
+            sx={{
+              '& .MuiChartsAxis-left .MuiChartsAxis-tickLabel': {
+                fill: '#e4d9d9',
               },
-              sx: {
-                fontSize: 20,
-                color: 'black',
+              '& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel': {
+                fill: '#e4d9d9',
               },
-            },
-          }}
-        />
-      </StyledPieWrapper>
+              '& .MuiChartsAxis-bottom .MuiChartsAxis-line': {
+                stroke: '#e4d9d9',
+                strokeWidth: 2,
+              },
+              '& .MuiChartsAxis-left .MuiChartsAxis-line': {
+                stroke: '#e4d9d9',
+                strokeWidth: 2,
+              },
+              '.MuiChartsAxis-tick': {
+                stroke: '#e4d9d9',
+              },
+              '.MuiChartsAxis-left .MuiChartsAxis-label': { fill: '#e4d9d9' },
+            }}
+            {...chartSetting}
+          />
+        </StyledChartWrapper>
+        <StyledChartWrapper direction="column" align="center" width="35%">
+          <p>Month Expenses</p>
+          <PieChart
+            series={[
+              {
+                innerRadius: 60,
+                outerRadius: 100,
+                data: prepareData(expenses),
+              },
+            ]}
+            sx={{
+              [`& .${pieArcLabelClasses.root}`]: {
+                fill: 'white',
+                fontSize: '20px',
+              },
+            }}
+            {...settings}
+            slotProps={{
+              legend: {
+                direction: 'vertical',
+                position: {
+                  vertical: 'middle',
+                  horizontal: 'start',
+                },
+                sx: {
+                  fontSize: 18,
+                  color: 'white',
+                },
+              },
+            }}
+          />
+        </StyledChartWrapper>
+        <StyledChartWrapper width="60%" direction="column" align="center">
+          <p>Top 5 Expenses</p>
+          <StyledTableSecondary>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              {topExpenses.map((expense) => (
+                <StyledRow key={expense.category}>
+                  <td>{expense.category}</td>
+                  <td>{expense.cost}</td>
+                </StyledRow>
+              ))}
+            </tbody>
+          </StyledTableSecondary>
+        </StyledChartWrapper>
+      </StyledOverviewWrapper>
     </StyledFlexWrapper>
   );
 }

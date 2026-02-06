@@ -12,9 +12,21 @@ export const StyledTable = styled.table`
   }
 `;
 
+export const StyledTableSecondary = styled.table`
+  border-radius: 8px;
+  width: 100%;
+  border-collapse: collapse;
+  td,
+  th {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #a5a1b35d;
+  }
+`;
+
 export const StyledRow = styled.tr`
   &:hover {
-    background: #3c34585d;
+    background: #a5a1b35d;
     border-radius: 8px;
   }
 `;

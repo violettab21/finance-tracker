@@ -56,7 +56,7 @@ export default function PlanItem({
             declineCallback={() => {
               setIsConfirmationMessageVisible(false);
             }}
-            text="test"
+            text="Are you sure you want to delete selected plan?"
           />
         }
         onClose={() => setIsConfirmationMessageVisible(false)}

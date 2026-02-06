@@ -65,7 +65,7 @@ export default function TimePeriodSection({
     <StyledFlexWrapper
       direction="row"
       gap={'1rem'}
-      align="center"
+      align="stretch"
       justify={'center'}
     >
       <StyledButtonMonth onClick={showPrevMonth}>

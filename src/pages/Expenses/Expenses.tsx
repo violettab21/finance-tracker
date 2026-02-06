@@ -35,19 +35,21 @@ export default function Expenses() {
   const { isExpensesLoading } = useContext(ExpensesContext);
 
   return (
-    <StyledExpensesWrapper direction="column" gap={'1rem'}>
-      <StyledFlexWrapper direction="column" gap={'1rem'}>
+    <StyledExpensesWrapper direction="column" gap={'1rem'} align="center">
+      <StyledFlexWrapper direction="column" gap={'1rem'} align="center">
         <TimePeriodSection
           month={month}
           setMonth={setMonth}
           year={year}
           setYear={setYear}
         />
-        <ExpensesSummary
-          expenses={getTotalExpenses(expenses)}
-          incomes={getTotalExpenses(incomes)}
-          savedFromPreviousMonths={savedFromPreviousMonths}
-        />
+        <StyledFlexWrapper width={'70%'} direction="column" align="center">
+          <ExpensesSummary
+            expenses={getTotalExpenses(expenses)}
+            incomes={getTotalExpenses(incomes)}
+            savedFromPreviousMonths={savedFromPreviousMonths}
+          />
+        </StyledFlexWrapper>
       </StyledFlexWrapper>
       <StyledFlexWrapper width="100%" gap={'10px'}>
         <StyledFlexWrapper width="100%" direction="column" gap={'1rem'}>
