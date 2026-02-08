@@ -2,56 +2,63 @@ import Modal from '../../components/Modal/Modal';
 import ExpenseForm from '../../components/expenses/ExpenseForm/ExpenseForm';
 import ExpensesList from '../../components/expenses/ExpensesList/ExpensesList';
 import { StyledFlexWrapper } from '../../styled/flex';
-import { categories } from '../../components/Select/CustomSelect';
 import { savingCategories } from '../Savings/Savings';
 import { MdAddCircle } from 'react-icons/md';
 import { StyledButtonExpense, StyledExpensesWrapper } from './styles';
 import { MdRemoveCircle } from 'react-icons/md';
 import { useExpenses } from './hooks/useExpenses';
 
-import TimePeriodSection from '../../components/expenses/TimePeriodSection/TimePeriodSection';
+import TimePeriodSection from '../../components/TimePeriodSection/TimePeriodSection';
 import ExpensesSummary from '../../components/expenses/ExpensesSummary/ExpensesSummary';
+import { useContext } from 'react';
+import { ExpensesContext } from '../../context/expensesContext';
+import { getTotalExpenses } from '../../helpers/expenses';
+import { CATEGORIES } from '../../constants/constants';
 
 export default function Expenses() {
   const {
     showModal,
     setShowModal,
-    month,
-    setMonth,
     showModalIncome,
     setShowModalIncome,
-    balance,
-    getTotalExpenses,
     onExpenseCreate,
     onIncomeCreate,
-    isExpensesLoading,
+    month,
+    setMonth,
     year,
     setYear,
-    setAllExpenses,
-    newExpenses,
-    newIncomes,
     savedFromPreviousMonths,
+    expenses,
+    incomes,
   } = useExpenses();
 
+  const { isExpensesLoading } = useContext(ExpensesContext);
+
   return (
-    <StyledExpensesWrapper direction="column" gap={'1rem'}>
-      <StyledFlexWrapper direction="column" gap={'1rem'}>
+    <StyledExpensesWrapper direction="column" gap={'1rem'} align="center">
+      <StyledFlexWrapper direction="column" gap={'1rem'} align="center">
         <TimePeriodSection
           month={month}
+          setMonth={setMonth}
           year={year}
           setYear={setYear}
-          setMonth={setMonth}
         />
-        <ExpensesSummary
-          expenses={getTotalExpenses(newExpenses)}
-          incomes={getTotalExpenses(newIncomes)}
-          balance={balance}
-          saved={savedFromPreviousMonths}
-        />
+        <StyledFlexWrapper width={'70%'} direction="column" align="center">
+          <ExpensesSummary
+            expenses={getTotalExpenses(expenses)}
+            incomes={getTotalExpenses(incomes)}
+            savedFromPreviousMonths={savedFromPreviousMonths}
+          />
+        </StyledFlexWrapper>
       </StyledFlexWrapper>
       <StyledFlexWrapper width="100%" gap={'10px'}>
         <StyledFlexWrapper width="100%" direction="column" gap={'1rem'}>
-          <StyledButtonExpense primary onClick={() => setShowModal(true)}>
+          <StyledButtonExpense
+            primary
+            onClick={() => {
+              setShowModal(true);
+            }}
+          >
             <p>Add Expense</p> <MdRemoveCircle size={30} />
           </StyledButtonExpense>
           <Modal
@@ -59,7 +66,7 @@ export default function Expenses() {
               <ExpenseForm
                 title="Add Expense"
                 onSubmit={onExpenseCreate}
-                categories={categories}
+                categories={CATEGORIES}
                 editedExpense={null}
               />
             }
@@ -67,11 +74,7 @@ export default function Expenses() {
             onClose={() => setShowModal(false)}
           />
 
-          <ExpensesList
-            expenses={newExpenses}
-            setExpenses={setAllExpenses}
-            isLoading={isExpensesLoading}
-          />
+          <ExpensesList expenses={expenses} isLoading={isExpensesLoading} />
         </StyledFlexWrapper>
         <StyledFlexWrapper width="100%" direction="column" gap={'1rem'}>
           <StyledButtonExpense primary onClick={() => setShowModalIncome(true)}>
@@ -90,11 +93,7 @@ export default function Expenses() {
             onClose={() => setShowModalIncome(false)}
           />
 
-          <ExpensesList
-            expenses={newIncomes}
-            setExpenses={setAllExpenses}
-            isLoading={isExpensesLoading}
-          />
+          <ExpensesList expenses={incomes} isLoading={isExpensesLoading} />
         </StyledFlexWrapper>
       </StyledFlexWrapper>
     </StyledExpensesWrapper>

@@ -1,7 +1,7 @@
 import TopNavBar from '../navigation/TopNavBar/TopNavBar';
 import LeftNavBar from '../navigation/LeftNavBar/LeftNavBar';
 import { Outlet } from 'react-router';
-import { StyledLayout, StyledMain } from './styles';
+import { StyledLayout, StyledMain, StyledPageWrapper } from './styles';
 
 export default function Layout() {
   return (
@@ -9,7 +9,9 @@ export default function Layout() {
       <TopNavBar />
       <StyledMain>
         <LeftNavBar />
-        <Outlet />
+        <StyledPageWrapper>
+          <Outlet />
+        </StyledPageWrapper>
       </StyledMain>
     </StyledLayout>
   );

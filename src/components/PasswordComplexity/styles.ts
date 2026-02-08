@@ -16,6 +16,6 @@ export const StyledComplexityBox = styled.div<StyledComplexityBoxProps>`
 `;
 
 export const StyledComplexityText = styled.p`
-  color: ${colors.text};
+  color: ${colors.textLight};
   margin-left: 5px;
 `;

@@ -11,13 +11,6 @@ export const StyledDetailsTable = styled.table`
   width: 100%;
 `;
 
-export const StyledButtonIcon = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: white;
-`;
-
 export const StyledDetailsRow = styled.tr`
   display: flex;
   align-items: center;
@@ -45,11 +38,4 @@ export const StyledButtonsWrapper = styled.td`
 
 export const StyledNotes = styled.td`
   width: 30%;
-`;
-
-export const StyledRow = styled.tr`
-  &:hover {
-    background: #3c34585d;
-    border-radius: 8px;
-  }
 `;

@@ -2,21 +2,18 @@ import {
   getTotalExpensesPerCategory,
   type ExpenseData,
 } from '../../../services/expenses/expenses';
-import { StyledTable } from './styles';
 import ExpenseItem from '../ExpenseItem/ExpenseItem';
-import type { Dispatch, SetStateAction } from 'react';
 import { StyledFlexWrapper } from '../../../styled/flex';
 import Loader from '../../Loader/Loader';
+import { StyledTable } from '../../../styled/table';
 
 interface ExpensesListProps {
   expenses: ExpenseData[];
-  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
   isLoading: boolean;
 }
 
 export default function ExpensesList({
   expenses,
-  setExpenses,
   isLoading,
 }: ExpensesListProps) {
   if (isLoading) {
@@ -40,7 +37,6 @@ export default function ExpensesList({
         <tbody>
           {getTotalExpensesPerCategory(expenses).map((expense) => (
             <ExpenseItem
-              setExpenses={setExpenses}
               key={expense.category}
               expenses={expenses}
               groupedExpense={expense}

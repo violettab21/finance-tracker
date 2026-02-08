@@ -1,69 +1,42 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import {
   addExpense,
   getAllExpensesByUser,
-  type ExpenseData,
 } from '../../../services/expenses/expenses';
 import type { FormDataExpense } from '../../../components/expenses/ExpenseForm/validation';
-import { getTotalExpenses } from '../../../helpers/expenses';
+import { ExpensesContext } from '../../../context/expensesContext';
+import {
+  checkIfPlanReached,
+  getTotalExpenses,
+} from '../../../helpers/expenses';
+import { ToastContext } from '../../../context/toastContext';
 
 export const useExpenses = () => {
   const [showModal, setShowModal] = useState(false);
-  const [allExpenses, setAllExpenses] = useState<ExpenseData[]>([]);
-  const [expenses, setExpenses] = useState<ExpenseData[]>([]);
-  const [isExpensesLoading, setIsExpensesLoading] = useState(true);
   const [month, setMonth] = useState(new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear());
+  const { expensesData, setExpensesData } = useContext(ExpensesContext);
   const [showModalIncome, setShowModalIncome] = useState(false);
+  const { plans } = useContext(ExpensesContext);
+  const { showToast } = useContext(ToastContext);
 
-  const newExpenses = useMemo(() => {
-    return allExpenses.filter(
+  const expenses = useMemo(() => {
+    return expensesData.filter(
       (expense) =>
         expense.type === 'expense' &&
         new Date(expense.date).getMonth() === month &&
         new Date(expense.date).getFullYear() === year
     );
-  }, [allExpenses, month, year]);
+  }, [expensesData, month, year]);
 
-  const newIncomes = useMemo(() => {
-    return allExpenses.filter(
+  const incomes = useMemo(() => {
+    return expensesData.filter(
       (expense) =>
         expense.type === 'income' &&
         new Date(expense.date).getMonth() === month &&
         new Date(expense.date).getFullYear() === year
     );
-  }, [allExpenses, month, year]);
-
-  const balance = useMemo(() => {
-    const totalExpenses = getTotalExpenses(
-      allExpenses.filter((expense) => expense.type === 'expense')
-    );
-    const totalIncomes = getTotalExpenses(
-      allExpenses.filter((expense) => expense.type === 'income')
-    );
-
-    return totalIncomes - totalExpenses;
-  }, [allExpenses]);
-
-  const savedFromPreviousMonths = useMemo(() => {
-    const filteredExpenses = allExpenses.filter(
-      (expense) => expense.type === 'expense'
-    );
-    const filteredIncomes = allExpenses.filter(
-      (expense) => expense.type === 'income'
-    );
-    const filteredExpensesByMonth = filteredExpenses.filter(
-      (expense) => new Date(expense.date) < new Date(year, month, 1)
-    );
-    const filteredIncomesByMonth = filteredIncomes.filter(
-      (expense) => new Date(expense.date) < new Date(year, month, 1)
-    );
-
-    const totalExpenses = getTotalExpenses(filteredExpensesByMonth);
-    const totalIncomes = getTotalExpenses(filteredIncomesByMonth);
-
-    return totalIncomes - totalExpenses;
-  }, [month, year, allExpenses]);
+  }, [expensesData, month, year]);
 
   const onExpenseCreate = async (data: FormDataExpense) => {
     try {
@@ -74,9 +47,14 @@ export const useExpenses = () => {
         date: data.date,
         notes: data.notes,
       });
-      const userExpanses = await getAllExpensesByUser();
-
-      setAllExpenses(userExpanses);
+      const userExpenses = await getAllExpensesByUser();
+      if (checkIfPlanReached(expensesData, plans, null, data)) {
+        showToast({
+          type: 'warning',
+          message: `Plan limit is reached for ${data.category.value} category. Please review your plans and expenses.`,
+        });
+      }
+      setExpensesData(userExpenses);
       setShowModal(false);
     } catch (err) {
       console.log(err);
@@ -94,42 +72,46 @@ export const useExpenses = () => {
       });
       const userExpenses = await getAllExpensesByUser();
 
-      setAllExpenses(userExpenses);
+      setExpensesData(userExpenses);
       setShowModalIncome(false);
     } catch (err) {
       console.log(err);
     }
   };
 
-  useEffect(() => {
-    const getAll = async () => {
-      const expenses1 = await getAllExpensesByUser();
-      setAllExpenses(expenses1);
-      setIsExpensesLoading(false);
-    };
-    void getAll();
-  }, [month, year]);
+  const savedFromPreviousMonths = useMemo(() => {
+    const filteredExpenses = expensesData.filter(
+      (expense) => expense.type === 'expense'
+    );
+    const filteredIncomes = expensesData.filter(
+      (expense) => expense.type === 'income'
+    );
+    const filteredExpensesByMonth = filteredExpenses.filter(
+      (expense) => new Date(expense.date) < new Date(year, month, 1)
+    );
+    const filteredIncomesByMonth = filteredIncomes.filter(
+      (expense) => new Date(expense.date) < new Date(year, month, 1)
+    );
+
+    const totalExpenses = getTotalExpenses(filteredExpensesByMonth);
+    const totalIncomes = getTotalExpenses(filteredIncomesByMonth);
+
+    return totalIncomes - totalExpenses;
+  }, [month, year, expensesData]);
 
   return {
-    isExpensesLoading,
     showModal,
     setShowModal,
-    expenses,
-    month,
     showModalIncome,
     setShowModalIncome,
-    balance,
-    getTotalExpenses,
     onExpenseCreate,
     onIncomeCreate,
-    setExpenses,
+    month,
     setMonth,
     year,
     setYear,
-    allExpenses,
-    newExpenses,
-    newIncomes,
-    setAllExpenses,
+    expenses,
+    incomes,
     savedFromPreviousMonths,
   };
 };

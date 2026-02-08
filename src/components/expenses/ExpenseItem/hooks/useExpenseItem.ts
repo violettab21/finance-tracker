@@ -1,20 +1,24 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   deleteExpense,
   editExpense,
   type ExpenseData,
 } from '../../../../services/expenses/expenses';
 import type { FormDataExpense } from '../../ExpenseForm/validation';
+import { ExpensesContext } from '../../../../context/expensesContext';
+import { ToastContext } from '../../../../context/toastContext';
+import { checkIfPlanReached } from '../../../../helpers/expenses';
 
 export const useExpenseItem = (
   expenses: ExpenseData[],
-  groupedExpense: { category: string; cost: number },
-  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>
+  groupedExpense: { category: string; cost: number }
 ) => {
+  const { expensesData, setExpensesData, plans } = useContext(ExpensesContext);
   const [isDetailsVisible, setIsDetailsVisible] = useState(false);
   const [details, setDetails] = useState<ExpenseData[]>();
   const [isEditVisible, setIsEditVisible] = useState(false);
   const [editItem, setEditItem] = useState<ExpenseData | null>(null);
+  const { showToast } = useContext(ToastContext);
 
   useEffect(() => {
     const getCategoryDetails = () => {
@@ -36,8 +40,13 @@ export const useExpenseItem = (
         date: data.date,
         notes: data.notes,
       });
-
-      setExpenses(userExpenses);
+      if (checkIfPlanReached(expensesData, plans, editItem, data)) {
+        showToast({
+          type: 'warning',
+          message: `Plan limit is reached for ${data.category.value} category. Please review your plans and expenses.`,
+        });
+      }
+      setExpensesData(userExpenses);
       setIsEditVisible(false);
     } catch (err) {
       console.log(err);
@@ -47,7 +56,7 @@ export const useExpenseItem = (
   const onExpenseDelete = async (item: ExpenseData) => {
     try {
       const userExpenses = await deleteExpense(item.id);
-      setExpenses(userExpenses);
+      setExpensesData(userExpenses);
     } catch (err) {
       console.log(err);
     }

@@ -4,13 +4,13 @@ import Password from '../../Input/Password/Password';
 import Button from '../../Button/Button';
 import Separator from '../../Separator/Separator';
 import { StyledForm } from './styles';
-import { useSignIn } from './hooks/useLogin';
+import { useLogin } from './hooks/useLogin';
 import { useAuth } from '../hooks/useAuth';
 import { StyledLinkForm, StyledTitle } from '../styles';
 
 export default function LoginForm() {
   const { onSubmit, register, handleSubmit, errors, isValid, signInError } =
-    useSignIn();
+    useLogin();
 
   const {
     signUpWithGoogle,

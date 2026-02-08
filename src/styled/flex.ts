@@ -8,14 +8,10 @@ type FlexProps = {
     | 'flex-end'
     | 'space-between'
     | 'space-around';
-  align?:
-    | 'center'
-    | 'flex-start'
-    | 'flex-end'
-    | 'space-between'
-    | 'space-around';
+  align?: 'center' | 'flex-start' | 'flex-end' | 'space-around' | 'stretch';
   width?: string;
   gap?: string;
+  height?: string;
 };
 
 export const StyledFlexWrapper = styled.div<FlexProps>`
@@ -25,4 +21,5 @@ export const StyledFlexWrapper = styled.div<FlexProps>`
   align-items: ${(props) => props.align || 'flex-start'};
   width: ${(props) => props.width || '100%'};
   gap: ${(props) => props.gap || '0px'};
+  height: ${(props) => props.height};
 `;

@@ -5,7 +5,7 @@ import { FirebaseError } from 'firebase/app';
 import {
   FIREBASE_AUTH_ERROR_EMAIL_IN_USE,
   FIREBASE_AUTH_ERROR_NETWORK,
-} from '../../../../constants/contants';
+} from '../../../../constants/constants';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ValidationSchema } from '../validation';
 import { useForm } from 'react-hook-form';

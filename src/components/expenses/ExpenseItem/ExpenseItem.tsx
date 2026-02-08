@@ -1,8 +1,6 @@
-import { type Dispatch, type SetStateAction } from 'react';
 import { type ExpenseData } from '../../../services/expenses/expenses';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import {
-  StyledButtonIcon,
   StyledButtonsWrapper,
   StyledControl,
   StyledCost,
@@ -10,27 +8,28 @@ import {
   StyledDetailsRow,
   StyledDetailsTable,
   StyledNotes,
-  StyledRow,
 } from './styles';
 import { MdEdit } from 'react-icons/md';
 import { MdDelete } from 'react-icons/md';
 import Modal from '../../Modal/Modal';
 import ExpenseForm from '../ExpenseForm/ExpenseForm';
-import { categories } from '../../Select/CustomSelect';
-import { savingCategories } from '../../../pages/Savings/Savings';
 import { transformDate } from '../../../helpers/helpers';
 import { useExpenseItem } from './hooks/useExpenseItem';
+import ButtonIcon from '../../ButtonIcon/ButtonIcon';
+import { StyledRow } from '../../../styled/table';
+import { savingCategories } from '../../../pages/Savings/Savings';
+import { useState } from 'react';
+import ConfirmationMessage from '../../Confirmation/ConfirmationMessage';
+import { CATEGORIES } from '../../../constants/constants';
 
 interface ExpenseItemProps {
   expenses: ExpenseData[];
   groupedExpense: { category: string; cost: number };
-  setExpenses: Dispatch<SetStateAction<ExpenseData[]>>;
 }
 
 export default function ExpenseItem({
   expenses,
   groupedExpense,
-  setExpenses,
 }: ExpenseItemProps) {
   const {
     onExpenseUpdate,
@@ -42,7 +41,10 @@ export default function ExpenseItem({
     isEditVisible,
     editItem,
     setIsEditVisible,
-  } = useExpenseItem(expenses, groupedExpense, setExpenses);
+  } = useExpenseItem(expenses, groupedExpense);
+  const [isConfirmationMessageVisible, setIsConfirmationMessageVisible] =
+    useState(false);
+  const [deleteItem, setDeleteItem] = useState<ExpenseData | null>(null);
 
   return (
     <>
@@ -74,16 +76,21 @@ export default function ExpenseItem({
                       <StyledCost>{item.cost}</StyledCost>
                       <StyledNotes>{item?.notes || 'N/A'}</StyledNotes>
                       <StyledButtonsWrapper>
-                        <StyledButtonIcon
+                        <ButtonIcon
                           onClick={() => {
                             openEditModal(item);
                           }}
                         >
                           <MdEdit size={20} />
-                        </StyledButtonIcon>
-                        <StyledButtonIcon onClick={() => onExpenseDelete(item)}>
+                        </ButtonIcon>
+                        <ButtonIcon
+                          onClick={() => {
+                            setIsConfirmationMessageVisible(true);
+                            setDeleteItem(item);
+                          }}
+                        >
                           <MdDelete size={20} />
-                        </StyledButtonIcon>
+                        </ButtonIcon>
                       </StyledButtonsWrapper>
                     </StyledDetailsRow>
                   </>
@@ -100,13 +107,29 @@ export default function ExpenseItem({
             onSubmit={onExpenseUpdate}
             title={'Edit expense'}
             categories={
-              editItem?.type === 'income' ? savingCategories : categories
+              editItem?.type === 'income' ? savingCategories : CATEGORIES
             }
           />
         }
         showModal={isEditVisible}
         onClose={() => setIsEditVisible(false)}
       />
+      {deleteItem && (
+        <Modal
+          modalContent={
+            <ConfirmationMessage
+              confirmCallback={() => {
+                onExpenseDelete(deleteItem);
+                setIsConfirmationMessageVisible(false);
+              }}
+              declineCallback={() => setIsConfirmationMessageVisible(false)}
+              text={`Are you sure you want to delete selected ${deleteItem.type}: ${deleteItem.category} ${deleteItem.cost}?`}
+            />
+          }
+          showModal={isConfirmationMessageVisible}
+          onClose={() => setIsConfirmationMessageVisible(false)}
+        />
+      )}
     </>
   );
 }

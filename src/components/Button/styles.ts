@@ -22,7 +22,8 @@ export const StyledButton = styled.button<StyledProps>`
     `
       background-color: ${colors.secondaryColor};
       color: ${colors.backgroundDark};
-    `} &:hover {
+    `}
+&:hover {
     ${({ $primary }) =>
       $primary &&
       `
