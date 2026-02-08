@@ -2,12 +2,13 @@ import { useContext, useMemo, useState } from 'react';
 import {
   addExpense,
   getAllExpensesByUser,
-  getTotalExpensesPerCategory,
 } from '../../../services/expenses/expenses';
 import type { FormDataExpense } from '../../../components/expenses/ExpenseForm/validation';
 import { ExpensesContext } from '../../../context/expensesContext';
-import { getTotalExpenses } from '../../../helpers/expenses';
-import { months } from '../../../components/TimePeriodSection/TimePeriodSection';
+import {
+  checkIfPlanReached,
+  getTotalExpenses,
+} from '../../../helpers/expenses';
 import { ToastContext } from '../../../context/toastContext';
 
 export const useExpenses = () => {
@@ -39,33 +40,6 @@ export const useExpenses = () => {
 
   const onExpenseCreate = async (data: FormDataExpense) => {
     try {
-      const specificExpenses = expensesData.filter(
-        (expense) =>
-          expense.type === 'expense' &&
-          new Date(expense.date).getMonth() ===
-            new Date(data.date).getMonth() &&
-          new Date(expense.date).getFullYear() ===
-            new Date(data.date).getFullYear()
-      );
-      const groupedExpenses = getTotalExpensesPerCategory(specificExpenses);
-      console.log(groupedExpenses);
-
-      const plannedExpense =
-        plans.find(
-          (plan) =>
-            Number(months.findIndex((month) => plan.month === month.value)) ===
-              new Date(data.date).getMonth() &&
-            Number(plan.year) === new Date(data.date).getFullYear() &&
-            plan.category === data.category.value
-        )?.cost || 0;
-      console.log(plannedExpense);
-
-      const currentExpenseForCategory =
-        groupedExpenses.find(
-          (expense) => expense.category === data.category.value
-        )?.cost || 0;
-      console.log(currentExpenseForCategory);
-
       await addExpense({
         category: data.category.value,
         type: 'expense',
@@ -74,16 +48,14 @@ export const useExpenses = () => {
         notes: data.notes,
       });
       const userExpenses = await getAllExpensesByUser();
-
-      setExpensesData(userExpenses);
-      setShowModal(false);
-
-      if (plannedExpense < currentExpenseForCategory + data.cost) {
+      if (checkIfPlanReached(expensesData, plans, null, data)) {
         showToast({
           type: 'warning',
           message: `Plan limit is reached for ${data.category.value} category. Please review your plans and expenses.`,
         });
       }
+      setExpensesData(userExpenses);
+      setShowModal(false);
     } catch (err) {
       console.log(err);
     }

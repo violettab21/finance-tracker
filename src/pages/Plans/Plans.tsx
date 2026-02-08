@@ -1,21 +1,12 @@
-import { useContext, useMemo, useState } from 'react';
 import Button from '../../components/Button/Button';
 import Modal from '../../components/Modal/Modal';
 import PlansForm from '../../components/plans/PlansForm/PlansForm';
 import { StyledFlexWrapper } from '../../styled/flex';
 import PlanItem from '../../components/plans/PlanItem/PlanItem';
 import { StyledTable } from '../../styled/table';
-import { ExpensesContext } from '../../context/expensesContext';
-import { months } from '../../components/TimePeriodSection/TimePeriodSection';
-import { customStyles } from '../../components/expenses/ExpenseForm/styles';
-import { StyledSelect } from './styles';
-
-const plansFilters = [
-  { value: 'all', label: 'All' },
-  { value: 'past', label: 'Past Plans' },
-  { value: 'current', label: 'Current Plans' },
-  { value: 'future', label: 'Future Plans' },
-];
+import { usePlans } from './hooks/usePlans';
+import Filter from '../../components/plans/Filter/Filter';
+import Loader from '../../components/Loader/Loader';
 
 export interface Plan {
   id: string;
@@ -27,65 +18,17 @@ export interface Plan {
 }
 
 export default function Plans() {
-  const [showModal, setShowModal] = useState(false);
-  const { plans, setPlans } = useContext(ExpensesContext);
-  const [filter, setFilter] = useState<string>('current');
-
-  const filteredPlans = useMemo(() => {
-    let result: Plan[] = [];
-    switch (filter) {
-      case 'all':
-        result = plans.slice();
-        break;
-      case 'past':
-        result = plans.filter((el) => {
-          const monthIndex = months.findIndex(
-            (value) => value.value === el.month
-          );
-          const dateValue = new Date(el.year, monthIndex, 1);
-          return dateValue < new Date() && monthIndex !== new Date().getMonth();
-        });
-        break;
-      case 'current':
-        result = plans.filter((el) => {
-          const monthIndex = months.findIndex(
-            (value) => value.value === el.month
-          );
-          return (
-            monthIndex === new Date().getMonth() &&
-            el.year === new Date().getFullYear()
-          );
-        });
-        break;
-      case 'future':
-        result = plans.filter((el) => {
-          const monthIndex = months.findIndex(
-            (value) => value.value === el.month
-          );
-          const dateValue = new Date(el.year, monthIndex, 1);
-          return dateValue > new Date();
-        });
-        break;
-    }
-    return result;
-  }, [plans, filter]);
-
-  const sortedPlans = useMemo(() => {
-    const copiedPlans = filteredPlans.slice();
-    const formattedPlans = copiedPlans.map((el) => {
-      const monthIndex = months.findIndex((value) => value.value === el.month);
-      const dateValue = new Date(el.year, monthIndex, 1);
-      return {
-        id: el.id,
-        category: el.category,
-        cost: el.cost,
-        month: el.month,
-        year: el.year,
-        date: dateValue,
-      };
-    });
-    return formattedPlans.sort((a, b) => Number(a.date) - Number(b.date));
-  }, [filteredPlans, filter, plans]);
+  const {
+    setPlans,
+    filter,
+    setFilter,
+    showModal,
+    setShowModal,
+    sortedPlans,
+    createPlan,
+    isPlanError,
+    isPlansLoading,
+  } = usePlans();
 
   return (
     <StyledFlexWrapper
@@ -95,7 +38,9 @@ export default function Plans() {
       align="center"
     >
       <Modal
-        modalContent={<PlansForm />}
+        modalContent={
+          <PlansForm onSubmit={createPlan} isPlanError={isPlanError} />
+        }
         showModal={showModal}
         onClose={() => setShowModal(false)}
       />
@@ -106,39 +51,31 @@ export default function Plans() {
               Add Plan
             </Button>
           </StyledFlexWrapper>
-          <StyledSelect
-            options={plansFilters}
-            styles={customStyles}
-            value={plansFilters.find((el) => el.value === filter)}
-            onChange={(option: unknown) => {
-              if (
-                typeof option === 'object' &&
-                option &&
-                'value' in option &&
-                'label' in option
-              ) {
-                if (typeof option.value === 'string') {
-                  setFilter(option.value);
-                }
-              }
-            }}
-          ></StyledSelect>
+          <StyledFlexWrapper width="30%">
+            <Filter filter={filter} setFilter={setFilter} />
+          </StyledFlexWrapper>
         </StyledFlexWrapper>
-        <StyledTable>
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Cost</th>
-              <th>Time Period</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedPlans.map((plan) => (
-              <PlanItem key={plan.id} plan={plan} setPlans={setPlans} />
-            ))}
-          </tbody>
-        </StyledTable>
+        {isPlansLoading ? (
+          <Loader />
+        ) : sortedPlans.length > 0 ? (
+          <StyledTable>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Cost</th>
+                <th>Time Period</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {sortedPlans.map((plan) => (
+                <PlanItem key={plan.id} plan={plan} setPlans={setPlans} />
+              ))}
+            </tbody>
+          </StyledTable>
+        ) : (
+          <p>No plans added</p>
+        )}
       </StyledFlexWrapper>
     </StyledFlexWrapper>
   );

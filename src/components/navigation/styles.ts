@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { colors } from '../../styled/colors';
 
 export const StyledNavLink = styled(Link)`
-  color: ${colors.text};
+  color: ${colors.textLight};
   text-decoration: none;
 `;
 
@@ -11,7 +11,7 @@ export const StyledNavButton = styled.button`
   border: none;
   background: none;
   font-family: 'Poppins', sans-serif;
-  color: ${colors.text};
+  color: ${colors.textLight};
   font-size: 16px;
   cursor: pointer;
 `;

@@ -15,6 +15,7 @@ export default function ExpensesProvider({
 }) {
   const [expensesData, setExpensesData] = useState<ExpenseData[]>([]);
   const [isExpensesLoading, setIsExpensesLoading] = useState(true);
+  const [isPlansLoading, setIsPlansLoading] = useState(true);
   const [plans, setPlans] = useState<Plan[]>([]);
 
   useEffect(() => {
@@ -22,8 +23,10 @@ export default function ExpensesProvider({
       try {
         const plans = await getAllPlansByUser();
         setPlans(plans);
+        setIsPlansLoading(false);
       } catch {
         console.log('error');
+        setIsPlansLoading(false);
       }
     };
     getPlans();
@@ -59,6 +62,7 @@ export default function ExpensesProvider({
         balance,
         plans,
         setPlans,
+        isPlansLoading,
       }}
     >
       {children}

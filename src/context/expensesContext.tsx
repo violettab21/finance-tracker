@@ -10,10 +10,12 @@ export const ExpensesContext = createContext<{
   balance: number;
   plans: Plan[];
   setPlans: Dispatch<SetStateAction<Plan[]>>;
+  isPlansLoading: boolean;
 }>({
   expensesData: [],
   setExpensesData: () => {},
   isExpensesLoading: true,
+  isPlansLoading: true,
   setIsExpensesLoading: () => {},
   balance: 0,
   plans: [],

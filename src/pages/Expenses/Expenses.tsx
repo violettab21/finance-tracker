@@ -2,7 +2,6 @@ import Modal from '../../components/Modal/Modal';
 import ExpenseForm from '../../components/expenses/ExpenseForm/ExpenseForm';
 import ExpensesList from '../../components/expenses/ExpensesList/ExpensesList';
 import { StyledFlexWrapper } from '../../styled/flex';
-import { categories } from '../../components/Select/CustomSelect';
 import { savingCategories } from '../Savings/Savings';
 import { MdAddCircle } from 'react-icons/md';
 import { StyledButtonExpense, StyledExpensesWrapper } from './styles';
@@ -14,6 +13,7 @@ import ExpensesSummary from '../../components/expenses/ExpensesSummary/ExpensesS
 import { useContext } from 'react';
 import { ExpensesContext } from '../../context/expensesContext';
 import { getTotalExpenses } from '../../helpers/expenses';
+import { CATEGORIES } from '../../constants/constants';
 
 export default function Expenses() {
   const {
@@ -66,7 +66,7 @@ export default function Expenses() {
               <ExpenseForm
                 title="Add Expense"
                 onSubmit={onExpenseCreate}
-                categories={categories}
+                categories={CATEGORIES}
                 editedExpense={null}
               />
             }

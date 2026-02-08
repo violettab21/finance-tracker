@@ -1,24 +1,9 @@
 import { StyledFlexWrapper } from '../../styled/flex';
 import { GrNext, GrPrevious } from 'react-icons/gr';
-import { customStyles } from '../expenses/ExpenseForm/styles';
-import Select from 'react-select';
 import { type Dispatch, type SetStateAction } from 'react';
 import { StyledButtonMonth } from './styles';
-
-export const months = [
-  { value: 'January', label: 'January' },
-  { value: 'February', label: 'February' },
-  { value: 'March', label: 'March' },
-  { value: 'April', label: 'April' },
-  { value: 'May', label: 'May' },
-  { value: 'June', label: 'June' },
-  { value: 'July', label: 'July' },
-  { value: 'August', label: 'August' },
-  { value: 'September', label: 'September' },
-  { value: 'October', label: 'October' },
-  { value: 'November', label: 'November' },
-  { value: 'December', label: 'December' },
-];
+import { MONTHS } from '../../constants/constants';
+import CustomSelect from '../Select/CustomSelect';
 
 export default function TimePeriodSection({
   month,
@@ -67,14 +52,14 @@ export default function TimePeriodSection({
       gap={'1rem'}
       align="stretch"
       justify={'center'}
+      width="40%"
     >
       <StyledButtonMonth onClick={showPrevMonth}>
         <GrPrevious size={15} />
       </StyledButtonMonth>
-      <Select
-        options={months}
-        styles={customStyles}
-        value={months[month]}
+      <CustomSelect
+        options={MONTHS}
+        value={MONTHS[month]}
         onChange={(option: unknown) => {
           if (
             typeof option === 'object' &&
@@ -82,16 +67,15 @@ export default function TimePeriodSection({
             'value' in option &&
             'label' in option
           ) {
-            const monthIndex = months.findIndex(
+            const monthIndex = MONTHS.findIndex(
               (object) => object.value === option?.value
             );
             setMonth(monthIndex);
           }
         }}
-      ></Select>
-      <Select
+      />
+      <CustomSelect
         options={years}
-        styles={customStyles}
         value={years.find((yearEl) => yearEl.value === year.toString())}
         onChange={(option: unknown) => {
           if (
@@ -108,7 +92,7 @@ export default function TimePeriodSection({
             }
           }
         }}
-      ></Select>
+      />
       <StyledButtonMonth onClick={showNextMonth}>
         <GrNext size={15} />
       </StyledButtonMonth>

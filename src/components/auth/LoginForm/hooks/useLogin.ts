@@ -8,7 +8,7 @@ import { signIn } from '../../../../services/auth/auth';
 import {
   FIREBASE_AUTH_ERROR_CREDENTIAL,
   FIREBASE_AUTH_ERROR_NETWORK,
-} from '../../../../constants/contants';
+} from '../../../../constants/constants';
 import { FirebaseError } from 'firebase/app';
 
 interface SignInFormInput {
@@ -16,7 +16,7 @@ interface SignInFormInput {
   password: string;
 }
 
-export const useSignIn = () => {
+export const useLogin = () => {
   const navigate = useNavigate();
   const {
     register,

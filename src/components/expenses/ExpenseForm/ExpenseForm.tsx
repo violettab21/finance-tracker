@@ -4,12 +4,12 @@ import Button from '../../Button/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { StyledFlexWrapper } from '../../../styled/flex';
 import { ValidationSchemaExpense, type FormDataExpense } from './validation';
-import { customStyles, StyledSelect, StyledTitle } from './styles';
 
-import { type Option } from '../../Select/CustomSelect';
+import CustomSelect, { type Option } from '../../Select/CustomSelect';
 import { StyledErrorText } from '../../Input/styles';
 import type { ExpenseData } from '../../../services/expenses/expenses';
 import { transformDateForInput } from '../../../helpers/helpers';
+import { StyledModalTitle } from '../../../styled/titles';
 
 interface ExpenseFormProps {
   title: string;
@@ -49,20 +49,19 @@ export default function ExpenseForm({
     <StyledFlexWrapper width="100%" justify="center">
       <form onSubmit={handleSubmit(onSubmit)}>
         <StyledFlexWrapper direction="column" width="100%" gap="10px">
-          <StyledTitle>{title}</StyledTitle>
+          <StyledModalTitle>{title}</StyledModalTitle>
           <StyledFlexWrapper width="100%">
             <Controller
               control={control}
               name="category"
               render={({ field }) => (
-                <StyledSelect
+                <CustomSelect
                   {...field}
                   defaultValue={
                     editedExpense &&
                     categories.find((el) => el.value === editedExpense.category)
                   }
                   options={categories}
-                  styles={customStyles}
                 />
               )}
             />
