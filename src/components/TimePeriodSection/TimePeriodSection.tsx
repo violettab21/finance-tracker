@@ -4,6 +4,7 @@ import { type Dispatch, type SetStateAction } from 'react';
 import { StyledButtonMonth } from './styles';
 import { MONTHS } from '../../constants/constants';
 import CustomSelect from '../Select/CustomSelect';
+import { getMonthIndex } from '../../helpers/helpers';
 
 export default function TimePeriodSection({
   month,
@@ -67,10 +68,10 @@ export default function TimePeriodSection({
             'value' in option &&
             'label' in option
           ) {
-            const monthIndex = MONTHS.findIndex(
-              (object) => object.value === option?.value
-            );
-            setMonth(monthIndex);
+            if (option?.value && typeof option?.value === 'string') {
+              const monthIndex = getMonthIndex(option.value);
+              setMonth(monthIndex);
+            }
           }
         }}
       />

@@ -4,6 +4,20 @@ export const FIREBASE_AUTH_ERROR_NETWORK = 'auth/network-request-failed';
 export const FIREBASE_AUTH_ERROR_CREDENTIAL = 'auth/invalid-credential';
 export const FIREBASE_AUTH_ERROR_EMAIL_IN_USE = 'auth/email-already-in-use';
 
+export const GENERIC_ERROR_TEXT =
+  'Something went wrong. Please try again later';
+
+export const DATA_ERROR_TEXT = 'Unable to get data. Please try again later';
+
+export const NETWORK_ERROR_TEXT =
+  'Network Error, please check your internet connection and try again';
+
+export const LOG_OUT_SUCCESS_TEXT = 'You are logged out';
+export const LOG_OUT_ERROR = 'Unable to log you out. Please try again later';
+
+export const EMAIL_IN_USE_TEXT = 'Email is already in use';
+export const INVALID_CREDENTIAL_TEXT = 'Incorrect email or password';
+
 export const CATEGORIES: Option[] = [
   { value: 'Home', label: 'Home' },
   { value: 'Food', label: 'Food' },

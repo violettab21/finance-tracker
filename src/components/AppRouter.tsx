@@ -6,17 +6,17 @@ import { AuthContext } from '../context/authContext';
 import Layout from './Layout/Layout';
 
 export default function AppRouter() {
-  const authState = useContext(AuthContext);
-  console.log(authState);
+  const { userData } = useContext(AuthContext);
   return (
     <Routes>
       <Route element={<Layout />}>
-        {publicRoutes.map((route) => (
-          <Route key={route.path} path={route.path} element={route.page} />
-        ))}
-        {privateRoutes.map((route) => (
-          <Route key={route.path} path={route.path} element={route.page} />
-        ))}
+        {userData
+          ? publicRoutes.map((route) => (
+              <Route key={route.path} path={route.path} element={route.page} />
+            ))
+          : privateRoutes.map((route) => (
+              <Route key={route.path} path={route.path} element={route.page} />
+            ))}
         <Route path="/*" element={<NotFoundPage />} />
       </Route>
     </Routes>

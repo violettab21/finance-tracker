@@ -56,8 +56,8 @@ export const useExpenses = () => {
       }
       setExpensesData(userExpenses);
       setShowModal(false);
-    } catch (err) {
-      console.log(err);
+    } catch {
+      showToast({ type: 'error', message: 'Error occurred during creation' });
     }
   };
 
@@ -74,8 +74,8 @@ export const useExpenses = () => {
 
       setExpensesData(userExpenses);
       setShowModalIncome(false);
-    } catch (err) {
-      console.log(err);
+    } catch {
+      showToast({ type: 'error', message: 'Error occurred during creation' });
     }
   };
 

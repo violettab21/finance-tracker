@@ -3,10 +3,8 @@ import {
   collection,
   deleteDoc,
   doc,
-  getAggregateFromServer,
   getDocs,
   query,
-  sum,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -56,7 +54,6 @@ export async function getExpensesByUser(type: 'income' | 'expense') {
       notes: doc.data().notes,
     };
   });
-  console.log(expenses);
   return expenses;
 }
 
@@ -84,20 +81,6 @@ export async function getAllExpensesByUser() {
   return expenses;
 }
 
-export async function getTotalByCategory(category: string) {
-  const currentUser = auth.currentUser?.uid;
-  const q = query(
-    collection(db, 'expenses'),
-    where('userUID', '==', currentUser),
-    where('category', '==', category)
-  );
-  const snapshot = await getAggregateFromServer(q, {
-    totalCost: sum('cost'),
-  });
-
-  console.log('totalCost: ', snapshot.data().totalCost);
-}
-
 export function getTotalExpensesPerCategory(expenses: ExpenseData[]) {
   const categories: Map<string, number> = new Map();
   expenses.forEach((expense) => {
@@ -108,8 +91,7 @@ export function getTotalExpensesPerCategory(expenses: ExpenseData[]) {
       categories.set(expense.category, currentCost + expense.cost);
     }
   });
-  console.log('sum');
-  console.log(categories);
+
   const categoriesArray: { category: string; cost: number }[] = [];
   categories.forEach((value, key) =>
     categoriesArray.push({ category: key, cost: value })

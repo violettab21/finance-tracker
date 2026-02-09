@@ -5,8 +5,8 @@ import {
 } from '../../services/expenses/expenses';
 import { useContext } from 'react';
 import { ExpensesContext } from '../../context/expensesContext';
-import { MONTHS } from '../../constants/constants';
 import { colors } from '../../styled/colors';
+import { getMonthIndex } from '../../helpers/helpers';
 
 const chartSetting = {
   yAxis: [
@@ -39,7 +39,7 @@ export default function BarChartExpenses({
       const planned = plans.find(
         (plan) =>
           plan.category === el.category &&
-          MONTHS.findIndex((object) => object.value === plan.month) === month &&
+          getMonthIndex(plan.month) === month &&
           plan.year === year
       );
       return {

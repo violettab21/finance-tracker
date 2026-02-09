@@ -8,8 +8,12 @@ import { signIn } from '../../../../services/auth/auth';
 import {
   FIREBASE_AUTH_ERROR_CREDENTIAL,
   FIREBASE_AUTH_ERROR_NETWORK,
+  GENERIC_ERROR_TEXT,
+  INVALID_CREDENTIAL_TEXT,
+  NETWORK_ERROR_TEXT,
 } from '../../../../constants/constants';
 import { FirebaseError } from 'firebase/app';
+import { EXPENSES_ROUTE } from '../../../../routes/routes';
 
 interface SignInFormInput {
   email: string;
@@ -30,20 +34,20 @@ export const useLogin = () => {
   const onSubmit = async (data: SignInFormInput) => {
     try {
       await signIn(data);
-      navigate('/finance-tracker');
+      navigate(EXPENSES_ROUTE);
     } catch (error) {
       if (
         error instanceof FirebaseError &&
         error.code === FIREBASE_AUTH_ERROR_CREDENTIAL
       ) {
-        setSignInError('Email is not correct');
+        setSignInError(INVALID_CREDENTIAL_TEXT);
       } else if (
         error instanceof FirebaseError &&
         error.code === FIREBASE_AUTH_ERROR_NETWORK
       ) {
-        setSignInError('Network error. Check Internet connection');
+        setSignInError(NETWORK_ERROR_TEXT);
       } else {
-        setSignInError('Something went wrong. Try again later');
+        setSignInError(GENERIC_ERROR_TEXT);
       }
     }
   };

@@ -1,12 +1,18 @@
 import type { Plan } from '../../../pages/Plans/Plans';
 import { MdDelete } from 'react-icons/md';
-import { useState, type Dispatch, type SetStateAction } from 'react';
+import {
+  useContext,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
 import { deletePlan } from '../../../services/plans/plans';
 import ButtonIcon from '../../ButtonIcon/ButtonIcon';
 import { StyledRow } from '../../../styled/table';
 import Modal from '../../Modal/Modal';
 import ConfirmationMessage from '../../Confirmation/ConfirmationMessage';
 import { addCommasToNumber } from '../../../helpers/helpers';
+import { ToastContext } from '../../../context/toastContext';
 
 export default function PlanItem({
   plan,
@@ -17,13 +23,14 @@ export default function PlanItem({
 }) {
   const [isConfirmationMessageVisible, setIsConfirmationMessageVisible] =
     useState(false);
+  const { showToast } = useContext(ToastContext);
 
   const onDeletePlan = async (id: string) => {
     try {
       const newPlans = await deletePlan(id);
       setPlans(newPlans);
-    } catch (err) {
-      console.log(err);
+    } catch {
+      showToast({ type: 'error', message: 'Error occurred during delete' });
     }
   };
 

@@ -48,8 +48,8 @@ export const useExpenseItem = (
       }
       setExpensesData(userExpenses);
       setIsEditVisible(false);
-    } catch (err) {
-      console.log(err);
+    } catch {
+      showToast({ type: 'error', message: 'Error occurred during update' });
     }
   };
 
@@ -57,8 +57,8 @@ export const useExpenseItem = (
     try {
       const userExpenses = await deleteExpense(item.id);
       setExpensesData(userExpenses);
-    } catch (err) {
-      console.log(err);
+    } catch {
+      showToast({ type: 'error', message: 'Error occurred during delete' });
     }
   };
 
