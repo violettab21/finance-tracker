@@ -21,6 +21,11 @@ export const CATEGORIES: Option[] = [
   { value: 'Cloth', label: 'Cloth' },
 ];
 
+export const savingCategories: Option[] = [
+  { value: 'Salary', label: 'Salary' },
+  { value: 'Savings', label: 'Savings' },
+];
+
 export const PLAN_FILTERS: Option[] = [
   { value: 'all', label: 'All' },
   { value: 'past', label: 'Past Plans' },

@@ -11,6 +11,7 @@ import {
   where,
 } from 'firebase/firestore';
 import { auth, db } from '../../firebase-config';
+import { getMonthName } from '../../helpers/helpers';
 
 export interface ExpenseData {
   id: string;
@@ -179,4 +180,38 @@ export async function editExpense(updatedExpenseData: ExpenseData) {
 
   const updatedExpenses = await getAllExpensesByUser();
   return updatedExpenses;
+}
+
+export function getTotalSavingPerDate(expenses: ExpenseData[]) {
+  const dates: Map<string, number> = new Map();
+  expenses.forEach((expense) => {
+    const dateHash = `${new Date(expense.date).getMonth()}-${new Date(expense.date).getFullYear()}`;
+    if (!dates.has(dateHash)) {
+      dates.set(
+        dateHash,
+        expense.type === 'income' ? expense.cost : -expense.cost
+      );
+    } else {
+      const currentSaved: number = dates.get(dateHash) as number;
+      dates.set(
+        dateHash,
+        expense.type === 'income'
+          ? currentSaved + expense.cost
+          : currentSaved - expense.cost
+      );
+    }
+  });
+  console.log('saved sum');
+  console.log(dates);
+  const datesArray: { year: string; saved: number; month: string }[] = [];
+
+  dates.forEach((value, key) =>
+    datesArray.push({
+      year: key.split('-')[1],
+      month: getMonthName(Number(key.split('-')[0])),
+      saved: value,
+    })
+  );
+
+  return datesArray;
 }

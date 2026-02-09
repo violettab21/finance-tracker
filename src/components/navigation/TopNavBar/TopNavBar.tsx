@@ -15,7 +15,9 @@ export default function TopNavBar() {
       <StyledTopNavbarList>
         {userData.userToken ? (
           <>
-            <li>Profile</li>
+            <li>
+              <StyledNavLink to="/profile">Profile</StyledNavLink>
+            </li>
             <li>
               <StyledNavButton onClick={signOut}>Log out</StyledNavButton>
             </li>

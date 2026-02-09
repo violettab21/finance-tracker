@@ -17,10 +17,9 @@ import { transformDate } from '../../../helpers/helpers';
 import { useExpenseItem } from './hooks/useExpenseItem';
 import ButtonIcon from '../../ButtonIcon/ButtonIcon';
 import { StyledRow } from '../../../styled/table';
-import { savingCategories } from '../../../pages/Savings/Savings';
 import { useState } from 'react';
 import ConfirmationMessage from '../../Confirmation/ConfirmationMessage';
-import { CATEGORIES } from '../../../constants/constants';
+import { CATEGORIES, savingCategories } from '../../../constants/constants';
 
 interface ExpenseItemProps {
   expenses: ExpenseData[];

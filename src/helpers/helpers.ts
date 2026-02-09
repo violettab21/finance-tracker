@@ -1,3 +1,5 @@
+import { MONTHS } from '../constants/constants';
+
 export function transformDateForInput(initialDate: string) {
   const dateObject = new Date(initialDate);
 
@@ -15,4 +17,8 @@ export function transformDate(date: string) {
     day: '2-digit',
   }).format(dateObject);
   return transformedDate;
+}
+
+export function getMonthName(dateNumber: number) {
+  return MONTHS[dateNumber].label;
 }
