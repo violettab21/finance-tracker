@@ -13,7 +13,7 @@ import { MdEdit } from 'react-icons/md';
 import { MdDelete } from 'react-icons/md';
 import Modal from '../../Modal/Modal';
 import ExpenseForm from '../ExpenseForm/ExpenseForm';
-import { transformDate } from '../../../helpers/helpers';
+import { addCommasToNumber, transformDate } from '../../../helpers/helpers';
 import { useExpenseItem } from './hooks/useExpenseItem';
 import ButtonIcon from '../../ButtonIcon/ButtonIcon';
 import { StyledRow } from '../../../styled/table';
@@ -61,7 +61,7 @@ export default function ExpenseItem({
           </StyledControl>
         </td>
         <td>{groupedExpense.category}</td>
-        <td>{groupedExpense.cost}</td>
+        <td>{addCommasToNumber(groupedExpense.cost)}</td>
       </StyledRow>
       {isDetailsVisible && (
         <tr>
@@ -72,7 +72,7 @@ export default function ExpenseItem({
                   <>
                     <StyledDetailsRow key={item.id}>
                       <StyledDate>{transformDate(item.date)}</StyledDate>
-                      <StyledCost>{item.cost}</StyledCost>
+                      <StyledCost>{addCommasToNumber(item.cost)}</StyledCost>
                       <StyledNotes>{item?.notes || 'N/A'}</StyledNotes>
                       <StyledButtonsWrapper>
                         <ButtonIcon

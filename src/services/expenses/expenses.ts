@@ -184,6 +184,7 @@ export async function editExpense(updatedExpenseData: ExpenseData) {
 
 export function getTotalSavingPerDate(expenses: ExpenseData[]) {
   const dates: Map<string, number> = new Map();
+  expenses.sort((a, b) => Number(new Date(a.date)) - Number(new Date(b.date)));
   expenses.forEach((expense) => {
     const dateHash = `${new Date(expense.date).getMonth()}-${new Date(expense.date).getFullYear()}`;
     if (!dates.has(dateHash)) {
@@ -201,8 +202,7 @@ export function getTotalSavingPerDate(expenses: ExpenseData[]) {
       );
     }
   });
-  console.log('saved sum');
-  console.log(dates);
+
   const datesArray: { year: string; saved: number; month: string }[] = [];
 
   dates.forEach((value, key) =>

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { StyledSummary } from './styles';
+import { addCommasToNumber } from '../../../helpers/helpers';
 
 interface ExpenseCardProps {
   text: string;
@@ -13,7 +14,7 @@ export default function ExpenseCard({ text, value, icon }: ExpenseCardProps) {
       {icon}
       <div>
         <p>{text}</p>
-        <p>{value}</p>
+        <p>{addCommasToNumber(value)}</p>
       </div>
     </StyledSummary>
   );

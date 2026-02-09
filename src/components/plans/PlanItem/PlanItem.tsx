@@ -6,6 +6,7 @@ import ButtonIcon from '../../ButtonIcon/ButtonIcon';
 import { StyledRow } from '../../../styled/table';
 import Modal from '../../Modal/Modal';
 import ConfirmationMessage from '../../Confirmation/ConfirmationMessage';
+import { addCommasToNumber } from '../../../helpers/helpers';
 
 export default function PlanItem({
   plan,
@@ -30,7 +31,7 @@ export default function PlanItem({
     <>
       <StyledRow key={plan.category}>
         <td>{plan.category}</td>
-        <td>{plan.cost}</td>
+        <td>{addCommasToNumber(plan.cost)}</td>
         <td>
           {plan.month} {plan.year}
         </td>

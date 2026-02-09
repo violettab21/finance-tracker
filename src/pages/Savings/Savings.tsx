@@ -8,9 +8,11 @@ import ExpenseCard from '../../components/expenses/ExpensesSummary/ExpenseCard';
 import { IoIosWallet } from 'react-icons/io';
 import { FaMoneyBillTrendUp } from 'react-icons/fa6';
 import { StyledSavedTableWrapper, StyledSavingSummary } from './styles';
+import Loader from '../../components/Loader/Loader';
+import { addCommasToNumber } from '../../helpers/helpers';
 
 export default function Savings() {
-  const { expensesData } = useContext(ExpensesContext);
+  const { expensesData, isExpensesLoading } = useContext(ExpensesContext);
 
   const savedPerMonths = useMemo(() => {
     return getTotalSavingPerDate(expensesData);
@@ -28,18 +30,20 @@ export default function Savings() {
     }
   }, [savedPerMonths, totalSaved]);
 
+  if (isExpensesLoading) return <Loader />;
+
   return (
     <StyledFlexWrapper width="100%" direction="column" gap={'1rem'}>
       <StyledSavingSummary justify="center">
         <ExpenseCard
           text={'You total saved'}
           value={totalSaved}
-          icon={<IoIosWallet />}
+          icon={<IoIosWallet size={30} />}
         />
         <ExpenseCard
           text={'Month average'}
           value={average}
-          icon={<FaMoneyBillTrendUp />}
+          icon={<FaMoneyBillTrendUp size={30} />}
         />
       </StyledSavingSummary>
       <StyledSavedTableWrapper direction="column">
@@ -54,7 +58,7 @@ export default function Savings() {
           <tbody>
             {savedPerMonths.map((saving) => (
               <StyledRow key={saving.month + saving.year}>
-                <td>{saving.saved}</td>
+                <td>{addCommasToNumber(saving.saved)}</td>
                 <td>
                   {saving.month} {saving.year}
                 </td>

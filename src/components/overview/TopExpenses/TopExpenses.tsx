@@ -4,6 +4,7 @@ import {
   getTotalExpensesPerCategory,
   type ExpenseData,
 } from '../../../services/expenses/expenses';
+import { addCommasToNumber } from '../../../helpers/helpers';
 
 export default function TopExpenses({
   expenses,
@@ -33,7 +34,7 @@ export default function TopExpenses({
         {topExpenses.map((expense) => (
           <StyledRow key={expense.category}>
             <td>{expense.category}</td>
-            <td>{expense.cost}</td>
+            <td>{addCommasToNumber(expense.cost)}</td>
           </StyledRow>
         ))}
       </tbody>

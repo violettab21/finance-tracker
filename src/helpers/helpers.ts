@@ -22,3 +22,12 @@ export function transformDate(date: string) {
 export function getMonthName(dateNumber: number) {
   return MONTHS[dateNumber].label;
 }
+
+export function getMonthIndex(monthName: string) {
+  const monthIndex = MONTHS.findIndex((value) => value.value === monthName);
+  return monthIndex;
+}
+
+export function addCommasToNumber(value: number) {
+  return new Intl.NumberFormat('en-US').format(value);
+}
