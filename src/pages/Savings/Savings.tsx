@@ -1,91 +1,72 @@
-import { useEffect, useState } from 'react';
-import { type Option } from '../../components/Select/CustomSelect';
-import {
-  addExpense,
-  getExpensesByUser,
-  type ExpenseData,
-} from '../../services/expenses/expenses';
+import { useContext, useMemo } from 'react';
+import { getTotalSavingPerDate } from '../../services/expenses/expenses';
 import { StyledFlexWrapper } from '../../styled/flex';
-import Button from '../../components/Button/Button';
-import Modal from '../../components/Modal/Modal';
-import ExpenseForm from '../../components/expenses/ExpenseForm/ExpenseForm';
-import type { FormDataExpense } from '../../components/expenses/ExpenseForm/validation';
-import { StyledTable } from '../../styled/table';
+import { StyledRow, StyledTableSecondary } from '../../styled/table';
+import { ExpensesContext } from '../../context/expensesContext';
+import ExpenseCard from '../../components/expenses/ExpensesSummary/ExpenseCard';
 
-export const savingCategories: Option[] = [
-  { value: 'Salary', label: 'Salary' },
-  { value: 'Savings', label: 'Savings' },
-];
+import { IoIosWallet } from 'react-icons/io';
+import { FaMoneyBillTrendUp } from 'react-icons/fa6';
+import { StyledSavedTableWrapper, StyledSavingSummary } from './styles';
+import Loader from '../../components/Loader/Loader';
+import { addCommasToNumber } from '../../helpers/helpers';
 
 export default function Savings() {
-  const [showModal, setShowModal] = useState(false);
-  const [savings, setSavings] = useState<ExpenseData[]>([]);
+  const { expensesData, isExpensesLoading } = useContext(ExpensesContext);
 
-  const onSavingCreate = async (data: FormDataExpense) => {
-    console.log(data);
-    try {
-      await addExpense({
-        category: data.category.value,
-        type: 'income',
-        cost: data.cost,
-        date: data.date,
-        notes: data.notes,
-      });
-      const userIncomes = await getExpensesByUser('income');
+  const savedPerMonths = useMemo(() => {
+    return getTotalSavingPerDate(expensesData);
+  }, [expensesData]);
 
-      setSavings(userIncomes);
-      setShowModal(false);
-    } catch (err) {
-      console.log(err);
+  const totalSaved = useMemo(() => {
+    return savedPerMonths.reduce((prev, current) => current.saved + prev, 0);
+  }, [savedPerMonths]);
+
+  const average = useMemo(() => {
+    if (savedPerMonths.length > 0) {
+      return Math.round(totalSaved / savedPerMonths.length);
+    } else {
+      return 0;
     }
-  };
+  }, [savedPerMonths, totalSaved]);
 
-  useEffect(() => {
-    getExpensesByUser('income')
-      .then((result) =>
-        setSavings(result.filter((el) => el.category === 'Savings'))
-      )
-      .catch((err) => console.log(err));
-  }, []);
+  if (isExpensesLoading) return <Loader />;
 
   return (
-    <StyledFlexWrapper width="100%" direction="column">
-      <Button primary onClick={() => setShowModal(true)}>
-        Add Saving
-      </Button>
-      <Modal
-        modalContent={
-          <ExpenseForm
-            title="Add Saving"
-            onSubmit={onSavingCreate}
-            categories={savingCategories.filter((el) => el.value === 'Savings')}
-            editedExpense={null}
-          />
-        }
-        showModal={showModal}
-        onClose={() => setShowModal(false)}
-      />
-      <StyledFlexWrapper width={'100%'}>
-        {' '}
-        <StyledTable>
+    <StyledFlexWrapper width="100%" direction="column" gap={'1rem'}>
+      <StyledSavingSummary justify="center">
+        <ExpenseCard
+          text={'You total saved'}
+          value={totalSaved}
+          icon={<IoIosWallet size={30} />}
+        />
+        <ExpenseCard
+          text={'Month average'}
+          value={average}
+          icon={<FaMoneyBillTrendUp size={30} />}
+        />
+      </StyledSavingSummary>
+      <StyledSavedTableWrapper direction="column">
+        <p>Check how much money you saved per month:</p>
+        <StyledTableSecondary>
           <thead>
             <tr>
-              <td>Cost</td>
-              <td>Date</td>
-              <td>Notes</td>
+              <th>Saved</th>
+              <th>Period</th>
             </tr>
           </thead>
           <tbody>
-            {savings.map((saving) => (
-              <tr key={saving.id}>
-                <td>{saving.cost}</td>
-                <td>{saving.date}</td>
-                <td>{saving.notes ? saving.notes : 'N/A'}</td>
-              </tr>
+            {savedPerMonths.map((saving) => (
+              <StyledRow key={saving.month + saving.year}>
+                <td>{addCommasToNumber(saving.saved)}</td>
+                <td>
+                  {saving.month} {saving.year}
+                </td>
+              </StyledRow>
             ))}
           </tbody>
-        </StyledTable>
-      </StyledFlexWrapper>
+        </StyledTableSecondary>
+      </StyledSavedTableWrapper>
     </StyledFlexWrapper>
   );
 }

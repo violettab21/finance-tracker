@@ -36,4 +36,5 @@ export const colors = {
     planned: '#8778c7',
     actual: '#3f346d',
   },
+  tableBackground: '#737388',
 };

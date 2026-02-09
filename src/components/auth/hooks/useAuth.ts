@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router';
 import { FirebaseError } from 'firebase/app';
 import { AuthContext } from '../../../context/authContext';
 import { SignInWithGoogle } from '../../../services/auth/auth';
+import { GENERIC_ERROR_TEXT } from '../../../constants/constants';
+import { EXPENSES_ROUTE } from '../../../routes/routes';
 
 export const useAuth = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -20,12 +22,12 @@ export const useAuth = () => {
       const userToken = await user.getIdToken();
       setCookie('user', userToken);
       setUserData({ userToken, userName: user.displayName });
-      navigate('/finance-tracker');
+      navigate(EXPENSES_ROUTE);
     } catch (error) {
       if (error instanceof FirebaseError) {
-        console.log(error.code);
+        setGoogleSignInError('Unable to login');
       } else {
-        setGoogleSignInError('Something went wrong. Try again later');
+        setGoogleSignInError(GENERIC_ERROR_TEXT);
       }
     }
   };

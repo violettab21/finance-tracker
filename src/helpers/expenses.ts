@@ -1,10 +1,10 @@
 import type { FormDataExpense } from '../components/expenses/ExpenseForm/validation';
-import { MONTHS } from '../constants/constants';
 import type { Plan } from '../pages/Plans/Plans';
 import {
   getTotalExpensesPerCategory,
   type ExpenseData,
 } from '../services/expenses/expenses';
+import { getMonthIndex } from './helpers';
 
 export function getTotalExpenses(expenses: ExpenseData[]) {
   const sum = expenses.reduce(
@@ -30,8 +30,7 @@ export function checkIfPlanReached(
   const plannedExpense =
     fullPLans.find(
       (plan) =>
-        Number(MONTHS.findIndex((month) => plan.month === month.value)) ===
-          new Date(data.date).getMonth() &&
+        Number(getMonthIndex(plan.month)) === new Date(data.date).getMonth() &&
         Number(plan.year) === new Date(data.date).getFullYear() &&
         plan.category === data.category.value
     )?.cost || null;

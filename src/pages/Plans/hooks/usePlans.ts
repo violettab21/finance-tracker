@@ -1,15 +1,17 @@
 import { useContext, useMemo, useState } from 'react';
 import { ExpensesContext } from '../../../context/expensesContext';
 import type { Plan } from '../Plans';
-import { MONTHS } from '../../../constants/constants';
 import type { FormDataPlan } from '../../../components/plans/PlansForm/validation';
 import { addPlan } from '../../../services/plans/plans';
+import { getMonthIndex } from '../../../helpers/helpers';
+import { ToastContext } from '../../../context/toastContext';
 
 export const usePlans = () => {
   const [showModal, setShowModal] = useState(false);
   const { plans, setPlans, isPlansLoading } = useContext(ExpensesContext);
   const [filter, setFilter] = useState<string>('current');
   const [isPlanError, setIsPlanError] = useState<string | null>(null);
+  const { showToast } = useContext(ToastContext);
 
   const filteredPlans = useMemo(() => {
     let result: Plan[] = [];
@@ -19,18 +21,14 @@ export const usePlans = () => {
         break;
       case 'past':
         result = plans.filter((el) => {
-          const monthIndex = MONTHS.findIndex(
-            (value) => value.value === el.month
-          );
+          const monthIndex = getMonthIndex(el.month);
           const dateValue = new Date(el.year, monthIndex, 1);
           return dateValue < new Date() && monthIndex !== new Date().getMonth();
         });
         break;
       case 'current':
         result = plans.filter((el) => {
-          const monthIndex = MONTHS.findIndex(
-            (value) => value.value === el.month
-          );
+          const monthIndex = getMonthIndex(el.month);
           return (
             monthIndex === new Date().getMonth() &&
             el.year === new Date().getFullYear()
@@ -39,9 +37,7 @@ export const usePlans = () => {
         break;
       case 'future':
         result = plans.filter((el) => {
-          const monthIndex = MONTHS.findIndex(
-            (value) => value.value === el.month
-          );
+          const monthIndex = getMonthIndex(el.month);
           const dateValue = new Date(el.year, monthIndex, 1);
           return dateValue > new Date();
         });
@@ -53,7 +49,7 @@ export const usePlans = () => {
   const sortedPlans = useMemo(() => {
     const copiedPlans = filteredPlans.slice();
     const formattedPlans = copiedPlans.map((el) => {
-      const monthIndex = MONTHS.findIndex((value) => value.value === el.month);
+      const monthIndex = getMonthIndex(el.month);
       const dateValue = new Date(el.year, monthIndex, 1);
       return {
         id: el.id,
@@ -93,8 +89,8 @@ export const usePlans = () => {
         setPlans(updatedPlans);
         setShowModal(false);
       }
-    } catch (err) {
-      console.log(err);
+    } catch {
+      showToast({ type: 'error', message: 'Error occurred during creation' });
     }
   };
 

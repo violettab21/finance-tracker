@@ -11,15 +11,4 @@ export const StyledLeftNavBar = styled.div`
   ul {
     list-style-type: none;
   }
-
-  li {
-    padding: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease-out;
-  }
-
-  li:hover {
-    background-color: #7979884d;
-    border-radius: 8px;
-  }
 `;

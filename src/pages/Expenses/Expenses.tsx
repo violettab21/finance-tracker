@@ -2,7 +2,6 @@ import Modal from '../../components/Modal/Modal';
 import ExpenseForm from '../../components/expenses/ExpenseForm/ExpenseForm';
 import ExpensesList from '../../components/expenses/ExpensesList/ExpensesList';
 import { StyledFlexWrapper } from '../../styled/flex';
-import { savingCategories } from '../Savings/Savings';
 import { MdAddCircle } from 'react-icons/md';
 import { StyledButtonExpense, StyledExpensesWrapper } from './styles';
 import { MdRemoveCircle } from 'react-icons/md';
@@ -13,7 +12,7 @@ import ExpensesSummary from '../../components/expenses/ExpensesSummary/ExpensesS
 import { useContext } from 'react';
 import { ExpensesContext } from '../../context/expensesContext';
 import { getTotalExpenses } from '../../helpers/expenses';
-import { CATEGORIES } from '../../constants/constants';
+import { CATEGORIES, savingCategories } from '../../constants/constants';
 
 export default function Expenses() {
   const {

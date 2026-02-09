@@ -1,3 +1,5 @@
+import { MONTHS } from '../constants/constants';
+
 export function transformDateForInput(initialDate: string) {
   const dateObject = new Date(initialDate);
 
@@ -15,4 +17,17 @@ export function transformDate(date: string) {
     day: '2-digit',
   }).format(dateObject);
   return transformedDate;
+}
+
+export function getMonthName(dateNumber: number) {
+  return MONTHS[dateNumber].label;
+}
+
+export function getMonthIndex(monthName: string) {
+  const monthIndex = MONTHS.findIndex((value) => value.value === monthName);
+  return monthIndex;
+}
+
+export function addCommasToNumber(value: number) {
+  return new Intl.NumberFormat('en-US').format(value);
 }

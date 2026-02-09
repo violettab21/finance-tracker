@@ -7,6 +7,10 @@ export const ExpensesContext = createContext<{
   setExpensesData: Dispatch<SetStateAction<ExpenseData[]>>;
   isExpensesLoading: boolean;
   setIsExpensesLoading: Dispatch<SetStateAction<boolean>>;
+  expansesError: string | null;
+  setExpansesError: Dispatch<SetStateAction<string | null>>;
+  plansError: string | null;
+  setPlansError: Dispatch<SetStateAction<string | null>>;
   balance: number;
   plans: Plan[];
   setPlans: Dispatch<SetStateAction<Plan[]>>;
@@ -17,6 +21,10 @@ export const ExpensesContext = createContext<{
   isExpensesLoading: true,
   isPlansLoading: true,
   setIsExpensesLoading: () => {},
+  expansesError: null,
+  setExpansesError: () => {},
+  plansError: null,
+  setPlansError: () => {},
   balance: 0,
   plans: [],
   setPlans: () => {},
