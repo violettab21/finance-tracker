@@ -1,6 +1,6 @@
 import Expenses from '../pages/Expenses/Expenses';
 import Login from '../pages/Login/Login';
-import Main from '../pages/Main';
+import Main from '../pages/Main/Main';
 import Overview from '../pages/Overview/Overview';
 import Plans from '../pages/Plans/Plans';
 import Register from '../pages/Register/Register';
@@ -18,6 +18,7 @@ export const privateRoutes = [
   { path: EXPENSES_ROUTE, page: <Expenses /> },
   { path: SAVINGS_ROUTE, page: <Savings /> },
   { path: PLANS_ROUTE, page: <Plans /> },
+  { path: '/', page: <Main /> },
 ];
 export const publicRoutes = [
   { path: LOGIN_ROUTE, page: <Login /> },

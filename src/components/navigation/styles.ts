@@ -17,14 +17,20 @@ export const StyledNavLink = styled(Link)`
   }
 `;
 
-export const StyledNavButton = styled.button`
+export interface StyledNavButtonProps {
+  selected?: boolean;
+}
+
+export const StyledNavButton = styled.button<StyledNavButtonProps>`
   border: none;
-  background: none;
+  background: ${(props) => (props.selected ? colors.backgroundDark : 'none;')};
   font-family: 'Poppins', sans-serif;
   color: ${colors.textLight};
   font-size: 16px;
   cursor: pointer;
   padding: 1rem;
+  width: 100%;
+  border-radius: 8px;
 
   &:hover {
     background-color: #7979884d;

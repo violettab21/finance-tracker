@@ -11,10 +11,10 @@ export default function AppRouter() {
     <Routes>
       <Route element={<Layout />}>
         {userData
-          ? publicRoutes.map((route) => (
+          ? privateRoutes.map((route) => (
               <Route key={route.path} path={route.path} element={route.page} />
             ))
-          : privateRoutes.map((route) => (
+          : publicRoutes.map((route) => (
               <Route key={route.path} path={route.path} element={route.page} />
             ))}
         <Route path="/*" element={<NotFoundPage />} />

@@ -1,12 +1,21 @@
 import { StyledLeftNavBar } from './styles';
-import { StyledNavButton, StyledNavLink } from '../styles';
+import { StyledNavButton } from '../styles';
 import { useSignOut } from '../../auth/hooks/useSignOut';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../../../context/authContext';
+import { useNavigate } from 'react-router';
+import {
+  EXPENSES_ROUTE,
+  OVERVIEW_ROUTE,
+  PLANS_ROUTE,
+  SAVINGS_ROUTE,
+} from '../../../routes/routes';
 
 export default function LeftNavBar() {
   const { userData } = useContext(AuthContext);
   const { signOut } = useSignOut();
+  const [selectedItem, setSelectedItem] = useState<string>('/');
+  const navigate = useNavigate();
 
   if (!userData.userToken) {
     return null;
@@ -16,18 +25,48 @@ export default function LeftNavBar() {
       <div>
         <ul>
           <li>
-            <StyledNavLink to="/overview">Overview</StyledNavLink>
+            <StyledNavButton
+              selected={OVERVIEW_ROUTE === selectedItem}
+              onClick={() => {
+                navigate(OVERVIEW_ROUTE);
+                setSelectedItem(OVERVIEW_ROUTE);
+              }}
+            >
+              Overview
+            </StyledNavButton>
           </li>
           <li>
-            <StyledNavLink to="/finance-tracker">
+            <StyledNavButton
+              selected={EXPENSES_ROUTE === selectedItem}
+              onClick={() => {
+                navigate(EXPENSES_ROUTE);
+                setSelectedItem(EXPENSES_ROUTE);
+              }}
+            >
               Expenses Management
-            </StyledNavLink>
+            </StyledNavButton>
           </li>
           <li>
-            <StyledNavLink to="/plans">Plans</StyledNavLink>
+            <StyledNavButton
+              selected={PLANS_ROUTE === selectedItem}
+              onClick={() => {
+                navigate(PLANS_ROUTE);
+                setSelectedItem(PLANS_ROUTE);
+              }}
+            >
+              Plans
+            </StyledNavButton>
           </li>
           <li>
-            <StyledNavLink to="/savings">Savings</StyledNavLink>
+            <StyledNavButton
+              selected={SAVINGS_ROUTE === selectedItem}
+              onClick={() => {
+                navigate(SAVINGS_ROUTE);
+                setSelectedItem(SAVINGS_ROUTE);
+              }}
+            >
+              Savings
+            </StyledNavButton>
           </li>
         </ul>
       </div>
@@ -36,10 +75,15 @@ export default function LeftNavBar() {
         {' '}
         <ul>
           <li>
-            <StyledNavLink to="/profile-settings">Profile</StyledNavLink>
-          </li>
-          <li>
-            <StyledNavLink to="/about">About</StyledNavLink>
+            <StyledNavButton
+              selected={SAVINGS_ROUTE === selectedItem}
+              onClick={() => {
+                navigate(SAVINGS_ROUTE);
+                setSelectedItem(SAVINGS_ROUTE);
+              }}
+            >
+              Profile
+            </StyledNavButton>
           </li>
           <li>
             <StyledNavButton onClick={signOut}>Log out</StyledNavButton>

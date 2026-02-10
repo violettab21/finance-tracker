@@ -51,7 +51,7 @@ export default function ExpensesProvider({
     );
 
     return totalIncomes - totalExpenses;
-  }, [expensesData, userData]);
+  }, [expensesData]);
 
   useEffect(() => {
     const getAll = async () => {

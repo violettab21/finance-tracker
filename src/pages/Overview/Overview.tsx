@@ -54,7 +54,7 @@ export default function Overview() {
         </StyledChartWrapper>
         <StyledChartWrapper width="60%" direction="column" align="center">
           <StyledChartTitle>Top 5 Expenses</StyledChartTitle>
-          <TopExpenses expenses={expenses} month={month} year={year} />
+          <TopExpenses expenses={expenses} />
         </StyledChartWrapper>
       </StyledOverviewWrapper>
     </StyledFlexWrapper>
