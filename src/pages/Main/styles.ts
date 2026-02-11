@@ -2,13 +2,6 @@ import styled from 'styled-components';
 import { StyledFlexWrapper } from '../../styled/flex';
 import { colors } from '../../styled/colors';
 
-export const StyledMainCards = styled(StyledFlexWrapper)`
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: space-between;
-  align-items: stretch;
-`;
-
 export const StyledMainSectionWrapper = styled(StyledFlexWrapper)`
   background-color: ${colors.backgroundDark};
   padding: 2rem;
