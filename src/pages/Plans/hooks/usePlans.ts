@@ -61,7 +61,7 @@ export const usePlans = () => {
       };
     });
     return formattedPlans.sort((a, b) => Number(a.date) - Number(b.date));
-  }, [filteredPlans, filter, plans]);
+  }, [filteredPlans]);
 
   const isPlanExists = (data: FormDataPlan) => {
     const existingPlan = plans.find(

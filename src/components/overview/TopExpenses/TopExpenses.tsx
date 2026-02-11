@@ -6,21 +6,13 @@ import {
 } from '../../../services/expenses/expenses';
 import { addCommasToNumber } from '../../../helpers/helpers';
 
-export default function TopExpenses({
-  expenses,
-  month,
-  year,
-}: {
-  expenses: ExpenseData[];
-  month: number;
-  year: number;
-}) {
+export default function TopExpenses({ expenses }: { expenses: ExpenseData[] }) {
   const topExpenses = useMemo(() => {
     const groupedExpensesByCategory = getTotalExpensesPerCategory(expenses);
     const copy = [...groupedExpensesByCategory];
     const topFiveExpenses = copy.sort((a, b) => b.cost - a.cost).slice(0, 5);
     return topFiveExpenses;
-  }, [month, year, expenses]);
+  }, [expenses]);
 
   return (
     <StyledTableSecondary>

@@ -17,4 +17,5 @@ export const StyledMain = styled.main`
 export const StyledPageWrapper = styled(StyledFlexWrapper)`
   padding: 1rem;
   overflow-y: auto;
+  justify-content: center;
 `;

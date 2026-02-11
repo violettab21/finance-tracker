@@ -10,7 +10,10 @@ export default function TopNavBar() {
 
   return (
     <StyledTopNavbar justify="space-between">
-      <p>Logo</p>
+      <div>
+        <StyledNavLink to="/">Home</StyledNavLink>
+      </div>
+
       {userData.userName ? <p>Hello, {userData.userName}</p> : <p>Hello</p>}
       <StyledTopNavbarList>
         {userData.userToken ? (

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ValidationSchemaSignIn } from '../validation';
@@ -13,7 +12,6 @@ import {
   NETWORK_ERROR_TEXT,
 } from '../../../../constants/constants';
 import { FirebaseError } from 'firebase/app';
-import { EXPENSES_ROUTE } from '../../../../routes/routes';
 
 interface SignInFormInput {
   email: string;
@@ -21,7 +19,6 @@ interface SignInFormInput {
 }
 
 export const useLogin = () => {
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -34,7 +31,6 @@ export const useLogin = () => {
   const onSubmit = async (data: SignInFormInput) => {
     try {
       await signIn(data);
-      navigate(EXPENSES_ROUTE);
     } catch (error) {
       if (
         error instanceof FirebaseError &&
