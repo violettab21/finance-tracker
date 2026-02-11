@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router';
 import {
   EXPENSES_ROUTE,
+  OVERVIEW_ROUTE,
   PLANS_ROUTE,
   SAVINGS_ROUTE,
 } from '../../routes/routes';
@@ -32,7 +33,9 @@ export default function Main() {
             personal use, saving for big goals, or just gaining insight into
             your spending habits, FinTrack makes it simple and stress-free.
           </p>
-          <Button secondary>Start right now</Button>
+          <Button onClick={() => navigate(EXPENSES_ROUTE)} secondary>
+            Start right now
+          </Button>
         </StyledFlexWrapper>
       </StyledMainSectionWrapper>
 
@@ -56,7 +59,7 @@ export default function Main() {
         image={charts}
         header="Visualize Your Finances"
         description="View clear and intuitive charts to track spending, planned trends, and financial progress."
-        buttonCallback={() => navigate(PLANS_ROUTE)}
+        buttonCallback={() => navigate(OVERVIEW_ROUTE)}
         buttonText="Check Overview"
       />
 

@@ -1,4 +1,3 @@
-import { BrowserRouter } from 'react-router';
 import AppRouter from './components/AppRouter';
 import { Global } from './styled/global';
 import { CookiesProvider } from 'react-cookie';
@@ -9,16 +8,14 @@ import ToastProvider from './context/toastProvider';
 function App() {
   return (
     <CookiesProvider>
-      <BrowserRouter>
-        <ToastProvider>
-          <AuthProvider>
-            <ExpensesProvider>
-              <Global />
-              <AppRouter />
-            </ExpensesProvider>
-          </AuthProvider>
-        </ToastProvider>
-      </BrowserRouter>
+      <ToastProvider>
+        <AuthProvider>
+          <ExpensesProvider>
+            <Global />
+            <AppRouter />
+          </ExpensesProvider>
+        </AuthProvider>
+      </ToastProvider>
     </CookiesProvider>
   );
 }

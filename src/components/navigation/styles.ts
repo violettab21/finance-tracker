@@ -31,6 +31,7 @@ export const StyledNavButton = styled.button<StyledNavButtonProps>`
   padding: 1rem;
   width: 100%;
   border-radius: 8px;
+  text-align: start;
 
   &:hover {
     background-color: #7979884d;

@@ -11,4 +11,9 @@ export const AuthContext = createContext<{
       userName: string | null;
     }>
   >;
-}>({ userData: { userToken: null, userName: null }, setUserData: () => {} });
+  loading: boolean;
+}>({
+  userData: { userToken: null, userName: null },
+  setUserData: () => {},
+  loading: true,
+});
