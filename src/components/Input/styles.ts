@@ -10,6 +10,10 @@ export const StyledInput = styled.input<InputProps>`
   background-color: ${colors.inputBackground};
   width: 100%;
   padding: 0.5rem 0.5rem;
+
+  &:disabled {
+    background: #60576477;
+  }
 `;
 
 export const StyledErrorText = styled.p`

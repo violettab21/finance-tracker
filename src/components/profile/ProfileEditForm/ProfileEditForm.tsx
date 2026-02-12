@@ -1,18 +1,9 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { ValidationSchema } from './validation';
-import { useContext, useEffect, useState } from 'react';
-import { ToastContext } from '../../../context/toastContext';
-import {
-  getUser,
-  updateUserEmail,
-  updateUserName,
-} from '../../../services/profile/profile';
 import { StyledFlexWrapper } from '../../../styled/flex';
 import Input from '../../Input/Input';
 import Button from '../../Button/Button';
 import { StyledForm } from './styles';
 import Loader from '../../Loader/Loader';
+import { useUpdateProfile } from './hooks/useUpdateProfile';
 
 export interface ProfileFormInput {
   firstName: string;
@@ -21,51 +12,17 @@ export interface ProfileFormInput {
 }
 
 export default function ProfileEditForm() {
-  const [userDetails, setUserDetails] = useState<{
-    firstName: string;
-    lastName: string;
-    email: string;
-  } | null>();
-  const [userDetailsLoading, setUserDetailsLoading] = useState(true);
   const {
+    userDetails,
+    userDetailsLoading,
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<ProfileFormInput>({
-    resolver: zodResolver(ValidationSchema),
-    mode: 'onChange',
-    defaultValues: userDetails
-      ? {
-          firstName: userDetails.firstName,
-          lastName: userDetails.lastName,
-          email: userDetails.email,
-        }
-      : undefined,
-  });
-
-  const [updateError, setUpdateError] = useState<string>('');
-  const { showToast } = useContext(ToastContext);
-  useEffect(() => {
-    const getUserDetails = async () => {
-      const details = await getUser();
-      setUserDetails(details);
-      setUserDetailsLoading(false);
-    };
-    getUserDetails();
-  }, []);
+    errors,
+    updateError,
+    onSubmit,
+  } = useUpdateProfile();
 
   if (userDetailsLoading) return <Loader />;
-
-  const onSubmit = async (data: ProfileFormInput) => {
-    try {
-      await updateUserName(data);
-      await updateUserEmail(data);
-      showToast({ type: 'success', message: 'Your profile update' });
-    } catch {
-      setUpdateError('error');
-      showToast({ type: 'error', message: 'Something went wrong' });
-    }
-  };
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>

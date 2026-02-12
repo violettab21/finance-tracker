@@ -80,12 +80,14 @@ export const getUser = async (): Promise<{
     );
     const result = await getDocs(q);
     const user = result.docs[0];
-    console.log(user.data());
-    return {
-      firstName: user.data().firstName,
-      lastName: user.data().lastName,
-      email: user.data().email,
-    };
+    if (user) {
+      console.log(user.data());
+      return {
+        firstName: user.data().firstName,
+        lastName: user.data().lastName,
+        email: user.data().email,
+      };
+    }
   }
   return null;
 };
