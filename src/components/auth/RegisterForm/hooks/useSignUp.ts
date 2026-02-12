@@ -11,8 +11,10 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ValidationSchema } from '../validation';
 import { useForm } from 'react-hook-form';
+import { OVERVIEW_ROUTE } from '../../../../routes/routes';
+import { useNavigate } from 'react-router';
 
-interface RegistrationFormInput {
+export interface RegistrationFormInput {
   firstName: string;
   lastName: string;
   email: string;
@@ -31,9 +33,11 @@ export function useSignUp() {
     mode: 'onChange',
   });
   const [signUpError, setSignUpError] = useState<string>('');
+  const navigate = useNavigate();
   const onSubmit = async (data: RegistrationFormInput) => {
     try {
       await signUp(data);
+      navigate(OVERVIEW_ROUTE);
     } catch (error) {
       if (
         error instanceof FirebaseError &&

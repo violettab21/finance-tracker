@@ -1,14 +1,12 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 
 import { FirebaseError } from 'firebase/app';
-import { AuthContext } from '../../../context/authContext';
 import { SignInWithGoogle } from '../../../services/auth/auth';
 import { GENERIC_ERROR_TEXT } from '../../../constants/constants';
 
 export const useAuth = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const { setUserData } = useContext(AuthContext);
   const [, setCookie] = useCookies(['user']);
 
   const [googleSignInError, setGoogleSignInError] = useState<string>('');
@@ -18,7 +16,6 @@ export const useAuth = () => {
       const user = await SignInWithGoogle();
       const userToken = await user.getIdToken();
       setCookie('user', userToken);
-      setUserData({ userToken, userName: user.displayName });
     } catch (error) {
       if (error instanceof FirebaseError) {
         setGoogleSignInError('Unable to login');

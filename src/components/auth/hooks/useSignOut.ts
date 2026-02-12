@@ -21,7 +21,12 @@ export function useSignOut() {
   async function signOut() {
     try {
       await signOutUser();
-      setUserData({ userName: null, userToken: null });
+      setUserData({
+        userFirstName: null,
+        userToken: null,
+        userLastName: null,
+        userEmail: null,
+      });
       removeCookie('user');
       navigate('/');
       showToast({ type: 'success', message: LOG_OUT_SUCCESS_TEXT });
