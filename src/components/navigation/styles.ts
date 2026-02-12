@@ -12,7 +12,7 @@ export const StyledNavLink = styled(Link)`
   display: inline-block;
 
   &:hover {
-    background-color: #7979884d;
+    background-color: ${colors.navigationHover};
     border-radius: 8px;
   }
 `;
@@ -34,7 +34,7 @@ export const StyledNavButton = styled.button<StyledNavButtonProps>`
   text-align: start;
 
   &:hover {
-    background-color: #7979884d;
+    background-color: ${colors.navigationHover};
     border-radius: 8px;
   }
 `;

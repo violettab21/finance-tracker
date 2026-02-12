@@ -21,8 +21,8 @@ export const StyledLink = styled(Link)`
   gap: 10px;
   padding: 0.75rem 1rem;
   margin: 1rem;
-  background-color: #59519587;
-  color: #ffffff;
+  background-color: ${colors.linkBackground};
+  color: ${colors.textLight};
   border-radius: 15px;
   text-decoration: none;
   align-self: flex-end;

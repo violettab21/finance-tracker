@@ -9,6 +9,7 @@ import {
   updateUserEmail,
   updateUserName,
 } from '../../../../services/profile/profile';
+import { GENERIC_ERROR_TEXT } from '../../../../constants/constants';
 
 export const useUpdateProfile = () => {
   const [userDetails, setUserDetails] = useState<{
@@ -49,10 +50,10 @@ export const useUpdateProfile = () => {
     try {
       await updateUserName(data);
       await updateUserEmail(data);
-      showToast({ type: 'success', message: 'Your profile update' });
+      showToast({ type: 'success', message: 'Profile is updated' });
     } catch {
       setUpdateError('error');
-      showToast({ type: 'error', message: 'Something went wrong' });
+      showToast({ type: 'error', message: GENERIC_ERROR_TEXT });
     }
   };
 
