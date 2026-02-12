@@ -12,12 +12,7 @@ export default function LoginForm() {
   const { onSubmit, register, handleSubmit, errors, isValid, signInError } =
     useLogin();
 
-  const {
-    signUpWithGoogle,
-    isPasswordVisible,
-    togglePasswordVisibility,
-    googleSignInError,
-  } = useAuth();
+  const { signUpWithGoogle, googleSignInError } = useAuth();
 
   return (
     <StyledFlexWrapper width="50%" justify="center">
@@ -38,8 +33,6 @@ export default function LoginForm() {
           <Password
             {...register('password')}
             placeholder="Password"
-            isPasswordVisible={isPasswordVisible}
-            togglePasswordVisibility={togglePasswordVisibility}
             error={errors.password ? errors.password?.message || null : null}
           />
           <Button primary disabled={!isValid}>

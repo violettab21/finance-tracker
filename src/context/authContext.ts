@@ -2,18 +2,21 @@ import { createContext, type Dispatch, type SetStateAction } from 'react';
 
 export const AuthContext = createContext<{
   userData: {
-    userToken: string | null;
-    userName: string | null;
+    userEmail: string | null;
+    userFullName: string | null;
   };
   setUserData: Dispatch<
     SetStateAction<{
-      userToken: string | null;
-      userName: string | null;
+      userEmail: string | null;
+      userFullName: string | null;
     }>
   >;
   loading: boolean;
 }>({
-  userData: { userToken: null, userName: null },
+  userData: {
+    userEmail: null,
+    userFullName: null,
+  },
   setUserData: () => {},
   loading: true,
 });

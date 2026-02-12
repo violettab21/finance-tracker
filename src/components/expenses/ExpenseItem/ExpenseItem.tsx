@@ -2,7 +2,7 @@ import { type ExpenseData } from '../../../services/expenses/expenses';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import {
   StyledButtonsWrapper,
-  StyledControl,
+  StyledControlVisibility,
   StyledCost,
   StyledDate,
   StyledDetailsRow,
@@ -52,13 +52,13 @@ export default function ExpenseItem({
         onClick={toggleDetailsVisibility}
       >
         <td>
-          <StyledControl onClick={toggleDetailsVisibility}>
+          <StyledControlVisibility onClick={toggleDetailsVisibility}>
             {isDetailsVisible ? (
               <MdExpandLess size={20} />
             ) : (
               <MdExpandMore size={20} />
             )}
-          </StyledControl>
+          </StyledControlVisibility>
         </td>
         <td>{groupedExpense.category}</td>
         <td>{addCommasToNumber(groupedExpense.cost)}</td>

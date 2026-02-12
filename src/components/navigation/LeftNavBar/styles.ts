@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import { colors } from '../../../styled/colors';
 
 export const StyledLeftNavBar = styled.div`
-  background-color: #3d3d4f;
+  background-color: ${colors.navigationBackground};
   padding: 1rem;
   width: 300px;
   display: flex;

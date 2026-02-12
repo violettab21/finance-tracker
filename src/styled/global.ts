@@ -7,9 +7,10 @@ export const Global = createGlobalStyle`
   margin: 0;
   box-sizing: border-box;
 }
+
 body {
 color: ${colors.textLight};
-background-color:#625E74;
+background-color: ${colors.background};
 font-family: "Poppins", sans-serif;
 }
 `;

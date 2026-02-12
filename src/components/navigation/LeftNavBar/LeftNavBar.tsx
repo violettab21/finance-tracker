@@ -26,7 +26,7 @@ export default function LeftNavBar() {
     updateSelectedItem();
   }, [location.pathname]);
 
-  if (!userData.userToken && !loading) {
+  if (!userData.userEmail && !loading) {
     return null;
   }
   return (

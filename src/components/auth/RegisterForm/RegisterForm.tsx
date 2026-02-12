@@ -22,12 +22,7 @@ export default function RegisterForm() {
     signUpError,
   } = useSignUp();
 
-  const {
-    signUpWithGoogle,
-    isPasswordVisible,
-    togglePasswordVisibility,
-    googleSignInError,
-  } = useAuth();
+  const { signUpWithGoogle, googleSignInError } = useAuth();
 
   const password = useWatch({
     control,
@@ -69,8 +64,6 @@ export default function RegisterForm() {
           <Password
             {...register('password')}
             placeholder="Password"
-            isPasswordVisible={isPasswordVisible}
-            togglePasswordVisibility={togglePasswordVisibility}
             error={errors.password ? errors.password?.message || null : null}
           />
           {password && <PasswordComplexity password={password} />}

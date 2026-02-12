@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { StyledFlexWrapper } from '../../../styled/flex';
+import { colors } from '../../../styled/colors';
 
 export const StyledSummary = styled(StyledFlexWrapper)`
-  background-color: #3d3d4f;
+  background-color: ${colors.summaryBackground};
   padding: 2rem;
   width: 50%;
   min-width: 100px;

@@ -10,21 +10,32 @@ export default function AuthProvider({
   children: React.ReactNode;
 }) {
   const [userData, setUserData] = useState<{
-    userToken: string | null;
-    userName: string | null;
+    userEmail: string | null;
+    userFullName: string | null;
   }>({
-    userToken: null,
-    userName: null,
+    userEmail: null,
+    userFullName: null,
   });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser?.uid) {
-        setUserData({
-          userToken: currentUser.email,
-          userName: currentUser.displayName,
-        });
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      try {
+        if (currentUser?.uid) {
+          setUserData({
+            userEmail: currentUser.email,
+            userFullName: currentUser.displayName,
+          });
+          setLoading(false);
+        } else {
+          setUserData({
+            userEmail: null,
+            userFullName: null,
+          });
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log(error);
         setLoading(false);
       }
     });

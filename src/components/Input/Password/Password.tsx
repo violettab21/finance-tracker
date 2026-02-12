@@ -1,4 +1,4 @@
-import { type InputHTMLAttributes } from 'react';
+import { useState, type InputHTMLAttributes } from 'react';
 import { StyledPassword } from './styles';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { StyledFlexWrapper } from '../../../styled/flex';
@@ -6,18 +6,15 @@ import { StyledErrorText, StyledInput } from '../styles';
 
 interface PasswordProps extends InputHTMLAttributes<HTMLInputElement> {
   error: string | null;
-  isPasswordVisible: boolean;
-  togglePasswordVisibility: (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => void;
 }
 
-export default function Password({
-  isPasswordVisible,
-  togglePasswordVisibility,
-  error,
-  ...props
-}: PasswordProps) {
+export default function Password({ error, ...props }: PasswordProps) {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
+
   return (
     <StyledFlexWrapper direction="column">
       <StyledPassword>
