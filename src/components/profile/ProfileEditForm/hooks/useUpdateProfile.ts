@@ -34,7 +34,6 @@ export const useUpdateProfile = () => {
       : undefined,
   });
 
-  const [updateError, setUpdateError] = useState<string>('');
   const { showToast } = useContext(ToastContext);
 
   useEffect(() => {
@@ -52,7 +51,6 @@ export const useUpdateProfile = () => {
       await updateUserEmail(data);
       showToast({ type: 'success', message: 'Profile is updated' });
     } catch {
-      setUpdateError('error');
       showToast({ type: 'error', message: GENERIC_ERROR_TEXT });
     }
   };
@@ -63,7 +61,6 @@ export const useUpdateProfile = () => {
     register,
     handleSubmit,
     errors,
-    updateError,
     onSubmit,
   };
 };

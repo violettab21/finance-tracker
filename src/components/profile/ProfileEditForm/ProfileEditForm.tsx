@@ -18,7 +18,6 @@ export default function ProfileEditForm() {
     register,
     handleSubmit,
     errors,
-    updateError,
     onSubmit,
   } = useUpdateProfile();
 
@@ -51,7 +50,6 @@ export default function ProfileEditForm() {
           {...register('email')}
           error={errors.email ? errors.email?.message || null : null}
         ></Input>
-        {updateError && <p>Some error occurred</p>}
         <Button primary>Update</Button>
       </StyledFlexWrapper>
     </StyledForm>
