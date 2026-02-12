@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { signUp } from '../../../../services/auth/auth';
 import { FirebaseError } from 'firebase/app';
 import {
@@ -13,6 +13,7 @@ import { ValidationSchema } from '../validation';
 import { useForm } from 'react-hook-form';
 import { OVERVIEW_ROUTE } from '../../../../routes/routes';
 import { useNavigate } from 'react-router';
+import { AuthContext } from '../../../../context/authContext';
 
 export interface RegistrationFormInput {
   firstName: string;
@@ -33,10 +34,15 @@ export function useSignUp() {
     mode: 'onChange',
   });
   const [signUpError, setSignUpError] = useState<string>('');
+  const { setUserData } = useContext(AuthContext);
   const navigate = useNavigate();
   const onSubmit = async (data: RegistrationFormInput) => {
     try {
       await signUp(data);
+      setUserData({
+        userEmail: data.email,
+        userFullName: data.firstName + ' ' + data.lastName,
+      });
       navigate(OVERVIEW_ROUTE);
     } catch (error) {
       if (

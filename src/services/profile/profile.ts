@@ -1,4 +1,5 @@
 import {
+  deleteUser,
   EmailAuthProvider,
   reauthenticateWithCredential,
   updateEmail,
@@ -106,5 +107,12 @@ export const updateUserPassword = async (data: PasswordResetFormInput) => {
 
   if (currentUser) {
     await updatePassword(currentUser, data.newPassword);
+  }
+};
+
+export const deleteUserProfile = async () => {
+  const user = auth.currentUser;
+  if (user) {
+    await deleteUser(user);
   }
 };

@@ -31,6 +31,10 @@ export const RedirectIfProtected = ({
   if (loading) {
     return <Loader />;
   }
+
+  if (userData.userEmail && !userData.userFullName) {
+    return <Loader />;
+  }
   if (!userData.userEmail && !loading) {
     return <Navigate to={LOGIN_ROUTE} replace />;
   }
@@ -45,6 +49,9 @@ export const RedirectIfAuth = ({ children }: { children: React.ReactNode }) => {
     return <Loader />;
   }
 
+  if (userData.userEmail && !userData.userFullName) {
+    return <Loader />;
+  }
   if (userData.userEmail && !loading) {
     return <Navigate to={OVERVIEW_ROUTE} replace />;
   }

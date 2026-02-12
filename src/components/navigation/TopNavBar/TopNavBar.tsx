@@ -14,7 +14,7 @@ export default function TopNavBar() {
         <StyledNavLink to="/">Home</StyledNavLink>
       </div>
 
-      {userData.userEmail ? (
+      {userData.userFullName ? (
         <p>Hello, {userData.userFullName}</p>
       ) : (
         <p>Hello</p>
