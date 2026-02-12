@@ -3,7 +3,6 @@ import { AuthContext } from './authContext';
 import { auth } from '../firebase-config';
 import Loader from '../components/Loader/Loader';
 import { onAuthStateChanged } from 'firebase/auth';
-import { getUser } from '../services/profile/profile';
 
 export default function AuthProvider({
   children,
@@ -11,36 +10,27 @@ export default function AuthProvider({
   children: React.ReactNode;
 }) {
   const [userData, setUserData] = useState<{
-    userToken: string | null;
-    userFirstName: string | null;
-    userLastName: string | null;
     userEmail: string | null;
+    userFullName: string | null;
   }>({
-    userToken: null,
-    userFirstName: null,
-    userLastName: null,
     userEmail: null,
+    userFullName: null,
   });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       try {
-        const userDetails = await getUser();
-        if (currentUser?.uid && userDetails) {
+        if (currentUser?.uid) {
           setUserData({
-            userToken: currentUser.email,
-            userFirstName: userDetails.firstName,
-            userLastName: userDetails.lastName,
-            userEmail: userDetails.email,
+            userEmail: currentUser.email,
+            userFullName: currentUser.displayName,
           });
           setLoading(false);
         } else {
           setUserData({
-            userToken: null,
-            userFirstName: null,
-            userLastName: null,
             userEmail: null,
+            userFullName: null,
           });
           setLoading(false);
         }

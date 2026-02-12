@@ -1,6 +1,11 @@
-import { updateEmail, updateProfile } from 'firebase/auth';
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updateEmail,
+  updatePassword,
+  updateProfile,
+} from 'firebase/auth';
 import { auth, db } from '../../firebase-config';
-import type { ProfileFormInput } from '../../pages/Profile/Profile';
 import {
   collection,
   doc,
@@ -9,6 +14,8 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
+import type { PasswordResetFormInput } from '../../components/profile/PasswordResetForm/PasswordResetForm';
+import type { ProfileFormInput } from '../../components/profile/ProfileEditForm/ProfileEditForm';
 
 export const updateUserName = async (data: ProfileFormInput) => {
   const currentUser = auth.currentUser;
@@ -80,4 +87,24 @@ export const getUser = async (): Promise<{
     };
   }
   return null;
+};
+
+export const reauthUser = async (data: PasswordResetFormInput) => {
+  const currentUser = auth.currentUser;
+
+  if (currentUser && currentUser.email) {
+    const credential = EmailAuthProvider.credential(
+      currentUser.email,
+      data.oldPassword
+    );
+    await reauthenticateWithCredential(currentUser, credential);
+  }
+};
+
+export const updateUserPassword = async (data: PasswordResetFormInput) => {
+  const currentUser = auth.currentUser;
+
+  if (currentUser) {
+    await updatePassword(currentUser, data.newPassword);
+  }
 };

@@ -22,9 +22,7 @@ export function useSignOut() {
     try {
       await signOutUser();
       setUserData({
-        userFirstName: null,
-        userToken: null,
-        userLastName: null,
+        userFullName: null,
         userEmail: null,
       });
       removeCookie('user');
