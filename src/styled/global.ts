@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import { colors } from './colors';
 
 export const Global = createGlobalStyle`
 * {
@@ -9,8 +8,8 @@ export const Global = createGlobalStyle`
 }
 
 body {
-color: ${colors.textLight};
-background-color: ${colors.background};
+color: ${(props) => props.theme.colors.textPrimary};
+background-color: ${(props) => props.theme.colors.background};
 font-family: "Poppins", sans-serif;
 }
 `;

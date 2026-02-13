@@ -3,10 +3,15 @@ import { AuthContext } from '../../../context/authContext';
 import { StyledTopNavbar, StyledTopNavbarList } from './styles';
 import { useSignOut } from '../../auth/hooks/useSignOut';
 import { StyledNavButton, StyledNavLink } from '../styles';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import { ThemeContext } from '../../../context/themeContext';
+import { darkTheme, lightTheme } from '../../../styled/themes';
 
 export default function TopNavBar() {
   const { userData } = useContext(AuthContext);
   const { signOut } = useSignOut();
+  const { currentTheme, setCurrentTheme } = useContext(ThemeContext);
 
   return (
     <StyledTopNavbar justify="space-between">
@@ -20,6 +25,15 @@ export default function TopNavBar() {
       )}
 
       <StyledTopNavbarList>
+        <FormControlLabel
+          control={<Switch defaultChecked />}
+          label={currentTheme === lightTheme ? 'Light Theme' : 'Dark Theme'}
+          onChange={() =>
+            currentTheme === lightTheme
+              ? setCurrentTheme(darkTheme)
+              : setCurrentTheme(lightTheme)
+          }
+        />
         {userData.userEmail ? (
           <>
             <li>

@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import { StyledFlexWrapper } from '../../styled/flex';
-import { colors } from '../../styled/colors';
 
 export const StyledChartWrapper = styled(StyledFlexWrapper)`
-  background-color: ${colors.pageBackground};
+  background-color: ${(props) => props.theme.colors.summaryBackground};
   border-radius: 10px;
   min-width: 300px;
   padding: 1rem;

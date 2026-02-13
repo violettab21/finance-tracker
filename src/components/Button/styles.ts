@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import type { StyledProps } from './types';
-import { colors } from '../../styled/colors';
 
 export const StyledButton = styled.button<StyledProps>`
   border-radius: 4px;
@@ -11,30 +10,30 @@ export const StyledButton = styled.button<StyledProps>`
   transition-duration: 0.5s;
   display: block;
   width: 100%;
-  ${({ $primary }) =>
+  ${({ $primary, theme }) =>
     $primary &&
     `
-      background-color: ${colors.primaryColor};
-      color: ${colors.backgroundLight};
+      background-color: ${theme.colors.primaryColor};
+      color: ${theme.colors.textLight};
     `}
-  ${({ $secondary }) =>
+  ${({ $secondary, theme }) =>
     $secondary &&
     `
-      background-color: ${colors.secondaryColor};
-      color: ${colors.backgroundDark};
+      background-color: ${theme.colors.secondaryColor};
+      color: ${theme.colors.textDark};
     `}
 &:hover {
-    ${({ $primary }) =>
+    ${({ $primary, theme }) =>
       $primary &&
       `
-        background-color: ${colors.secondaryColor};
-        color: ${colors.backgroundDark};
+        background-color: ${theme.colors.secondaryColor};
+        color: ${theme.colors.textDark};
       `}
-    ${({ $secondary }) =>
+    ${({ $secondary, theme }) =>
       $secondary &&
       `
-        background-color: ${colors.primaryColor};
-        color: ${colors.backgroundLight};
+        background-color: ${theme.colors.primaryColor};
+        color: ${theme.colors.textLight};
       `}
   }
 `;

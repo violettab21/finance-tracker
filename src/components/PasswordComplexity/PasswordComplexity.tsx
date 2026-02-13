@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import { StyledFlexWrapper } from '../../styled/flex';
 import { StyledComplexityBox, StyledComplexityText } from './styles';
-import { colors } from '../../styled/colors';
+import { useTheme } from 'styled-components';
 
 export const PasswordComplexity = ({ password }: { password: string }) => {
+  const theme = useTheme();
   const calculatePasswordComplexity = (password: string) => {
     let complexity = 0;
     if (password.length >= 8) {
@@ -35,34 +36,34 @@ export const PasswordComplexity = ({ password }: { password: string }) => {
     switch (complexity) {
       case 1: {
         text = 'Weak';
-        color = colors.PasswordComplexityColors.weak;
+        color = theme.colors.PasswordComplexityColors.weak;
         break;
       }
 
       case 2: {
         text = 'Below Average';
-        color = colors.PasswordComplexityColors.belowAverage;
+        color = theme.colors.PasswordComplexityColors.belowAverage;
         break;
       }
 
       case 3: {
         text = 'Medium';
-        color = colors.PasswordComplexityColors.medium;
+        color = theme.colors.PasswordComplexityColors.medium;
         break;
       }
       case 4: {
         text = 'Good';
-        color = colors.PasswordComplexityColors.good;
+        color = theme.colors.PasswordComplexityColors.good;
         break;
       }
       case 5: {
         text = 'Strong';
-        color = colors.PasswordComplexityColors.strong;
+        color = theme.colors.PasswordComplexityColors.strong;
         break;
       }
       default: {
         text = 'Weak';
-        color = colors.PasswordComplexityColors.weak;
+        color = theme.colors.PasswordComplexityColors.weak;
         break;
       }
     }

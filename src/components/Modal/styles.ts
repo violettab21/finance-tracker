@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import { colors } from '../../styled/colors';
 
 export const StyledModalWrapper = styled.div`
   display: flex;
-  background-color: ${colors.modalBackgroundDark};
+  background-color: ${(props) => props.theme.colors.modalBackgroundDark};
   width: 100%;
   height: 100vh;
   position: fixed;

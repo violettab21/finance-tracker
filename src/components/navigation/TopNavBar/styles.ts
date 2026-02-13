@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import { StyledFlexWrapper } from '../../../styled/flex';
-import { colors } from '../../../styled/colors';
 
 export const StyledTopNavbar = styled(StyledFlexWrapper)`
-  background-color: ${colors.navigationBackground};
+  background-color: ${(props) => props.theme.colors.navigationBackground};
   align-items: center;
   padding: 1rem;
 `;

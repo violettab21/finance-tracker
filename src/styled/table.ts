@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { colors } from './colors';
 
 export const StyledTable = styled.table`
-  background-color: ${colors.tableBackground};
+  background-color: ${(props) => props.theme.colors.tableBackground};
   border-radius: 8px;
   width: 100%;
   border-collapse: collapse;

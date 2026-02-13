@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { colors } from '../../styled/colors';
 
 export const StyledSeparator = styled.div`
   display: flex;
@@ -16,7 +15,7 @@ export const StyledSeparator = styled.div`
     position: absolute;
     top: -10px;
     left: calc(50% - 50px);
-    background-color: ${colors.backgroundDark};
+    background-color: ${(props) => props.theme.colors.formBackground};
     padding: 0.5rem;
   }
 `;

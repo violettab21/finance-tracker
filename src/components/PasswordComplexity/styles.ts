@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import { colors } from '../../styled/colors';
-
 interface StyledComplexityBoxProps {
   $indicatorColor: string;
   $isFilled?: boolean;
@@ -16,6 +14,6 @@ export const StyledComplexityBox = styled.div<StyledComplexityBoxProps>`
 `;
 
 export const StyledComplexityText = styled.p`
-  color: ${colors.textLight};
+  color: ${(props) => props.theme.colors.textPrimary};
   margin-left: 5px;
 `;

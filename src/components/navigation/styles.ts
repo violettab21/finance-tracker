@@ -1,9 +1,8 @@
 import { Link } from 'react-router';
 import styled from 'styled-components';
-import { colors } from '../../styled/colors';
 
 export const StyledNavLink = styled(Link)`
-  color: ${colors.textLight};
+  color: ${(props) => props.theme.colors.textPrimary};
   text-decoration: none;
   padding: 1rem;
   cursor: pointer;
@@ -12,7 +11,7 @@ export const StyledNavLink = styled(Link)`
   display: inline-block;
 
   &:hover {
-    background-color: ${colors.navigationHover};
+    background-color: ${(props) => props.theme.colors.navigationHover};
     border-radius: 8px;
   }
 `;
@@ -23,9 +22,10 @@ export interface StyledNavButtonProps {
 
 export const StyledNavButton = styled.button<StyledNavButtonProps>`
   border: none;
-  background: ${(props) => (props.selected ? colors.backgroundDark : 'none;')};
+  background: ${(props) =>
+    props.selected ? props.theme.colors.linkBackground : 'none;'};
   font-family: 'Poppins', sans-serif;
-  color: ${colors.textLight};
+  color: ${(props) => props.theme.colors.textPrimary};
   font-size: 16px;
   cursor: pointer;
   padding: 1rem;
@@ -34,7 +34,7 @@ export const StyledNavButton = styled.button<StyledNavButtonProps>`
   text-align: start;
 
   &:hover {
-    background-color: ${colors.navigationHover};
+    background-color: ${(props) => props.theme.colors.navigationHover};
     border-radius: 8px;
   }
 `;
