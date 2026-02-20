@@ -13,26 +13,26 @@ export const StyledButton = styled.button<StyledProps>`
   ${({ $primary, theme }) =>
     $primary &&
     `
-      background-color: ${theme.colors.primaryColor};
+      background-color: ${theme.colors.primaryButtonColor};
       color: ${theme.colors.textLight};
     `}
   ${({ $secondary, theme }) =>
     $secondary &&
     `
-      background-color: ${theme.colors.secondaryColor};
+      background-color: ${theme.colors.secondaryButtonColor};
       color: ${theme.colors.textDark};
     `}
 &:hover {
     ${({ $primary, theme }) =>
       $primary &&
       `
-        background-color: ${theme.colors.secondaryColor};
+        background-color: ${theme.colors.secondaryButtonColor};
         color: ${theme.colors.textDark};
       `}
     ${({ $secondary, theme }) =>
       $secondary &&
       `
-        background-color: ${theme.colors.primaryColor};
+        background-color: ${theme.colors.primaryButtonColor};
         color: ${theme.colors.textLight};
       `}
   }

@@ -15,7 +15,7 @@ export const StyledSeparator = styled.div`
     position: absolute;
     top: -10px;
     left: calc(50% - 50px);
-    background-color: ${(props) => props.theme.colors.formBackground};
+    background-color: ${(props) => props.theme.colors.backgroundSection};
     padding: 0.5rem;
   }
 `;

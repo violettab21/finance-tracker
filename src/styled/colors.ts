@@ -1,16 +1,20 @@
 export const darkThemeColors = {
-  primaryColor: '#6d54b5',
-  secondaryColor: '#E0DDF8',
-  backgroundDark: '#29263D',
-  backgroundLight: '#F7F7F7',
-  border: '#756D8F',
+  primaryButtonColor: '#6d54b5',
+  secondaryButtonColor: '#E0DDF8',
+  backgroundPage: '#625E74',
+  backgroundSection: '#29263D',
+  border: '#756d8f67',
   backgroundImage: '#756D8F',
+
   textLight: '#ffffff',
   textDark: '#323135',
+
   textPrimary: '#ffffff',
   textSecondary: '#323135',
+
   inputBackground: '#3E3658',
-  formBackground: '#2C2638',
+  disabledInput: '#60576477',
+
   PasswordComplexityColors: {
     weak: '#7b758d',
     belowAverage: '#7d71a5',
@@ -18,7 +22,7 @@ export const darkThemeColors = {
     good: '#69599c',
     strong: '#6d54b5',
   },
-  pageBackground: '#3d3d4f',
+
   chartPieColors: {
     color1: '#8778c7',
     color2: '#3f346d',
@@ -35,12 +39,14 @@ export const darkThemeColors = {
     color13: '#270933',
     color14: '#5f2346',
   },
+
   chartBarsColors: {
     planned: '#8778c7',
     actual: '#3f346d',
   },
+
   tableBackground: '#737388',
-  disabledField: '#60576477',
+
   errorText: '#ca3e3e',
   linkBackground: '#59519587',
   tableRowBackground: '#473b6d5d',
@@ -52,24 +58,28 @@ export const darkThemeColors = {
   toastSuccess: '#72b475',
   toastWarning: '#e6b577',
   toastError: '#ca3e3e',
-  background: '#625E74',
 };
 
 export type Theme = typeof darkThemeColors;
 
 export const lightThemeColors = {
-  textLight: '#ffffff',
-  textDark: '#323135',
-  primaryColor: '#6d54b5',
-  secondaryColor: '#cfcce2',
-  backgroundDark: '#29263D',
-  backgroundLight: '#ac9999',
-  border: '#756D8F',
+  primaryButtonColor: '#6d54b5',
+  secondaryButtonColor: '#cfcce2',
+
+  backgroundPage: '#ffffff',
+  backgroundSection: '#908ca5',
+
+  border: '#756d8f67',
   backgroundImage: '#f5f5f5',
+
   textPrimary: '#161616',
   textSecondary: '#c9c6d1',
+  textLight: '#ffffff',
+  textDark: '#323135',
+
   inputBackground: '#3E3658',
-  formBackground: '#c7c5c9',
+  disabledInput: '#60576477',
+
   PasswordComplexityColors: {
     weak: '#7b758d',
     belowAverage: '#7d71a5',
@@ -77,7 +87,6 @@ export const lightThemeColors = {
     good: '#69599c',
     strong: '#6d54b5',
   },
-  pageBackground: '#3d3d4f',
   chartPieColors: {
     color1: '#8778c7',
     color2: '#3f346d',
@@ -98,18 +107,18 @@ export const lightThemeColors = {
     planned: '#8778c7',
     actual: '#3f346d',
   },
-  tableBackground: '#c5c5c5',
-  disabledField: '#60576477',
-  errorText: '#ca3e3e',
-  linkBackground: '#7668CC',
+
+  tableBackground: '#7979884d',
   tableRowBackground: '#473b6d5d',
-  summaryBackground: '#c7c5c9',
-  navigationBackground: '#e5e5e6',
+
+  linkBackground: '#6d54b5',
+  summaryBackground: '#F7F7F7',
+  navigationBackground: '#F7F7F7',
   navigationHover: '#7979884d',
   loader: 'rgb(121, 121, 139)',
   modalBackgroundDark: '#3a3838b9',
   toastSuccess: '#72b475',
   toastWarning: '#e6b577',
   toastError: '#ca3e3e',
-  background: '#ffffff',
+  errorText: '#ca3e3e',
 };

@@ -9,7 +9,7 @@ export const Global = createGlobalStyle`
 
 body {
 color: ${(props) => props.theme.colors.textPrimary};
-background-color: ${(props) => props.theme.colors.background};
+background-color: ${(props) => props.theme.colors.backgroundPage};
 font-family: "Poppins", sans-serif;
 }
 `;

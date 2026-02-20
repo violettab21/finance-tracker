@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledModalTitle = styled.h1`
-  color: ${(props) => props.theme.colors.textPrimary};
+  color: ${(props) => props.theme.colors.textDark};
   font-size: 1.5rem;
 `;
 

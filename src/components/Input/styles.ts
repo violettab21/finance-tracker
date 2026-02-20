@@ -13,7 +13,7 @@ export const StyledInput = styled.input<InputProps>`
   padding: 0.5rem 0.5rem;
 
   &:disabled {
-    background: ${(props) => props.theme.colors.disabledField};
+    background: ${(props) => props.theme.colors.disabledInput};
   }
 `;
 

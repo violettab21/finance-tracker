@@ -7,6 +7,7 @@ export const StyledLeftNavBar = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-right: ${({ theme }) => `1px solid ${theme.colors.border}`};
 
   ul {
     list-style-type: none;

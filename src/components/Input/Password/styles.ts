@@ -6,9 +6,11 @@ export const StyledPassword = styled.div`
 
   button {
     position: absolute;
-    right: 5px;
+    right: 10px;
     border: none;
     background: none;
     top: 35%;
+    cursor: pointer;
+    color: ${(props) => props.theme.colors.textLight};
   }
 `;

@@ -26,13 +26,23 @@ export default function TopNavBar() {
 
       <StyledTopNavbarList>
         <FormControlLabel
-          control={<Switch defaultChecked />}
-          label={currentTheme === lightTheme ? 'Light Theme' : 'Dark Theme'}
-          onChange={() =>
-            currentTheme === lightTheme
-              ? setCurrentTheme(darkTheme)
-              : setCurrentTheme(lightTheme)
-          }
+          control={<Switch defaultChecked color="default" />}
+          label={currentTheme === lightTheme ? 'Dark Theme' : 'Light Theme'}
+          onChange={() => {
+            if (currentTheme === lightTheme) {
+              setCurrentTheme(darkTheme);
+              localStorage.setItem(
+                'finTrack',
+                JSON.stringify({ theme: 'dark' })
+              );
+            } else {
+              setCurrentTheme(lightTheme);
+              localStorage.setItem(
+                'finTrack',
+                JSON.stringify({ theme: 'light' })
+              );
+            }
+          }}
         />
         {userData.userEmail ? (
           <>
