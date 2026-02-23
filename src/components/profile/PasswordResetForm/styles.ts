@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import { colors } from '../../../styled/colors';
 
 export const StyledFormReset = styled.form`
   width: 100%;
   padding: 1rem;
-  background: ${colors.formBackground};
+  background: ${(props) => props.theme.colors.backgroundSection};
   border-radius: 8px;
 `;

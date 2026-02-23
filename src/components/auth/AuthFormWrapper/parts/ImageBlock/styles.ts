@@ -2,10 +2,9 @@ import styled from 'styled-components';
 import bgImage from '../../../../../assets/bank3.png';
 import { Link } from 'react-router';
 import { StyledFlexWrapper } from '../../../../../styled/flex';
-import { colors } from '../../../../../styled/colors';
 
 export const StyledImageBlock = styled(StyledFlexWrapper)`
-  background-color: ${colors.border};
+  background-color: ${(props) => props.theme.colors.backgroundImage};
   background-image: url(${bgImage});
   background-size: 50%;
   background-repeat: no-repeat;
@@ -21,8 +20,8 @@ export const StyledLink = styled(Link)`
   gap: 10px;
   padding: 0.75rem 1rem;
   margin: 1rem;
-  background-color: ${colors.linkBackground};
-  color: ${colors.textLight};
+  background-color: ${(props) => props.theme.colors.linkBackground};
+  color: ${(props) => props.theme.colors.textPrimary};
   border-radius: 15px;
   text-decoration: none;
   align-self: flex-end;

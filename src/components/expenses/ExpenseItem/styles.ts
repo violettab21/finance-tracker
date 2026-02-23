@@ -1,11 +1,10 @@
 import styled from 'styled-components';
-import { colors } from '../../../styled/colors';
 
 export const StyledControlVisibility = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  color: ${colors.textLight};
+  color: ${(props) => props.theme.colors.textPrimary};
 `;
 
 export const StyledDetailsTable = styled.table`
@@ -17,7 +16,7 @@ export const StyledDetailsRow = styled.tr`
   align-items: center;
 
   &:hover {
-    background: ${colors.tableRowBackground};
+    background: ${(props) => props.theme.colors.tableRowBackground};
     border-radius: 8px;
   }
 `;

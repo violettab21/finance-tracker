@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import { StyledFlexWrapper } from '../../../styled/flex';
-import { colors } from '../../../styled/colors';
 
 export const StyledMainBlock = styled(StyledFlexWrapper)`
-  background-color: ${colors.backgroundDark};
+  background-color: ${(props) => props.theme.colors.backgroundSection};
   padding: 2rem;
   border-radius: 8px;
 `;
@@ -13,10 +12,9 @@ type ImageBlockProps = {
 };
 
 export const StyledBlock1 = styled.div<ImageBlockProps>`
-  background-color: ${colors.pageBackground};
+  background-color: ${(props) => props.theme.colors.backgroundImage};
   padding: 1rem;
   border-radius: 8px;
-  background-color: ${colors.border};
   background-image: ${(props) => `url(${props.image});`};
   background-size: 80%;
   background-repeat: no-repeat;

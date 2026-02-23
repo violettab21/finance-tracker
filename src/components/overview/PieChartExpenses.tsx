@@ -3,8 +3,7 @@ import {
   getTotalExpensesPerCategory,
   type ExpenseData,
 } from '../../services/expenses/expenses';
-import { colors } from '../../styled/colors';
-const colorsCategory = Object.values(colors.chartPieColors);
+import { useTheme } from 'styled-components';
 
 const settings = {
   margin: { left: 10 },
@@ -17,6 +16,8 @@ export default function PieChartExpenses({
 }: {
   expenses: ExpenseData[];
 }) {
+  const theme = useTheme();
+  const colorsCategory = Object.values(theme.colors.chartPieColors);
   const prepareData = (data: ExpenseData[]) => {
     const dataChart = getTotalExpensesPerCategory(data).map((el, i) => {
       const color = colorsCategory[i];
@@ -40,7 +41,7 @@ export default function PieChartExpenses({
       ]}
       sx={{
         [`& .${pieArcLabelClasses.root}`]: {
-          fill: 'white',
+          fill: theme.colors.textPrimary,
           fontSize: '20px',
         },
       }}
@@ -54,7 +55,7 @@ export default function PieChartExpenses({
           },
           sx: {
             fontSize: 18,
-            color: 'white',
+            color: theme.colors.textPrimary,
           },
         },
       }}

@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { colors } from '../../styled/colors';
 
 export const StyledButtonMonth = styled.button`
-  background: ${colors.inputBackground};
+  background: ${(props) => props.theme.colors.inputBackground};
   cursor: pointer;
   padding: 0 10px;
   color: #ffffff;

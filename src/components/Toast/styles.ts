@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { colors } from '../../styled/colors';
 
 export type StyledProps = {
   $type: 'success' | 'warning' | 'error';
@@ -9,12 +8,12 @@ export const StyledToast = styled.div<StyledProps>`
   position: fixed;
   right: 2px;
   bottom: 2px;
-  background: ${({ $type }) =>
+  background: ${({ $type, theme }) =>
     $type === 'success'
-      ? colors.toastSuccess
+      ? theme.colors.toastSuccess
       : $type === 'warning'
-        ? colors.toastWarning
-        : colors.toastError};
+        ? theme.colors.toastWarning
+        : theme.colors.toastError};
   width: 500px;
   z-index: 1000;
   border-radius: 8px;

@@ -5,8 +5,8 @@ import {
 } from '../../services/expenses/expenses';
 import { useContext } from 'react';
 import { ExpensesContext } from '../../context/expensesContext';
-import { colors } from '../../styled/colors';
 import { getMonthIndex } from '../../helpers/helpers';
+import { useTheme } from 'styled-components';
 
 const chartSetting = {
   yAxis: [
@@ -29,6 +29,7 @@ export default function BarChartExpenses({
   year: number;
 }) {
   const { plans } = useContext(ExpensesContext);
+  const theme = useTheme();
 
   const prepareDataBars = (
     data: ExpenseData[],
@@ -63,7 +64,10 @@ export default function BarChartExpenses({
         { dataKey: 'real', label: 'Actual' },
         { dataKey: 'planned', label: 'Planned' },
       ]}
-      colors={[colors.chartBarsColors.planned, colors.chartBarsColors.actual]}
+      colors={[
+        theme.colors.chartBarsColors.planned,
+        theme.colors.chartBarsColors.actual,
+      ]}
       slotProps={{
         legend: {
           direction: 'vertical',
@@ -73,29 +77,31 @@ export default function BarChartExpenses({
           },
           sx: {
             fontSize: 20,
-            color: 'white',
+            color: theme.colors.textPrimary,
           },
         },
       }}
       sx={{
         '& .MuiChartsAxis-left .MuiChartsAxis-tickLabel': {
-          fill: colors.textLight,
+          fill: theme.colors.textPrimary,
         },
         '& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel': {
-          fill: colors.textLight,
+          fill: theme.colors.textPrimary,
         },
         '& .MuiChartsAxis-bottom .MuiChartsAxis-line': {
-          stroke: colors.textLight,
+          stroke: theme.colors.textPrimary,
           strokeWidth: 2,
         },
         '& .MuiChartsAxis-left .MuiChartsAxis-line': {
-          stroke: colors.textLight,
+          stroke: theme.colors.textPrimary,
           strokeWidth: 2,
         },
         '.MuiChartsAxis-tick': {
-          stroke: colors.textLight,
+          stroke: theme.colors.textPrimary,
         },
-        '.MuiChartsAxis-left .MuiChartsAxis-label': { fill: colors.textLight },
+        '.MuiChartsAxis-left .MuiChartsAxis-label': {
+          fill: theme.colors.textPrimary,
+        },
       }}
       {...chartSetting}
     />

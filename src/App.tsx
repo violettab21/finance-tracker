@@ -4,19 +4,22 @@ import { CookiesProvider } from 'react-cookie';
 import AuthProvider from './context/authProvider';
 import ExpensesProvider from './context/expensesProvider';
 import ToastProvider from './context/toastProvider';
+import { Theme } from './context/theme';
 
 function App() {
   return (
-    <CookiesProvider>
-      <ToastProvider>
-        <AuthProvider>
-          <ExpensesProvider>
-            <Global />
-            <AppRouter />
-          </ExpensesProvider>
-        </AuthProvider>
-      </ToastProvider>
-    </CookiesProvider>
+    <Theme>
+      <CookiesProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <ExpensesProvider>
+              <Global />
+              <AppRouter />
+            </ExpensesProvider>
+          </AuthProvider>
+        </ToastProvider>
+      </CookiesProvider>
+    </Theme>
   );
 }
 
