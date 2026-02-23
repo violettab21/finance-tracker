@@ -1,17 +1,17 @@
-import { useContext } from 'react';
-import { AuthContext } from '../../../context/authContext';
 import { StyledTopNavbar, StyledTopNavbarList } from './styles';
 import { useSignOut } from '../../auth/hooks/useSignOut';
 import { StyledNavButton, StyledNavLink } from '../styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { ThemeContext } from '../../../context/themeContext';
-import { darkTheme, lightTheme } from '../../../styled/themes';
+import { lightTheme } from '../../../styled/themes';
+import { useTheme } from './hooks/useTheme';
+import { useContext } from 'react';
+import { AuthContext } from '../../../context/authContext';
 
 export default function TopNavBar() {
-  const { userData } = useContext(AuthContext);
   const { signOut } = useSignOut();
-  const { currentTheme, setCurrentTheme } = useContext(ThemeContext);
+  const { userData } = useContext(AuthContext);
+  const { currentTheme, changeTheme } = useTheme();
 
   return (
     <StyledTopNavbar justify="space-between">
@@ -29,19 +29,7 @@ export default function TopNavBar() {
           control={<Switch defaultChecked color="default" />}
           label={currentTheme === lightTheme ? 'Dark Theme' : 'Light Theme'}
           onChange={() => {
-            if (currentTheme === lightTheme) {
-              setCurrentTheme(darkTheme);
-              localStorage.setItem(
-                'finTrack',
-                JSON.stringify({ theme: 'dark' })
-              );
-            } else {
-              setCurrentTheme(lightTheme);
-              localStorage.setItem(
-                'finTrack',
-                JSON.stringify({ theme: 'light' })
-              );
-            }
+            changeTheme();
           }}
         />
         {userData.userEmail ? (
