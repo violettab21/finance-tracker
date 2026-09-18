@@ -1,6 +1,10 @@
 import React from 'react';
 import ImageBlock from './parts/ImageBlock/ImageBlock';
-import { StyledFormWrapper } from './styles';
+import {
+  StyledBlockWrapper,
+  StyledFormWrapper,
+  StyledImageWrapper,
+} from './styles';
 import { StyledFlexWrapper } from '../../../styled/flex';
 
 export default function AuthFormWrapper({
@@ -10,16 +14,20 @@ export default function AuthFormWrapper({
 }) {
   return (
     <StyledFlexWrapper justify="center" align="center">
-      <StyledFormWrapper
+      <StyledBlockWrapper
         justify="space-around"
         direction="row"
         align="center"
         width="80%"
         gap={'10px'}
       >
-        <ImageBlock />
-        {children}
-      </StyledFormWrapper>
+        <StyledImageWrapper direction="column" width="50%">
+          <ImageBlock />
+        </StyledImageWrapper>
+        <StyledFormWrapper width="50%" justify="center">
+          {children}
+        </StyledFormWrapper>
+      </StyledBlockWrapper>
     </StyledFlexWrapper>
   );
 }

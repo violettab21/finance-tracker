@@ -23,7 +23,6 @@ export default function Main() {
           direction="column"
           justify="center"
           align="center"
-          width="50%"
           gap={'1rem'}
         >
           <h1>FinTrack: Simplify Your Financial Life</h1>
