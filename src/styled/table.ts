@@ -9,6 +9,9 @@ export const StyledTable = styled.table`
   th {
     padding: 1rem;
     text-align: center;
+    @media (max-width: 768px) {
+      padding: 0.5rem;
+    }
   }
 `;
 
@@ -21,10 +24,14 @@ export const StyledTableSecondary = styled.table`
     padding: 1rem;
     text-align: center;
     border-bottom: 1px solid #a5a1b35d;
+    @media (max-width: 768px) {
+      padding: 0.5rem;
+    }
   }
 `;
 
 export const StyledRow = styled.tr`
+  cursor: pointer;
   &:hover {
     background: #a5a1b35d;
     border-radius: 8px;

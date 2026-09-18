@@ -5,6 +5,7 @@ import Button from '../../components/Button/Button';
 import Modal from '../../components/Modal/Modal';
 import ConfirmationMessage from '../../components/Confirmation/ConfirmationMessage';
 import { useDeleteProfile } from './hooks/useDeleteProfile';
+import { StyledProfileWrapper } from './styles';
 
 export default function Profile() {
   const {
@@ -16,7 +17,7 @@ export default function Profile() {
 
   return (
     <StyledFlexWrapper direction="column" gap={'1rem'} justify="center">
-      <StyledFlexWrapper width="30%" direction="column" gap={'1rem'}>
+      <StyledProfileWrapper width="40%" direction="column" gap={'1rem'}>
         <ProfileEditForm />
         <PasswordResetForm />
         <Button onClick={openConfirmation} secondary>
@@ -35,7 +36,7 @@ export default function Profile() {
             onClose={closeConfirmation}
           />
         )}
-      </StyledFlexWrapper>
+      </StyledProfileWrapper>
     </StyledFlexWrapper>
   );
 }

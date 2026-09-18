@@ -5,6 +5,11 @@ export const StyledMainBlock = styled(StyledFlexWrapper)`
   background-color: ${(props) => props.theme.colors.backgroundSection};
   padding: 2rem;
   border-radius: 8px;
+
+  @media (max-width: 600px) {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
 `;
 
 type ImageBlockProps = {

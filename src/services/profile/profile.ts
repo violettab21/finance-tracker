@@ -81,7 +81,6 @@ export const getUser = async (): Promise<{
     const result = await getDocs(q);
     const user = result.docs[0];
     if (user) {
-      console.log(user.data());
       return {
         firstName: user.data().firstName,
         lastName: user.data().lastName,

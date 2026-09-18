@@ -27,7 +27,7 @@ export const StyledCost = styled.td`
 `;
 
 export const StyledDate = styled.td`
-  width: 25%;
+  width: 30%;
 `;
 
 export const StyledButtonsWrapper = styled.td`

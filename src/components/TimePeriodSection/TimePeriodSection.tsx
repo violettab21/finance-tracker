@@ -1,7 +1,6 @@
-import { StyledFlexWrapper } from '../../styled/flex';
 import { GrNext, GrPrevious } from 'react-icons/gr';
 import { type Dispatch, type SetStateAction } from 'react';
-import { StyledButtonMonth } from './styles';
+import { StyledButtonMonth, StyledTimeWrapper } from './styles';
 import { MONTHS } from '../../constants/constants';
 import CustomSelect from '../Select/CustomSelect';
 import { getMonthIndex } from '../../helpers/helpers';
@@ -48,12 +47,11 @@ export default function TimePeriodSection({
   }
 
   return (
-    <StyledFlexWrapper
+    <StyledTimeWrapper
       direction="row"
       gap={'1rem'}
       align="stretch"
       justify={'center'}
-      width="40%"
     >
       <StyledButtonMonth onClick={showPrevMonth}>
         <GrPrevious size={15} />
@@ -97,6 +95,6 @@ export default function TimePeriodSection({
       <StyledButtonMonth onClick={showNextMonth}>
         <GrNext size={15} />
       </StyledButtonMonth>
-    </StyledFlexWrapper>
+    </StyledTimeWrapper>
   );
 }

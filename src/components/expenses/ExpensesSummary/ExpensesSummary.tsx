@@ -20,7 +20,7 @@ export default function ExpensesSummary({
   return (
     <>
       <h1>Total Balance: {balance}</h1>
-      <StyledSummaryWrapper gap={'1rem'}>
+      <StyledSummaryWrapper>
         <ExpenseCard
           text={'Month Expenses'}
           value={expenses}

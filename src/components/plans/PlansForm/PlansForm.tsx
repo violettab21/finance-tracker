@@ -8,6 +8,7 @@ import Button from '../../Button/Button';
 import { CATEGORIES, MONTHS } from '../../../constants/constants';
 import CustomSelect from '../../Select/CustomSelect';
 import { StyledModalTitle } from '../../../styled/titles';
+import { StyledPlansForm } from './styles';
 
 export default function PlansForm({
   onSubmit,
@@ -44,7 +45,7 @@ export default function PlansForm({
 
   return (
     <StyledFlexWrapper width="100%" justify="center">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <StyledPlansForm onSubmit={handleSubmit(onSubmit)}>
         <StyledFlexWrapper direction="column" width="100%" gap="10px">
           <StyledModalTitle>Add plan</StyledModalTitle>
           <StyledFlexWrapper width="100%">
@@ -106,7 +107,7 @@ export default function PlansForm({
           {isPlanError && <StyledErrorText>{isPlanError}</StyledErrorText>}
           <Button primary>Add</Button>
         </StyledFlexWrapper>
-      </form>
+      </StyledPlansForm>
     </StyledFlexWrapper>
   );
 }

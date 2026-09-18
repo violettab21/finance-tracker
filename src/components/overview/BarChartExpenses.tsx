@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { ExpensesContext } from '../../context/expensesContext';
 import { getMonthIndex } from '../../helpers/helpers';
 import { useTheme } from 'styled-components';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const chartSetting = {
   yAxis: [
@@ -15,8 +16,6 @@ const chartSetting = {
       width: 60,
     },
   ],
-  width: 500,
-  height: 300,
 };
 
 export default function BarChartExpenses({
@@ -30,6 +29,7 @@ export default function BarChartExpenses({
 }) {
   const { plans } = useContext(ExpensesContext);
   const theme = useTheme();
+  const smallSize = useMediaQuery('(max-width:600px)');
 
   const prepareDataBars = (
     data: ExpenseData[],
@@ -52,6 +52,18 @@ export default function BarChartExpenses({
     return dataChart;
   };
 
+  function getChartSize() {
+    const size = { width: 0, height: 0 };
+    if (smallSize) {
+      size.width = 360;
+      size.height = 300;
+    } else {
+      size.width = 500;
+      size.height = 300;
+    }
+    return size;
+  }
+
   return (
     <BarChart
       dataset={prepareDataBars(expenses, month, year)}
@@ -70,10 +82,10 @@ export default function BarChartExpenses({
       ]}
       slotProps={{
         legend: {
-          direction: 'vertical',
+          direction: 'horizontal',
           position: {
-            vertical: 'middle',
-            horizontal: 'end',
+            vertical: 'bottom',
+            horizontal: 'center',
           },
           sx: {
             fontSize: 20,
@@ -104,6 +116,8 @@ export default function BarChartExpenses({
         },
       }}
       {...chartSetting}
+      width={getChartSize().width}
+      height={getChartSize().height}
     />
   );
 }

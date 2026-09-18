@@ -18,6 +18,9 @@ export const StyledModalWindow = styled.div`
   background-color: white;
   padding: 2rem 3rem;
   border-radius: 8px;
+  @media (max-width: 728px) {
+    width: 90%;
+  }
 `;
 
 export const StyledModalClose = styled.button`

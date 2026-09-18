@@ -3,7 +3,7 @@ import { StyledImageBlock, StyledImageText, StyledLink } from './styles';
 import { FaArrowRightLong } from 'react-icons/fa6';
 export default function ImageBlock() {
   return (
-    <StyledFlexWrapper direction="column" width="50%">
+    <StyledFlexWrapper>
       <StyledImageBlock direction="column" justify="space-between">
         <StyledLink to="/">
           Back to main <FaArrowRightLong />

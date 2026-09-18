@@ -4,11 +4,10 @@ import {
   type ExpenseData,
 } from '../../services/expenses/expenses';
 import { useTheme } from 'styled-components';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const settings = {
   margin: { left: 10 },
-  width: 300,
-  height: 300,
 };
 
 export default function PieChartExpenses({
@@ -17,6 +16,7 @@ export default function PieChartExpenses({
   expenses: ExpenseData[];
 }) {
   const theme = useTheme();
+  const smallSize = useMediaQuery('(max-width:600px)');
   const colorsCategory = Object.values(theme.colors.chartPieColors);
   const prepareData = (data: ExpenseData[]) => {
     const dataChart = getTotalExpensesPerCategory(data).map((el, i) => {
@@ -30,12 +30,28 @@ export default function PieChartExpenses({
     return dataChart;
   };
 
+  function getChartSize() {
+    const size = { width: 0, height: 0, innerRadius: 0, outerRadius: 0 };
+    if (smallSize) {
+      size.width = 150;
+      size.height = 150;
+      size.innerRadius = 40;
+      size.outerRadius = 60;
+    } else {
+      size.width = 300;
+      size.height = 300;
+      size.innerRadius = 60;
+      size.outerRadius = 100;
+    }
+    return size;
+  }
+
   return (
     <PieChart
       series={[
         {
-          innerRadius: 60,
-          outerRadius: 100,
+          innerRadius: getChartSize().innerRadius,
+          outerRadius: getChartSize().outerRadius,
           data: prepareData(expenses),
         },
       ]}
@@ -46,6 +62,8 @@ export default function PieChartExpenses({
         },
       }}
       {...settings}
+      width={getChartSize().width}
+      height={getChartSize().height}
       slotProps={{
         legend: {
           direction: 'vertical',

@@ -18,4 +18,12 @@ export const StyledPageWrapper = styled(StyledFlexWrapper)`
   padding: 1rem;
   overflow-y: auto;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 0.5rem;
+  }
+
+  @media (max-width: 380px) {
+    padding: 0rem;
+  }
 `;
