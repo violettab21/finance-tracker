@@ -18,6 +18,7 @@ export const StyledNavLink = styled(Link)`
 
 export interface StyledNavButtonProps {
   selected?: boolean;
+  align?: string;
 }
 
 export const StyledNavButton = styled.button<StyledNavButtonProps>`
@@ -31,7 +32,7 @@ export const StyledNavButton = styled.button<StyledNavButtonProps>`
   padding: 1rem;
   width: 100%;
   border-radius: 8px;
-  text-align: start;
+  text-align: ${(props) => props.align || 'start'};
 
   &:hover {
     background-color: ${(props) => props.theme.colors.navigationHover};
