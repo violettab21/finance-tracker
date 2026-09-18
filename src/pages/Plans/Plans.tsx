@@ -7,6 +7,11 @@ import { StyledTable } from '../../styled/table';
 import { usePlans } from './hooks/usePlans';
 import Filter from '../../components/plans/Filter/Filter';
 import Loader from '../../components/Loader/Loader';
+import {
+  StyledPlanButton,
+  StyledPlanFilter,
+  StyledPlansWrapper,
+} from './styles';
 
 export interface Plan {
   id: string;
@@ -31,12 +36,7 @@ export default function Plans() {
   } = usePlans();
 
   return (
-    <StyledFlexWrapper
-      direction="column"
-      gap={'1rem'}
-      justify={'center'}
-      align="center"
-    >
+    <StyledFlexWrapper direction="column" justify={'center'} align="center">
       <Modal
         modalContent={
           <PlansForm onSubmit={createPlan} isPlanError={isPlanError} />
@@ -44,16 +44,16 @@ export default function Plans() {
         showModal={showModal}
         onClose={() => setShowModal(false)}
       />
-      <StyledFlexWrapper direction="column" width="80%" gap={'1rem'}>
-        <StyledFlexWrapper justify="space-between">
-          <StyledFlexWrapper width="30%">
+      <StyledPlansWrapper direction="column" width="80%" gap={'1rem'}>
+        <StyledFlexWrapper justify="space-between" align="stretch" gap={'1rem'}>
+          <StyledPlanButton width="30%">
             <Button onClick={() => setShowModal(true)} secondary>
               Add Plan
             </Button>
-          </StyledFlexWrapper>
-          <StyledFlexWrapper width="30%">
+          </StyledPlanButton>
+          <StyledPlanFilter width="50%">
             <Filter filter={filter} setFilter={setFilter} />
-          </StyledFlexWrapper>
+          </StyledPlanFilter>
         </StyledFlexWrapper>
         {isPlansLoading ? (
           <Loader />
@@ -76,7 +76,7 @@ export default function Plans() {
         ) : (
           <p>No plans added</p>
         )}
-      </StyledFlexWrapper>
+      </StyledPlansWrapper>
     </StyledFlexWrapper>
   );
 }

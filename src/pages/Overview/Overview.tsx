@@ -22,7 +22,12 @@ export default function Overview() {
 
   return (
     <StyledFlexWrapper align="center" direction="column" gap={'1rem'}>
-      <StyledFlexWrapper direction="column" gap={'1rem'} align="center">
+      <StyledFlexWrapper
+        direction="column"
+        gap={'1rem'}
+        align="center"
+        width="40%"
+      >
         <TimePeriodSection
           month={month}
           setMonth={setMonth}
@@ -31,28 +36,22 @@ export default function Overview() {
         />
       </StyledFlexWrapper>
       <StyledOverviewWrapper>
-        <StyledFlexWrapper width="35%">
-          <StyledFlexWrapper
-            direction="column"
-            height="100%"
-            justify="space-between"
-          >
-            <ExpensesSummary
-              expenses={getTotalExpenses(expenses)}
-              incomes={getTotalExpenses(incomes)}
-              savedFromPreviousMonths={savedFromPreviousMonths}
-            />
-          </StyledFlexWrapper>
+        <StyledFlexWrapper direction="column" justify="space-between">
+          <ExpensesSummary
+            expenses={getTotalExpenses(expenses)}
+            incomes={getTotalExpenses(incomes)}
+            savedFromPreviousMonths={savedFromPreviousMonths}
+          />
         </StyledFlexWrapper>
-        <StyledChartWrapper direction="column" align="center" width="60%">
+        <StyledChartWrapper direction="column" align="center">
           <StyledChartTitle>Total Expanses</StyledChartTitle>
           <BarChartExpenses expenses={expenses} month={month} year={year} />
         </StyledChartWrapper>
-        <StyledChartWrapper direction="column" align="center" width="35%">
+        <StyledChartWrapper direction="column" align="center">
           <StyledChartTitle>Month Expenses</StyledChartTitle>
           <PieChartExpenses expenses={expenses} />
         </StyledChartWrapper>
-        <StyledChartWrapper width="60%" direction="column" align="center">
+        <StyledChartWrapper direction="column" align="center">
           <StyledChartTitle>Top 5 Expenses</StyledChartTitle>
           <TopExpenses expenses={expenses} />
         </StyledChartWrapper>

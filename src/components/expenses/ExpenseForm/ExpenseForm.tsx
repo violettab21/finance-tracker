@@ -10,6 +10,7 @@ import { StyledErrorText } from '../../Input/styles';
 import type { ExpenseData } from '../../../services/expenses/expenses';
 import { transformDateForInput } from '../../../helpers/helpers';
 import { StyledModalTitle } from '../../../styled/titles';
+import { StyledExpensesForm } from './styles';
 
 interface ExpenseFormProps {
   title: string;
@@ -47,7 +48,7 @@ export default function ExpenseForm({
 
   return (
     <StyledFlexWrapper width="100%" justify="center">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <StyledExpensesForm onSubmit={handleSubmit(onSubmit)}>
         <StyledFlexWrapper direction="column" width="100%" gap="10px">
           <StyledModalTitle>{title}</StyledModalTitle>
           <StyledFlexWrapper width="100%">
@@ -99,7 +100,7 @@ export default function ExpenseForm({
           ></Input>
           <Button primary>{title}</Button>
         </StyledFlexWrapper>
-      </form>
+      </StyledExpensesForm>
     </StyledFlexWrapper>
   );
 }

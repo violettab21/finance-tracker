@@ -3,7 +3,11 @@ import ExpenseForm from '../../components/expenses/ExpenseForm/ExpenseForm';
 import ExpensesList from '../../components/expenses/ExpensesList/ExpensesList';
 import { StyledFlexWrapper } from '../../styled/flex';
 import { MdAddCircle } from 'react-icons/md';
-import { StyledButtonExpense, StyledExpensesWrapper } from './styles';
+import {
+  StyledButtonExpense,
+  StyledExpensesTablesWrapper,
+  StyledExpensesWrapper,
+} from './styles';
 import { MdRemoveCircle } from 'react-icons/md';
 import { useExpenses } from './hooks/useExpenses';
 
@@ -35,22 +39,28 @@ export default function Expenses() {
 
   return (
     <StyledExpensesWrapper direction="column" gap={'1rem'} align="center">
-      <StyledFlexWrapper direction="column" gap={'1rem'} align="center">
+      <StyledFlexWrapper
+        direction="column"
+        gap={'1rem'}
+        align="center"
+        width="40%"
+      >
         <TimePeriodSection
           month={month}
           setMonth={setMonth}
           year={year}
           setYear={setYear}
         />
-        <StyledFlexWrapper width={'70%'} direction="column" align="center">
-          <ExpensesSummary
-            expenses={getTotalExpenses(expenses)}
-            incomes={getTotalExpenses(incomes)}
-            savedFromPreviousMonths={savedFromPreviousMonths}
-          />
-        </StyledFlexWrapper>
       </StyledFlexWrapper>
-      <StyledFlexWrapper width="100%" gap={'10px'}>
+      <StyledFlexWrapper width={'70%'} direction="column" align="stretch">
+        <ExpensesSummary
+          expenses={getTotalExpenses(expenses)}
+          incomes={getTotalExpenses(incomes)}
+          savedFromPreviousMonths={savedFromPreviousMonths}
+        />
+      </StyledFlexWrapper>
+
+      <StyledExpensesTablesWrapper width="100%" gap={'10px'}>
         <StyledFlexWrapper width="100%" direction="column" gap={'1rem'}>
           <StyledButtonExpense
             primary
@@ -94,7 +104,7 @@ export default function Expenses() {
 
           <ExpensesList expenses={incomes} isLoading={isExpensesLoading} />
         </StyledFlexWrapper>
-      </StyledFlexWrapper>
+      </StyledExpensesTablesWrapper>
     </StyledExpensesWrapper>
   );
 }

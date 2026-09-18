@@ -63,6 +63,13 @@ export default function TopNavBar() {
         <StyledHamburgerMenu>
           <Hamburger toggled={isOpen} toggle={setOpen} />
           <Menu />
+          <FormControlLabel
+            control={<Switch defaultChecked color="default" />}
+            label={currentTheme === lightTheme ? 'Dark Theme' : 'Light Theme'}
+            onChange={() => {
+              changeTheme();
+            }}
+          />
         </StyledHamburgerMenu>
       )}
 
