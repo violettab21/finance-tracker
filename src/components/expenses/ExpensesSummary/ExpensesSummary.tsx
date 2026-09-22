@@ -38,7 +38,7 @@ export default function ExpensesSummary({
         />
         <ExpenseCard
           text={'Saved this month'}
-          value={balance - savedFromPreviousMonths}
+          value={incomes - expenses}
           icon={<IoIosWallet size={30} />}
         />
       </StyledSummaryWrapper>
