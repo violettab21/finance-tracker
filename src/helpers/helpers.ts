@@ -1,7 +1,7 @@
 import { MONTHS } from '../constants/constants';
 
-export function transformDateForInput(initialDate: string) {
-  const dateObject = new Date(initialDate);
+export function transformDateForInput(miliseconds: number) {
+  const dateObject = new Date(miliseconds);
 
   const date = dateObject.getDate();
   const month = dateObject.getMonth();

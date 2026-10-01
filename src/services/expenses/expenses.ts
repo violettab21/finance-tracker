@@ -28,7 +28,7 @@ export async function addExpense(expenseData: Omit<ExpenseData, 'id'>) {
     type: expenseData.type,
     category: expenseData.category,
     cost: expenseData.cost,
-    date: new Date(expenseData.date),
+    date: new Date(expenseData.date).getTime(),
     userUID: currentUser,
     notes: expenseData.notes,
   });
@@ -50,7 +50,7 @@ export async function getExpensesByUser(type: 'income' | 'expense') {
       type: doc.data().type,
       category: doc.data().category,
       cost: doc.data().cost,
-      date: doc.data().date.toDate().toLocaleString(),
+      date: doc.data().date,
       notes: doc.data().notes,
     };
   });
@@ -73,7 +73,7 @@ export async function getAllExpensesByUser() {
       type: doc.data().type,
       category: doc.data().category,
       cost: doc.data().cost,
-      date: doc.data().date.toDate().toLocaleString(),
+      date: doc.data().date,
       notes: doc.data().notes,
     };
   });
@@ -114,7 +114,7 @@ export async function getExpensesByCategory(category: string) {
       type: doc.data().type,
       category: doc.data().category,
       cost: doc.data().cost,
-      date: doc.data().date.toDate().toLocaleString(),
+      date: doc.data().date,
       notes: doc.data().notes,
     };
   });
@@ -156,7 +156,7 @@ export async function editExpense(updatedExpenseData: ExpenseData) {
     type: updatedExpenseData.type,
     category: updatedExpenseData.category,
     cost: updatedExpenseData.cost,
-    date: new Date(updatedExpenseData.date),
+    date: new Date(updatedExpenseData.date).getTime(),
     notes: updatedExpenseData.notes,
   });
 
