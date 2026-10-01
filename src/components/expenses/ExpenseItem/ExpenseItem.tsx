@@ -69,30 +69,28 @@ export default function ExpenseItem({
             <StyledDetailsTable>
               <tbody>
                 {details?.map((item) => (
-                  <>
-                    <StyledDetailsRow key={item.id}>
-                      <StyledDate>{transformDate(item.date)}</StyledDate>
-                      <StyledCost>{addCommasToNumber(item.cost)}</StyledCost>
-                      <StyledNotes>{item?.notes || 'N/A'}</StyledNotes>
-                      <StyledButtonsWrapper>
-                        <ButtonIcon
-                          onClick={() => {
-                            openEditModal(item);
-                          }}
-                        >
-                          <MdEdit size={20} />
-                        </ButtonIcon>
-                        <ButtonIcon
-                          onClick={() => {
-                            setIsConfirmationMessageVisible(true);
-                            setDeleteItem(item);
-                          }}
-                        >
-                          <MdDelete size={20} />
-                        </ButtonIcon>
-                      </StyledButtonsWrapper>
-                    </StyledDetailsRow>
-                  </>
+                  <StyledDetailsRow key={item.id}>
+                    <StyledDate>{transformDate(item.date)}</StyledDate>
+                    <StyledCost>{addCommasToNumber(item.cost)}</StyledCost>
+                    <StyledNotes>{item?.notes || 'N/A'}</StyledNotes>
+                    <StyledButtonsWrapper>
+                      <ButtonIcon
+                        onClick={() => {
+                          openEditModal(item);
+                        }}
+                      >
+                        <MdEdit size={20} />
+                      </ButtonIcon>
+                      <ButtonIcon
+                        onClick={() => {
+                          setIsConfirmationMessageVisible(true);
+                          setDeleteItem(item);
+                        }}
+                      >
+                        <MdDelete size={20} />
+                      </ButtonIcon>
+                    </StyledButtonsWrapper>
+                  </StyledDetailsRow>
                 ))}
               </tbody>
             </StyledDetailsTable>

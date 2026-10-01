@@ -40,8 +40,8 @@ export default function ExpenseForm({
             categories[0],
           cost: editedExpense?.cost || 1,
           date: editedExpense?.date
-            ? transformDateForInput(editedExpense?.date)
-            : transformDateForInput(new Date().toLocaleString()),
+            ? transformDateForInput(new Date(editedExpense?.date).getTime())
+            : transformDateForInput(new Date().getTime()),
         }
       : undefined,
   });
@@ -84,8 +84,8 @@ export default function ExpenseForm({
             type="date"
             defaultValue={
               editedExpense
-                ? transformDateForInput(editedExpense.date)
-                : transformDateForInput(new Date().toLocaleString())
+                ? transformDateForInput(new Date(editedExpense.date).getTime())
+                : transformDateForInput(new Date().getTime())
             }
             {...register('date')}
             error={errors.date ? errors.date?.message || null : null}
