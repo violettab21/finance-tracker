@@ -5,6 +5,7 @@ import { IoIosWallet } from 'react-icons/io';
 import { useContext } from 'react';
 import { ExpensesContext } from '../../../context/expensesContext';
 import { StyledSummaryWrapper } from './styles';
+import { addCommasToNumber } from '../../../helpers/helpers';
 
 export default function ExpensesSummary({
   expenses,
@@ -19,7 +20,7 @@ export default function ExpensesSummary({
 
   return (
     <>
-      <h1>Total Balance: {balance}</h1>
+      <h1>Total Balance: {addCommasToNumber(balance)}</h1>
       <StyledSummaryWrapper>
         <ExpenseCard
           text={'Month Expenses'}
