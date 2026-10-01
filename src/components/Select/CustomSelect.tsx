@@ -12,7 +12,7 @@ export default function CustomSelect({ ...props }) {
   const customStyles: StylesConfig<unknown, false> = {
     control: (base) => ({
       ...base,
-      borderColor: '#cccccc',
+      border: 'none',
       color: `white`,
       backgroundColor: `${theme.colors.inputBackground}`,
       //width: '100%',

@@ -4,6 +4,7 @@ import { StyledButtonMonth, StyledTimeWrapper } from './styles';
 import { MONTHS } from '../../constants/constants';
 import CustomSelect from '../Select/CustomSelect';
 import { getMonthIndex } from '../../helpers/helpers';
+import { StyledFlexWrapper } from '../../styled/flex';
 
 export default function TimePeriodSection({
   month,
@@ -47,51 +48,52 @@ export default function TimePeriodSection({
   }
 
   return (
-    <StyledTimeWrapper
-      direction="row"
-      gap={'1rem'}
-      align="stretch"
-      justify={'center'}
-    >
+    <StyledTimeWrapper direction="row" gap={'1rem'} justify={'center'}>
       <StyledButtonMonth onClick={showPrevMonth}>
         <GrPrevious size={15} />
       </StyledButtonMonth>
-      <CustomSelect
-        options={MONTHS}
-        value={MONTHS[month]}
-        onChange={(option: unknown) => {
-          if (
-            typeof option === 'object' &&
-            option &&
-            'value' in option &&
-            'label' in option
-          ) {
-            if (option?.value && typeof option?.value === 'string') {
-              const monthIndex = getMonthIndex(option.value);
-              setMonth(monthIndex);
+      <StyledFlexWrapper width="30%">
+        {' '}
+        <CustomSelect
+          options={MONTHS}
+          value={MONTHS[month]}
+          onChange={(option: unknown) => {
+            if (
+              typeof option === 'object' &&
+              option &&
+              'value' in option &&
+              'label' in option
+            ) {
+              if (option?.value && typeof option?.value === 'string') {
+                const monthIndex = getMonthIndex(option.value);
+                setMonth(monthIndex);
+              }
             }
-          }
-        }}
-      />
-      <CustomSelect
-        options={years}
-        value={years.find((yearEl) => yearEl.value === year.toString())}
-        onChange={(option: unknown) => {
-          if (
-            typeof option === 'object' &&
-            option &&
-            'value' in option &&
-            'label' in option
-          ) {
-            const selectedYear = years.find(
-              (yearEl) => yearEl.value === option?.value
-            );
-            if (selectedYear) {
-              setYear(Number(selectedYear.value));
+          }}
+        />
+      </StyledFlexWrapper>
+      <StyledFlexWrapper width="30%">
+        <CustomSelect
+          options={years}
+          value={years.find((yearEl) => yearEl.value === year.toString())}
+          onChange={(option: unknown) => {
+            if (
+              typeof option === 'object' &&
+              option &&
+              'value' in option &&
+              'label' in option
+            ) {
+              const selectedYear = years.find(
+                (yearEl) => yearEl.value === option?.value
+              );
+              if (selectedYear) {
+                setYear(Number(selectedYear.value));
+              }
             }
-          }
-        }}
-      />
+          }}
+        />
+      </StyledFlexWrapper>
+
       <StyledButtonMonth onClick={showNextMonth}>
         <GrNext size={15} />
       </StyledButtonMonth>

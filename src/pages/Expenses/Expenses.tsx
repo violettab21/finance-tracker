@@ -39,19 +39,13 @@ export default function Expenses() {
 
   return (
     <StyledExpensesWrapper direction="column" gap={'1rem'} align="center">
-      <StyledFlexWrapper
-        direction="column"
-        gap={'1rem'}
-        align="center"
-        width="40%"
-      >
-        <TimePeriodSection
-          month={month}
-          setMonth={setMonth}
-          year={year}
-          setYear={setYear}
-        />
-      </StyledFlexWrapper>
+      <TimePeriodSection
+        month={month}
+        setMonth={setMonth}
+        year={year}
+        setYear={setYear}
+      />
+
       <StyledFlexWrapper width={'70%'} direction="column" align="stretch">
         <ExpensesSummary
           expenses={getTotalExpenses(expenses)}
