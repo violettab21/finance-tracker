@@ -66,7 +66,7 @@ export default function PieChartExpenses({
       height={getChartSize().height}
       slotProps={{
         legend: {
-          direction: 'vertical',
+          direction: smallSize ? 'horizontal' : 'vertical',
           position: {
             vertical: 'middle',
             horizontal: 'start',
