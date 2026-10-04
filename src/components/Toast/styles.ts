@@ -22,6 +22,9 @@ export const StyledToast = styled.div<StyledProps>`
   justify-content: space-between;
   animation: toast 0.3s ease-in-out;
   transition: all 3ms;
+  @media (max-width: 768px) {
+    width: 300px;
+  }
 
   @keyframes toast {
     from {

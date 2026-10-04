@@ -16,7 +16,12 @@ export default function LoginForm() {
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
-      <StyledFlexWrapper direction="column" width="100%" gap="10px">
+      <StyledFlexWrapper
+        direction="column"
+        width="100%"
+        gap="10px"
+        align="stretch"
+      >
         <StyledTitle>Log in</StyledTitle>
         <p>
           Do not have an account?{' '}

@@ -4,7 +4,7 @@ export const StyledModalWrapper = styled.div`
   display: flex;
   background-color: ${(props) => props.theme.colors.modalBackgroundDark};
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   position: fixed;
   align-items: center;
   justify-content: center;

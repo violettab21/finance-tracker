@@ -32,7 +32,7 @@ export default function MainImageBlock({
         </Button>
       </StyledFlexWrapper>
       <StyledFlexWrapper
-        width="50%"
+        width="100%"
         direction="column"
         justify="center"
         align="center"

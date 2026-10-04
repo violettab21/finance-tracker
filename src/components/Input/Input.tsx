@@ -1,6 +1,5 @@
 import type { InputHTMLAttributes } from 'react';
-import { StyledErrorText, StyledInput } from './styles';
-import { StyledFlexWrapper } from '../../styled/flex';
+import { StyledErrorText, StyledInput, StyledInputWrapper } from './styles';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error: string | null;
@@ -8,9 +7,9 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export default function Input({ error, ...props }: InputProps) {
   return (
-    <StyledFlexWrapper direction="column">
+    <StyledInputWrapper>
       <StyledInput error={error} {...props}></StyledInput>
       {error && <StyledErrorText>{error}</StyledErrorText>}
-    </StyledFlexWrapper>
+    </StyledInputWrapper>
   );
 }

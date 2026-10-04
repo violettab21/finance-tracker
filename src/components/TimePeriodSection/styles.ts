@@ -10,6 +10,9 @@ export const StyledButtonMonth = styled.button`
   border: none;
   width: 40px;
   height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const StyledTimeWrapper = styled(StyledFlexWrapper)`

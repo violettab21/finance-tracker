@@ -25,7 +25,12 @@ export default function ProfileEditForm() {
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
-      <StyledFlexWrapper direction="column" width="100%" gap="10px">
+      <StyledFlexWrapper
+        direction="column"
+        width="100%"
+        gap="10px"
+        align="stretch"
+      >
         <p>Update your profile data</p>
 
         <Input

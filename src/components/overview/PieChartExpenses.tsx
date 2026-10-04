@@ -69,7 +69,7 @@ export default function PieChartExpenses({
           direction: smallSize ? 'horizontal' : 'vertical',
           position: {
             vertical: 'middle',
-            horizontal: 'start',
+            horizontal: 'center',
           },
           sx: {
             fontSize: 18,
