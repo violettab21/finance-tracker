@@ -6,15 +6,25 @@ export const StyledButtonMonth = styled.button`
   cursor: pointer;
   padding: 0 10px;
   color: #ffffff;
-  border-color: #cccccc;
-  border-radius: 4px;
-  border-style: ridge;
+  border-radius: 50%;
+  border: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const StyledTimeWrapper = styled(StyledFlexWrapper)`
   min-width: 350px;
+  width: 50%;
 
   @media (max-width: 768px) {
     gap: 0.5rem;
+    width: 100%;
+  }
+
+  @media (max-width: 1020px) {
+    width: 100%;
   }
 `;

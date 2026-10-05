@@ -49,7 +49,12 @@ export default function ExpenseForm({
   return (
     <StyledFlexWrapper width="100%" justify="center">
       <StyledExpensesForm onSubmit={handleSubmit(onSubmit)}>
-        <StyledFlexWrapper direction="column" width="100%" gap="10px">
+        <StyledFlexWrapper
+          direction="column"
+          width="100%"
+          gap="10px"
+          align="stretch"
+        >
           <StyledModalTitle>{title}</StyledModalTitle>
           <StyledFlexWrapper width="100%">
             <Controller

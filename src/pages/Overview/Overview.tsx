@@ -22,19 +22,13 @@ export default function Overview() {
 
   return (
     <StyledFlexWrapper align="center" direction="column" gap={'1rem'}>
-      <StyledFlexWrapper
-        direction="column"
-        gap={'1rem'}
-        align="center"
-        width="40%"
-      >
-        <TimePeriodSection
-          month={month}
-          setMonth={setMonth}
-          year={year}
-          setYear={setYear}
-        />
-      </StyledFlexWrapper>
+      <TimePeriodSection
+        month={month}
+        setMonth={setMonth}
+        year={year}
+        setYear={setYear}
+      />
+
       <StyledOverviewWrapper>
         <StyledFlexWrapper direction="column" justify="space-between">
           <ExpensesSummary

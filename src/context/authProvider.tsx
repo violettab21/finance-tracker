@@ -3,6 +3,7 @@ import { AuthContext } from './authContext';
 import { auth } from '../firebase-config';
 import Loader from '../components/Loader/Loader';
 import { onAuthStateChanged } from 'firebase/auth';
+import { StyledFlexWrapper } from '../styled/flex';
 
 export default function AuthProvider({
   children,
@@ -44,7 +45,11 @@ export default function AuthProvider({
   }, []);
 
   if (loading) {
-    return <Loader />;
+    return (
+      <StyledFlexWrapper height="100vh">
+        <Loader />
+      </StyledFlexWrapper>
+    );
   }
   return (
     <AuthContext value={{ userData, setUserData, loading }}>

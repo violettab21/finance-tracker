@@ -33,7 +33,12 @@ export default function RegisterForm() {
 
   return (
     <StyledRegisterForm onSubmit={handleSubmit(onSubmit)}>
-      <StyledFlexWrapper direction="column" width="100%" gap="10px">
+      <StyledFlexWrapper
+        direction="column"
+        width="100%"
+        gap="10px"
+        align="stretch"
+      >
         <StyledTitle>Create an account</StyledTitle>
         <p>
           Already have an account?{' '}

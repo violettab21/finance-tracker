@@ -1,6 +1,13 @@
 import styled from 'styled-components';
 import type { InputProps } from './Input';
 
+export const StyledInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0px;
+  min-width: 0;
+`;
+
 export const StyledInput = styled.input<InputProps>`
   border: ${({ error, theme }) =>
     !error
@@ -10,8 +17,13 @@ export const StyledInput = styled.input<InputProps>`
   color: ${(props) => props.theme.colors.textLight};
   background-color: ${(props) => props.theme.colors.inputBackground};
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   padding: 0.5rem 0.5rem;
-
+  font-family: 'Poppins';
+  font-size: 16px;
+  -webkit-appearance: none;
+  appearance: none;
   &:disabled {
     background: ${(props) => props.theme.colors.disabledInput};
   }

@@ -17,7 +17,6 @@ import { useContext } from 'react';
 import { ExpensesContext } from '../../context/expensesContext';
 import { getTotalExpenses } from '../../helpers/expenses';
 import { CATEGORIES, savingCategories } from '../../constants/constants';
-
 export default function Expenses() {
   const {
     showModal,
@@ -39,20 +38,14 @@ export default function Expenses() {
 
   return (
     <StyledExpensesWrapper direction="column" gap={'1rem'} align="center">
-      <StyledFlexWrapper
-        direction="column"
-        gap={'1rem'}
-        align="center"
-        width="40%"
-      >
-        <TimePeriodSection
-          month={month}
-          setMonth={setMonth}
-          year={year}
-          setYear={setYear}
-        />
-      </StyledFlexWrapper>
-      <StyledFlexWrapper width={'70%'} direction="column" align="stretch">
+      <TimePeriodSection
+        month={month}
+        setMonth={setMonth}
+        year={year}
+        setYear={setYear}
+      />
+
+      <StyledFlexWrapper width={'100%'} direction="column" align="stretch">
         <ExpensesSummary
           expenses={getTotalExpenses(expenses)}
           incomes={getTotalExpenses(incomes)}
