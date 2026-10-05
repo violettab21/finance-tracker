@@ -2,6 +2,10 @@ import styled from 'styled-components';
 import { StyledFlexWrapper } from '../../../styled/flex';
 
 export const StyledTopNavbar = styled(StyledFlexWrapper)`
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 10vh;
   background-color: ${(props) => props.theme.colors.navigationBackground};
   align-items: center;
   padding: 1rem;

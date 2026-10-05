@@ -15,7 +15,6 @@ export default function CustomSelect({ ...props }) {
       border: 'none',
       color: `white`,
       backgroundColor: `${theme.colors.inputBackground}`,
-      //width: '100%',
       padding: `0`,
       cursor: 'pointer',
     }),
@@ -25,11 +24,10 @@ export default function CustomSelect({ ...props }) {
     }),
     valueContainer: (base) => ({
       ...base,
-      //width: '100%',
     }),
     menu: (base) => ({
       ...base,
-      // width: '100%',
+      backgroundColor: `${theme.colors.inputBackground}`,
     }),
     option: (base, state) => ({
       ...base,
@@ -37,7 +35,6 @@ export default function CustomSelect({ ...props }) {
         ? `${theme.colors.inputBackground}`
         : 'white',
       color: !state.isSelected ? `white` : 'black',
-      //  width: '100%',
     }),
   };
   return <StyledSelect styles={customStyles} {...props} />;
